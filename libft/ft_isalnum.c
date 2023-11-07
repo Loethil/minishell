@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 14:12:44 by mbatteux          #+#    #+#             */
-/*   Updated: 2023/11/06 14:12:47 by mbatteux         ###   ########.fr       */
+/*   Created: 2023/04/11 13:17:43 by mbatteux          #+#    #+#             */
+/*   Updated: 2023/04/11 13:17:50 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include "libft.h"
-
-typedef struct s_data
+int	ft_isalnum(int c)
 {
-	char	**all_path;
-	char	*true_path;
-}				t_data;
-
-#endif
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+		return (1);
+	else if (c >= '0' && c <= '9')
+		return (1);
+	else
+		return (0);
+}

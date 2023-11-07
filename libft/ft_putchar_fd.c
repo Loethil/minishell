@@ -1,29 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 14:12:44 by mbatteux          #+#    #+#             */
-/*   Updated: 2023/11/06 14:12:47 by mbatteux         ###   ########.fr       */
+/*   Created: 2023/04/20 17:29:41 by mbatteux          #+#    #+#             */
+/*   Updated: 2023/04/20 17:29:42 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include "libft.h"
-
-typedef struct s_data
+void	ft_putchar_fd(char c, int fd)
 {
-	char	**all_path;
-	char	*true_path;
-}				t_data;
-
-#endif
+	write (fd, &c, 1);
+}

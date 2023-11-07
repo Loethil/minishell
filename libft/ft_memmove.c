@@ -1,29 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 14:12:44 by mbatteux          #+#    #+#             */
-/*   Updated: 2023/11/06 14:12:47 by mbatteux         ###   ########.fr       */
+/*   Created: 2023/04/11 15:11:08 by mbatteux          #+#    #+#             */
+/*   Updated: 2023/04/11 15:11:09 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include "libft.h"
-
-typedef struct s_data
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	char	**all_path;
-	char	*true_path;
-}				t_data;
+	size_t			i;
+	unsigned char	*tab1;
+	unsigned char	*tab2;
 
-#endif
+	if (!dest && !src)
+		return (NULL);
+	tab1 = (unsigned char *)src;
+	tab2 = (unsigned char *)dest;
+	if (tab2 > tab1)
+	{
+		while (n--)
+			tab2[n] = tab1[n];
+	}
+	else
+	{
+		i = -1;
+		while (++i < n)
+			tab2[i] = tab1[i];
+	}
+	return (dest);
+}

@@ -9,7 +9,7 @@
 /*   Updated: 2023/04/20 18:42:44 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "minishell.h"
+#include "libft.h"
 
 int	countword(char const *s, char c)
 {

@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 14:12:44 by mbatteux          #+#    #+#             */
-/*   Updated: 2023/11/06 14:12:47 by mbatteux         ###   ########.fr       */
+/*   Created: 2023/04/15 22:38:10 by mbatteux          #+#    #+#             */
+/*   Updated: 2023/04/15 22:38:11 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include "libft.h"
-
-typedef struct s_data
+char	*ft_strdup(const char *s)
 {
-	char	**all_path;
-	char	*true_path;
-}				t_data;
+	char	*tab;
+	int		i;
 
-#endif
+	i = 0;
+	tab = (char *) malloc((ft_strlen(s) + 1) * sizeof(char));
+	if (!tab)
+		return (NULL);
+	while (s[i])
+	{
+		tab[i] = s[i];
+		i++;
+	}
+	tab[i] = '\0';
+	return (tab);
+}

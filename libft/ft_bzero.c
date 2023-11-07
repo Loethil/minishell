@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 14:12:44 by mbatteux          #+#    #+#             */
-/*   Updated: 2023/11/06 14:12:47 by mbatteux         ###   ########.fr       */
+/*   Created: 2023/04/11 14:34:27 by mbatteux          #+#    #+#             */
+/*   Updated: 2023/04/11 14:34:30 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include "libft.h"
-
-typedef struct s_data
+void	ft_bzero(void *s, size_t n)
 {
-	char	**all_path;
-	char	*true_path;
-}				t_data;
+	size_t			i;
+	unsigned char	*str;
 
-#endif
+	str = (unsigned char *)s;
+	i = 0;
+	while (i < n)
+	{
+		str[i] = '\0';
+		i++;
+	}
+}

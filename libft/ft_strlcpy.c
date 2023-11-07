@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 14:12:44 by mbatteux          #+#    #+#             */
-/*   Updated: 2023/11/06 14:12:47 by mbatteux         ###   ########.fr       */
+/*   Created: 2023/04/11 15:24:29 by mbatteux          #+#    #+#             */
+/*   Updated: 2023/04/11 15:24:30 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include "libft.h"
-
-typedef struct s_data
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	char	**all_path;
-	char	*true_path;
-}				t_data;
+	unsigned int	i;
+	unsigned int	j;
 
-#endif
+	i = ft_strlen(src);
+	j = -1;
+	if (i + 1 < size)
+	{
+		while (++j < i + 1)
+			dst[j] = src[j];
+	}
+	else if (size > 0)
+	{
+		while (++j < size - 1)
+			dst[j] = src[j];
+		dst[j] = 0;
+	}
+	return (i);
+}

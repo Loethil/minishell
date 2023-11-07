@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 14:12:44 by mbatteux          #+#    #+#             */
-/*   Updated: 2023/11/06 14:12:47 by mbatteux         ###   ########.fr       */
+/*   Created: 2023/04/12 14:42:20 by mbatteux          #+#    #+#             */
+/*   Updated: 2023/04/12 14:42:21 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include "libft.h"
-
-typedef struct s_data
+char	*ft_strchr(const char *s, int c)
 {
-	char	**all_path;
-	char	*true_path;
-}				t_data;
+	int	i;
 
-#endif
+	i = -1;
+	while (s[++i])
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+	if (s[i] == (char)c)
+		return ((char *)&s[i]);
+	return (NULL);
+}
