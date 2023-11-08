@@ -17,13 +17,19 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
+# include <sys/types.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <errno.h>
 # include "libft.h"
 
 typedef struct s_data
 {
 	char	**all_path;
 	char	*true_path;
+	pid_t	pid;
 }				t_data;
 
 #endif

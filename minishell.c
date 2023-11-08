@@ -16,8 +16,10 @@
 
 int	echo(char **tabsplit, char **env)
 {
-	(void)env;
-	printf("%s\n", tabsplit[1]);
+	// (void)env;
+	if (execve("/usr/bin/echo", tabsplit, env) == -1)
+		printf("error");
+	// printf("%s\n", tabsplit[1]);
 	return (0);
 }
 
@@ -25,6 +27,8 @@ int	main(int argc, char **argv, char **env)
 {
 	char *tab;
 	char	**tabsplit;
+	int 	status;
+	t_data	data;
 	int	i = 0;
 
 
@@ -40,7 +44,13 @@ int	main(int argc, char **argv, char **env)
 		printf("-%s\n", tab);
 		while (tabsplit[i])
 			printf("--%s\n", tabsplit[i++]);
-		if (ft_strncmp(tabsplit[0], "echo", 4) == 0)
-			echo(tabsplit, env);
+		data.pid = fork();
+		if (data.pid == 0)
+		{
+			if (ft_strncmp(tabsplit[0], "echo", 4) == 0)
+				echo(tabsplit, env);
+		}
+		else
+			waitpid(data.pid, &status, 0);
 	}
 }
