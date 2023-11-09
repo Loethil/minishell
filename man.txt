@@ -1,0 +1,138 @@
+MAN DE TOUTES LES FONCTIONS DE MINISHELL
+
+readline = Readline will read a line from the terminal and return it, using
+       prompt as a prompt.  If prompt is NULL or the empty string, no
+       prompt is issued.  The line returned is allocated with malloc(3);
+       the caller must free it when finished.  The line returned has the
+       final newline removed, so only the text of the line remains.
+
+rl_clear_history = Clear the history list by deleting all of the entries, 
+		in the same manner as the History library’s clear_history() function. 
+		This differs from clear_history because it frees private data Readline
+		saves in the history list.
+
+rl_on_new_line = Tell the update functions that we have moved onto a new (empty) line, 
+		usually after outputting a newline.
+
+rl_replace_line = Replace the contents of rl_line_buffer with text. 
+		The point and mark are preserved, if possible. If clear_undo is non-zero, 
+		the undo list associated with the current line is cleared.
+
+rl_redisplay = Change what’s displayed on the screen to 
+		reflect the current contents of rl_line_buffer.
+
+add_history = Place string at the end of the history list. 
+		The associated data field (if any) is set to NULL.
+
+access = access() vérifie si le processus appelant peut accéder au fichier pathname. 
+		Si pathname est un lien symbolique, il est déréférencé.
+
+fork = fork() crée un nouveau processus en dupliquant le processus appelant. Le nouveau processus, 
+		que l'on appelle processus fils, est la copie exacte du processus appelant
+
+wait = Tous ces appels système sont utilisés pour attendre le changement d'état du fils d'un processus appelant, 
+		et pour obtenir des informations sur le fils dont l'état a changé. 
+
+waitpid = L'appel système waitpid() suspend l'exécution du processus 
+		appelant jusqu'à ce que le fils spécifié par son pid ait changé d'état.
+
+wait3 & 4 = Les appels système wait3() et wait4()  sont  similaires  à  waitpid(2),
+       mais  retournent  également  des  informations  sur  l’utilisation  des
+       ressources par le fils dans la structure pointée par rusage.
+
+signal = signal() installe le gestionnaire handler pour le signal signum.
+		handler peut être SIG_IGN, SIG_DFL ou l'adresse d'une fonction définie 
+		par le programmeur (un « gestionnaire de signal »).
+
+sigaction = L'appel système sigaction() sert à modifier 
+		l'action effectuée par un processus à la réception d'un signal spécifique.
+
+sigemptyset = sigemptyset() vide l'ensemble de signaux fourni par set, tous les signaux étant exclus de cet ensemble.
+	Ces fonctions permettent la manipulation des ensembles de signaux POSIX.
+sigaddset = sigaddset() ajoutentle signal signum de l'ensemble set.
+
+kill = L'appel système kill() peut être utilisé pour envoyer n'importe quel signal 
+		à n'importe quel processus ou groupe de processus.
+
+getcwd = La fonction getcwd() copie le chemin d'accès absolu du répertoire de travail courant
+		 dans la chaîne pointée par buf, qui est de longueur size.
+
+chdir = chdir() remplace le répertoire de travail courant du processus
+		 appelant par celui indiqué dans le chemin path.
+
+stat = Ces fonctions renvoient des informations à propos d'un fichier. 
+		Aucune permission n'est nécessaire sur le fichier lui-même, 
+		mais vous devez --- dans le cas de stat() et lstat() --- 
+		avoir la permission d'exécution (parcours) pour tous les répertoires de path qui mènent au fichier.
+
+lstat = lstat() est identique à stat(), sauf que si path est un lien symbolique, 
+		il donne l'état du lien lui-même plutôt que celui du fichier visé.
+
+fstat = fstat() est identique à stat(), 
+		sauf que le fichier ouvert est pointé par le descripteur fd, obtenu avec open(2).
+
+unlink = unlink() détruit un nom dans le système de fichiers. 
+		Si ce nom était le dernier lien sur un fichier, 
+		et si aucun processus n'a ouvert ce fichier, ce dernier est effacé, 
+		et l'espace qu'il utilisait est rendu disponible.
+
+execve = execve() exécute le programme correspondant au fichier.
+
+	dup() et dup2() créent une copie du descripteur de fichier oldfd.
+
+dup = dup() utilise le plus petit numéro inutilisé pour le nouveau descripteur.
+
+dup2 = dup2() transforme newfd en une copie de oldfd, fermant auparavant newfd si besoin est
+
+pipe = pipe() crée un tube, un canal unidirectionnel de données qui peut être utilisé 
+		pour la communication entre processus.
+
+opendir = La fonction opendir() ouvre un flux répertoire correspondant au répertoire 'name', 
+		et renvoie un pointeur sur ce flux. 
+		Le flux est positionné sur la première entrée du répertoire.
+
+readdir = La fonction readdir() renvoie un pointeur sur une structure 'dirent' représentant 
+		l'entrée suivante du flux répertoire pointé par dir.
+
+closedir = La fonction closedir() ferme le flux de répertoire associé à dir. 
+		Après cette invocation, le descripteur dir du flux de répertoire n'est plus disponible.  
+
+strerror = La fonction strerror() renvoie une chaîne décrivant le code d'erreur passé en argument errnum
+
+perror = La fonction perror() affiche un message sur la sortie d'erreur standard, décrivant 
+		la dernière erreur rencontrée durant un appel système ou une fonction de bibliothèque
+
+isatty = renvoie 1 si desc est un descripteur de fichier ouvert connecté à un terminal, ou 0 autrement. 
+
+ttyname = La fonction ttyname() renvoie un pointeur sur le chemin d'accès terminé 
+		par un octet nul du périphérique terminal ouvert associé au descripteur de fichier fd
+
+ttyslot = La fonction ttyslot() renvoie la position de l'entrée du terminal en cours dans un fichier.
+
+ioctl = La fonction ioctl() modifie le comportement des périphériques sous-jacents des fichiers spéciaux. 
+		En particulier, de nombreuses caractéristiques des fichiers spéciaux en mode caractère (par exemple des terminaux) 
+		peuvent être contrôlées avec des requêtes ioctl(). 
+		L'argument d doit être un descripteur de fichier ouvert.
+
+getenv = La fonction getenv() recherche dans la liste des variables d'environnement un variable nommée name, 
+		et renvoie un pointeur sur la chaîne value correspondante
+
+tcsetattr = tcsetattr() fixe les paramètres du terminal 
+
+tcgetattr = tcgetattr() récupère les paramètres associés à l'objet référencé par fd 
+
+tgetent = The tgetent routine loads the entry for name.
+
+tgetflag = The tgetflag routine gets the boolean entry for id, or zero if it is not available.
+
+tgetnum = The tgetnum routine gets the numeric entry for id, or -1 if it is not available.
+
+tgetstr = The tgetstr routine returns the string entry for id, or zero if it is not available. Use tputs to output the returned string. 
+		The return value will also be copied to the buffer pointed to by area, 
+		and the area value will be updated to point past the null ending this value.
+
+tgoto = The tgoto routine instantiates the parameters into the given capability. 
+		The output from this routine is to be passed to tputs.
+
+tputs = The tputs routine is described on the curs_terminfo(3X) manual page. 
+		It can retrieve capabilities by either termcap or terminfo name.
