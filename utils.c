@@ -19,53 +19,43 @@ int	ft_strcmp(const char *s1, const char *s2)
 	i = 0;
 	while (s1[i])
 	{
-		if (s1[i] == s2[i])
-			i++;
-		else
+		if (s1[i] != s2[i])
 			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
 	}
 	if (s2[i])
 		return (-1);
 	return (0);
 }
 
-char	**find_path(t_data *data, char **env)
+char	**find_path(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-			break ;
-		i++;
-	}
-	data->all_path = ft_split(env[i] + 5, ':');
-	i = 0;
+	data->all_path = ft_split(getenv("PATH"), ':');
 	while (data->all_path[i])
 	{
 		data->all_path[i] = ft_strjoin(data->all_path[i], "/");
 		i++;
 	}
 	return(data->all_path);
-} //obselete a changer par getenv(path)
+}
 
-char	*get_access(t_data *data, char *argv)
+char	*get_access(t_data *data, char *cmd)
 {
 	int	i;
 
 	i = 0;
-	if (access(argv, X_OK) == 0)
-		return (argv);
 	while (data->all_path[i])
 	{
-		data->true_path = ft_strjoin(data->all_path[i], argv);
+		data->true_path = ft_strjoin(data->all_path[i], cmd);
 		if (access(data->true_path, X_OK) == 0)
 			return (data->true_path);
 		free(data->true_path);
 		i++;
 	}
-	write (1, "command not found\n", 18);
+	printf("%s command not found\n", cmd);
 	exit(1);
 }
 

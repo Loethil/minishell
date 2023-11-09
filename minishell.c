@@ -23,17 +23,24 @@ int	echo(char **lineplit, char **env)
 
 void	findcmd(t_data *data, char **env)
 {
-	data->all_path = find_path(data, env);
-	data->true_path = get_access(data, data->linesplit[0]);
-	if (execve(data->true_path,  &data->linesplit[0], env) == -1)
-		printf("error execve\n");
+	data->pid = fork();
+	if (data->pid == 0)
+	{
+		data->all_path = find_path(data);
+		data->true_path = get_access(data, data->linesplit[0]);
+		if (execve(data->true_path,  &data->linesplit[0], env) == -1)
+			printf("error execve\n");
+	}
+	else
+		waitpid(data->pid, &data->status, 0);
 }
+
 
 
 void	printpwd(t_data *data)
 {
-	getcwd(data->cwd, 100);
-	printf("%s\n", data->cwd);
+	data->pwd = getenv("PWD");
+	printf("%s\n", data->pwd);
 }
 
 void	printenv(char **env)
@@ -45,12 +52,20 @@ void	printenv(char **env)
 		printf("%s\n", env[i++]);
 }
 
+void	changedir(t_data *data)
+{
+	(void)data;
+	chdir("libft/");
+	printf("%s\n", getenv("PWD"));
+	//PROBLEME CELA NE CHANGE PAS L'ENV !!!!
+}
+
 void	whoitis(t_data *data, char **env)
 {
 	if (ft_strcmp(data->linesplit[0], "echo") == 0)
-			echo(data->linesplit, env);
+			echo(data->linesplit, env); // 
 	else if (ft_strcmp(data->linesplit[0], "cd") == 0)
-			echo(data->linesplit, env); //
+			changedir(data); // 
 	else if (ft_strcmp(data->linesplit[0], "pwd") == 0)
 			printpwd(data);
 	else if (ft_strcmp(data->linesplit[0], "export") == 0)
@@ -60,7 +75,7 @@ void	whoitis(t_data *data, char **env)
 	else if (ft_strcmp(data->linesplit[0], "env") == 0)
 			printenv(env);
 	else if (ft_strcmp(data->linesplit[0], "exit") == 0)
-			echo(data->linesplit, env); //
+			exit(0);
 	else
 		findcmd(data, env);
 }
@@ -84,10 +99,6 @@ int	main(int argc, char **argv, char **env)
 		printf("-%s\n", data.line);
 		while (data.linesplit[i])
 			printf("--%s\n", data.linesplit[i++]);
-		data.pid = fork();
-		if (data.pid == 0)
-			whoitis(&data, env);
-		else
-			waitpid(data.pid, &data.status, 0);
+		whoitis(&data, env);
 	}
 }
