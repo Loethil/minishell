@@ -28,8 +28,16 @@
 typedef struct s_data
 {
 	char	**all_path;
+	char	**linesplit;
 	char	*true_path;
+	char	*line;
+	int		status;
+	char	cwd[100];
 	pid_t	pid;
 }				t_data;
+
+int		ft_strcmp(const char *s1, const char *s2);
+char	**find_path(t_data *data, char **env);
+char	*get_access(t_data *data, char *argv);
 
 #endif

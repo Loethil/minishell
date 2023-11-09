@@ -14,43 +14,80 @@
 
 /*recoder echo avec l'option -n, ou faire les bonus de pipex (gerer plusieurs pipe)*/
 
-int	echo(char **tabsplit, char **env)
+int	echo(char **lineplit, char **env)
 {
-	// (void)env;
-	if (execve("/usr/bin/echo", tabsplit, env) == -1)
+	if (execve("/usr/bin/echo", lineplit, env) == -1)
 		printf("error");
-	// printf("%s\n", tabsplit[1]);
 	return (0);
 }
 
+void	findcmd(t_data *data, char **env)
+{
+	data->all_path = find_path(data, env);
+	data->true_path = get_access(data, data->linesplit[0]);
+	if (execve(data->true_path,  &data->linesplit[0], env) == -1)
+		printf("error execve\n");
+}
+
+
+void	printpwd(t_data *data)
+{
+	getcwd(data->cwd, 100);
+	printf("%s\n", data->cwd);
+}
+
+void	printenv(char **env)
+{
+	int	i;
+
+	i = 0;
+	while(env[i])
+		printf("%s\n", env[i++]);
+}
+
+void	whoitis(t_data *data, char **env)
+{
+	if (ft_strcmp(data->linesplit[0], "echo") == 0)
+			echo(data->linesplit, env);
+	else if (ft_strcmp(data->linesplit[0], "cd") == 0)
+			echo(data->linesplit, env); //
+	else if (ft_strcmp(data->linesplit[0], "pwd") == 0)
+			printpwd(data);
+	else if (ft_strcmp(data->linesplit[0], "export") == 0)
+			echo(data->linesplit, env); //
+	else if (ft_strcmp(data->linesplit[0], "unset") == 0)
+			echo(data->linesplit, env); //
+	else if (ft_strcmp(data->linesplit[0], "env") == 0)
+			printenv(env);
+	else if (ft_strcmp(data->linesplit[0], "exit") == 0)
+			echo(data->linesplit, env); //
+	else
+		findcmd(data, env);
+}
+
+
 int	main(int argc, char **argv, char **env)
 {
-	char *tab;
-	char	**tabsplit;
-	int 	status;
 	t_data	data;
-	int	i = 0;
-
-
+	int		i;
+	
 	(void)argc;
 	(void)argv;
+	i = 0;
 	while (1)
 	{
-		tab = readline("minishell:");
-		if (tab[0] == '\0')
+		data.line = readline("minishell:");
+		if (data.line[0] == '\0')
 			continue ;
-		add_history(tab);
-		tabsplit = ft_split(tab, ' ');
-		printf("-%s\n", tab);
-		while (tabsplit[i])
-			printf("--%s\n", tabsplit[i++]);
+		add_history(data.line);
+		data.linesplit = ft_split(data.line, ' ');
+		printf("-%s\n", data.line);
+		while (data.linesplit[i])
+			printf("--%s\n", data.linesplit[i++]);
 		data.pid = fork();
 		if (data.pid == 0)
-		{
-			if (ft_strncmp(tabsplit[0], "echo", 4) == 0)
-				echo(tabsplit, env);
-		}
+			whoitis(&data, env);
 		else
-			waitpid(data.pid, &status, 0);
+			waitpid(data.pid, &data.status, 0);
 	}
 }
