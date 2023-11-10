@@ -37,7 +37,8 @@ typedef struct s_data
 }				t_data;
 
 int		ft_strcmp(const char *s1, const char *s2);
-char	**find_path(t_data *data);
-char	*get_access(t_data *data, char *argv);
+char	**ft_find_path(t_data *data);
+char	*ft_get_access(t_data *data, char *argv);
+int		ft_findpwd(char **env);
 
 #endif

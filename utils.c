@@ -28,7 +28,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-char	**find_path(t_data *data)
+char	**ft_find_path(t_data *data)
 {
 	int	i;
 
@@ -42,7 +42,7 @@ char	**find_path(t_data *data)
 	return(data->all_path);
 }
 
-char	*get_access(t_data *data, char *cmd)
+char	*ft_get_access(t_data *data, char *cmd)
 {
 	int	i;
 
@@ -59,3 +59,16 @@ char	*get_access(t_data *data, char *cmd)
 	exit(1);
 }
 
+int	ft_findpwd(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (strncmp(env[i], "PWD=", 4) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}

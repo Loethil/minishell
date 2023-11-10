@@ -14,20 +14,20 @@
 
 /*recoder echo avec l'option -n, ou faire les bonus de pipex (gerer plusieurs pipe)*/
 
-int	echo(char **lineplit, char **env)
+int	ft_echo(char **lineplit, char **env)
 {
 	if (execve("/usr/bin/echo", lineplit, env) == -1)
 		printf("error");
 	return (0);
 }
 
-void	findcmd(t_data *data, char **env)
+void	ft_findcmd(t_data *data, char **env)
 {
 	data->pid = fork();
 	if (data->pid == 0)
 	{
-		data->all_path = find_path(data);
-		data->true_path = get_access(data, data->linesplit[0]);
+		data->all_path = ft_find_path(data);
+		data->true_path = ft_get_access(data, data->linesplit[0]);
 		if (execve(data->true_path,  &data->linesplit[0], env) == -1)
 			printf("error execve\n");
 	}
@@ -37,13 +37,13 @@ void	findcmd(t_data *data, char **env)
 
 
 
-void	printpwd(t_data *data)
+void	ft_printpwd(t_data *data)
 {
 	data->pwd = getenv("PWD");
 	printf("%s\n", data->pwd);
 }
 
-void	printenv(char **env)
+void	ft_printenv(char **env)
 {
 	int	i;
 
@@ -52,32 +52,42 @@ void	printenv(char **env)
 		printf("%s\n", env[i++]);
 }
 
-void	changedir(t_data *data)
+void	ft_changedir(t_data *data, char **env)
 {
-	(void)data;
-	chdir("libft/");
-	printf("%s\n", getenv("PWD"));
-	//PROBLEME CELA NE CHANGE PAS L'ENV !!!!
+	int	i;
+
+	i = ft_findpwd(env);
+	// data->true_path = ft_strjoin(data->true_path, "/");
+	data->true_path = ft_strjoin(env[i], "/");
+	printf("%s\n", data->true_path);
+	data->true_path = ft_strjoin(data->true_path, data->linesplit[1]);
+	printf("%s\n", data->true_path);
+	env[i] = NULL;
+	env[i] = data->true_path;
+	chdir(data->linesplit[1]);
+	printf("%s\n", env[i]);
+	printf("getenv = %s\n", getenv("PWD"));
+	//bug getenv ne se change pas mais l'env si c tro chelou tsais
 }
 
-void	whoitis(t_data *data, char **env)
+void	ft_whoitis(t_data *data, char **env)
 {
 	if (ft_strcmp(data->linesplit[0], "echo") == 0)
-			echo(data->linesplit, env); // 
+			ft_echo(data->linesplit, env); // 
 	else if (ft_strcmp(data->linesplit[0], "cd") == 0)
-			changedir(data); // 
+			ft_changedir(data, env); // 
 	else if (ft_strcmp(data->linesplit[0], "pwd") == 0)
-			printpwd(data);
+			ft_printpwd(data);
 	else if (ft_strcmp(data->linesplit[0], "export") == 0)
-			echo(data->linesplit, env); //
+			ft_echo(data->linesplit, env); //
 	else if (ft_strcmp(data->linesplit[0], "unset") == 0)
-			echo(data->linesplit, env); //
+			ft_echo(data->linesplit, env); //
 	else if (ft_strcmp(data->linesplit[0], "env") == 0)
-			printenv(env);
+			ft_printenv(env);
 	else if (ft_strcmp(data->linesplit[0], "exit") == 0)
 			exit(0);
 	else
-		findcmd(data, env);
+		ft_findcmd(data, env);
 }
 
 
@@ -99,6 +109,6 @@ int	main(int argc, char **argv, char **env)
 		printf("-%s\n", data.line);
 		while (data.linesplit[i])
 			printf("--%s\n", data.linesplit[i++]);
-		whoitis(&data, env);
+		ft_whoitis(&data, env);
 	}
 }
