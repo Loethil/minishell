@@ -59,6 +59,32 @@ char	*ft_get_access(t_data *data, char *cmd)
 	exit(1);
 }
 
+char	*ft_copystring(char *env)
+{
+	int	i;
+	char	*tab;
+
+	i = -1;
+	tab = malloc(ft_strlen(env)  * sizeof(char));
+	while (env[++i])
+		tab[i] = env[i];
+	return (tab);
+}
+
+char	**changeenv(t_data *data, char **env)
+{
+	int	i;
+
+	i = 0;
+	data->newenv = malloc(10000 * sizeof(char *));
+	while (env[i])
+	{
+		data->newenv[i] = ft_copystring(env[i]);
+		i++;
+	}
+	return (data->newenv);
+}
+
 int	ft_findpwd(char **env)
 {
 	int	i;

@@ -30,6 +30,7 @@ typedef struct s_data
 	char		*line;
 	char	**all_path;
 	char	**linesplit;
+	char	**newenv;
 	char	*true_path;
 	int		status;
 	char	*pwd;
@@ -37,8 +38,9 @@ typedef struct s_data
 }				t_data;
 
 int		ft_strcmp(const char *s1, const char *s2);
+int		ft_findpwd(char **env);
 char	**ft_find_path(t_data *data);
 char	*ft_get_access(t_data *data, char *argv);
-int		ft_findpwd(char **env);
-
+char	*ft_copystring(char *env);
+char	**changeenv(t_data *data, char **env);
 #endif
