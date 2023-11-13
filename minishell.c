@@ -38,35 +38,41 @@ void	ft_findcmd(t_data *data)
 		waitpid(data->pid, &data->status, 0);
 }
 
-void	ft_printpwd(t_data *data)
+void	ft_pwdorenv(char **newenv, char *tab)
+{
+	int	i;
+
+	if ( strcmp(tab, "PWD") == 0)
+	{
+		i = ft_findpwd(newenv);
+		printf("%s\n", newenv[i] + 4);
+	}
+	if (strcmp(tab, "ENV") == 0)
+	{
+			i = 0;
+		while(newenv[i])
+			printf("%s\n", newenv[i++]);
+	}
+}
+
+void	ft_changedir(t_data *data, char *path)
 {
 	int	i;
 
 	i = ft_findpwd(data->newenv);
-	printf("%s\n", data->newenv[i] + 4);
-}
-
-void	ft_printenv(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while(data->newenv[i])
-		printf("%s\n", data->newenv[i++]);
-}
-
-void	ft_changedir(t_data *data)
-{
-	int	i;
-
-	i = ft_findpwd(data->newenv);
-	// data->true_path = ft_strjoin(data->true_path, "/");
+	if (data->linesplit[1][0] == '~')
+	{
+		data->newenv[i] = ft_strjoin("PWD=/home/mbatteux", path + 1);
+		path = ft_strjoin("/home/mbatteux/", path + 1);
+		if (chdir(path) == -1)
+			printf("ERROR CHDIR");
+		return ;
+	}
 	data->true_path = ft_strjoin(data->newenv[i], "/");
-	data->true_path = ft_strjoin(data->true_path, data->linesplit[1]);
+	data->true_path = ft_strjoin(data->true_path, path);
 	data->newenv[i] = data->true_path;
-	printf("%s\n", data->true_path);
-	chdir(data->linesplit[1]);
-	//path relatif marche mais pas path absolu
+	if (chdir(path) == -1)
+		printf("ERROR CHDIR");
 }
 
 void	ft_whoitis(t_data *data)
@@ -74,15 +80,15 @@ void	ft_whoitis(t_data *data)
 	if (ft_strcmp(data->linesplit[0], "echo") == 0)
 			ft_echo(data, data->linesplit[1]); // 
 	else if (ft_strcmp(data->linesplit[0], "cd") == 0)
-			ft_changedir(data);
+			ft_changedir(data, data->linesplit[1]);
 	else if (ft_strcmp(data->linesplit[0], "pwd") == 0)
-			ft_printpwd(data);
+			ft_pwdorenv(data->newenv, "PWD");
 	else if (ft_strcmp(data->linesplit[0], "export") == 0)
 			ft_echo(data, data->linesplit[1]); //
 	else if (ft_strcmp(data->linesplit[0], "unset") == 0)
 			ft_echo(data, data->linesplit[1]); //
 	else if (ft_strcmp(data->linesplit[0], "env") == 0)
-			ft_printenv(data);
+			ft_pwdorenv(data->newenv, "ENV");
 	else if (ft_strcmp(data->linesplit[0], "exit") == 0)
 			exit(0);
 	else
