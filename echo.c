@@ -25,12 +25,18 @@ int	ft_tablen(char **tab)
 int	ft_echo(t_data *data)
 {
 	int	i;
+	int	j;
 
 	i = 1;
-	if (strcmp(data->linesplit[1], "-n") == 0)
+	j = 1;
+	if (strncmp(data->linesplit[1], "-n", 2) == 0)
 	{
-		while (strcmp(data->linesplit[i], "-n") == 0)
+		while (strncmp(data->linesplit[i], "-n", 2) == 0)
+		{
+			while (data->linesplit[i][j] == 'n')
+				j++;
 			i++;
+		}
 		while (data->linesplit[i])
 		{
 			if (ft_tablen(data->linesplit) < 3 || i == ft_tablen(data->linesplit) - 1)

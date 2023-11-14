@@ -13,7 +13,8 @@
 NAME = minishell
 
 CCC = minishell.c\
-	utils.c
+	utils.c \
+	echo.c
 
 OOO = $(CCC:.c=.o)
 
