@@ -47,11 +47,16 @@ typedef	struct s_line
 	int		pipenmb;
 }				t_line;
 
-int		ft_strcmp(const char *s1, const char *s2);
-int		ft_findpwd(char **env);
-char	**ft_find_path(t_data *data);
-char	*ft_get_access(t_data *data, char *argv);
-char	*ft_copystring(char *env);
-char	**changeenv(t_data *data, char **env);
+void		ft_exit(t_data *data, char *nbr);
+void		ft_findcmd(t_data *data);
+void		ft_changedir(t_data *data, char *path);
+void		ft_whoitis(t_data *data);
+void		ft_pwdorenv(char **newenv, char *tab);
+int			ft_strcmp(const char *s1, const char *s2);
 long long	ft_atoll(const char *str);
+int			ft_findpwd(char **env);
+char		*ft_copystring(char *env);
+char		*ft_get_access(t_data *data, char *cmd);
+char		**changeenv(t_data *data, char **env);
+char		**ft_find_path(t_data *data);
 #endif

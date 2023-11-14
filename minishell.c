@@ -16,13 +16,6 @@
 exemple : cmd 1 c'est le premier argument
 redir si il y a un '>' etc*/
 
-int	ft_echo(t_data *data, char *linesplit)
-{
-	if (execve("/usr/bin/echo", &linesplit, data->newenv) == -1)
-		printf("error");
-	return (0);
-}
-
 void	ft_exit(t_data *data, char *nbr)
 {
 	if (nbr == NULL)
@@ -50,23 +43,6 @@ void	ft_findcmd(t_data *data)
 		waitpid(data->pid, &data->status, 0);
 }
 
-void	ft_pwdorenv(char **newenv, char *tab)
-{
-	int	i;
-
-	if ( strcmp(tab, "PWD") == 0)
-	{
-		i = ft_findpwd(newenv);
-		printf("%s\n", newenv[i] + 4);
-	}
-	if (strcmp(tab, "ENV") == 0)
-	{
-		i = 0;
-		while(newenv[i])
-			printf("%s\n", newenv[i++]);
-	}
-}
-
 void	ft_changedir(t_data *data, char *path)
 {
 	int	i;
@@ -89,16 +65,16 @@ void	ft_changedir(t_data *data, char *path)
 
 void	ft_whoitis(t_data *data)
 {
-	if (ft_strcmp(data->linesplit[0], "echo") == 0)
-			ft_echo(data, data->linesplit[1]); //
-	else if (ft_strcmp(data->linesplit[0], "cd") == 0)
+	// if (ft_strcmp(data->linesplit[0], "echo") == 0)
+	// 		ft_echo(data, data->linesplit[1]); //
+	if (ft_strcmp(data->linesplit[0], "cd") == 0)
 			ft_changedir(data, data->linesplit[1]);
 	else if (ft_strcmp(data->linesplit[0], "pwd") == 0)
 			ft_pwdorenv(data->newenv, "PWD");
-	else if (ft_strcmp(data->linesplit[0], "export") == 0)
-			ft_echo(data, data->linesplit[1]); //
-	else if (ft_strcmp(data->linesplit[0], "unset") == 0)
-			ft_echo(data, data->linesplit[1]); //
+	// else if (ft_strcmp(data->linesplit[0], "export") == 0)
+	// 		ft_echo(data, data->linesplit[1]); //
+	// else if (ft_strcmp(data->linesplit[0], "unset") == 0)
+	// 		ft_echo(data, data->linesplit[1]); //
 	else if (ft_strcmp(data->linesplit[0], "env") == 0)
 			ft_pwdorenv(data->newenv, "ENV");
 	else if (ft_strcmp(data->linesplit[0], "exit") == 0)
