@@ -98,3 +98,22 @@ int	ft_findpwd(char **env)
 	}
 	return (-1);
 }
+
+// gerer les cas ou nbr est plus grands qu'un long long
+long long	ft_atoll(const char *str)
+{
+	long long	res;
+	int	o;
+	int	s;
+
+	o = 0;
+	res = 0;
+	s = 0;
+	if (str[o++] == '-' )
+		s++;
+	while (str[o] && (ft_isdigit(str[o]) == 1))
+		res = res * 10 + str[o++] - '0';
+	if (s == 1)
+		return (-res);
+	return (res);
+}

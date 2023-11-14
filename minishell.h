@@ -34,6 +34,7 @@ typedef struct s_data
 	char	*true_path;
 	int		status;
 	char	*pwd;
+	long long max;
 	pid_t	pid;
 }				t_data;
 
@@ -52,4 +53,5 @@ char	**ft_find_path(t_data *data);
 char	*ft_get_access(t_data *data, char *argv);
 char	*ft_copystring(char *env);
 char	**changeenv(t_data *data, char **env);
+long long	ft_atoll(const char *str);
 #endif
