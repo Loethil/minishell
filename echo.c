@@ -22,40 +22,42 @@ int	ft_tablen(char **tab)
 	return (i);
 }
 
-int	ft_echo(t_data *data)
+void	ft_print_echo(char **linesplit, int i)
 {
-	int	i;
+	while (linesplit[i])
+	{
+		if (ft_tablen(linesplit) <= 2 || i == ft_tablen(linesplit) - 1)
+			printf("%s", linesplit[i]);
+		else
+			printf("%s ", linesplit[i]);
+		i++;
+	}
+}
+
+int	ft_echo(t_data *data, int i)
+{
 	int	j;
 
-	i = 1;
-	j = 1;
 	if (strncmp(data->linesplit[1], "-n", 2) == 0)
 	{
 		while (strncmp(data->linesplit[i], "-n", 2) == 0)
 		{
+			j = 1;
 			while (data->linesplit[i][j] == 'n')
 				j++;
+			if (data->linesplit[i][j])
+			{
+				ft_print_echo(data->linesplit, i);
+				return (0);
+			}
 			i++;
 		}
-		while (data->linesplit[i])
-		{
-			if (ft_tablen(data->linesplit) < 3 || i == ft_tablen(data->linesplit) - 1)
-				printf("%s", data->linesplit[i]);
-			else
-				printf("%s ", data->linesplit[i]);
-			i++;	
-		}
+		ft_print_echo(data->linesplit, i);
 	}
 	else
 	{
-		while (data->linesplit[i])
-		{
-			if (ft_tablen(data->linesplit) < 3 || i == ft_tablen(data->linesplit) - 1)
-				printf("%s\n", data->linesplit[i]);
-			else
-				printf("%s ", data->linesplit[i]);
-			i++;
-		}
+		ft_print_echo(data->linesplit, i);
+		printf("\n");
 	}
 	return (0);
 }

@@ -54,5 +54,5 @@ char		*ft_get_access(t_data *data, char *argv);
 char		*ft_copystring(char *env);
 char		**changeenv(t_data *data, char **env);
 long long	ft_atoll(const char *str);
-int			ft_echo(t_data *data);
+int			ft_echo(t_data *data, int i);
 #endif
