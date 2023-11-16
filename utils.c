@@ -50,11 +50,14 @@ long long	ft_atoll(const char *str)
 	o = 0;
 	res = 0;
 	s = 0;
-	if (str[o++] == '-' )
+	if (str[o] == '-' )
+	{
+		o++;
 		s++;
+	}
 	while (str[o] && (ft_isdigit(str[o]) == 1))
 		res = res * 10 + str[o++] - '0';
 	if (s == 1)
-		return (-res);
+	 	return (-res);
 	return (res);
 }

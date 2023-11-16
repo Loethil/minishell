@@ -12,7 +12,6 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -25,6 +24,16 @@
 # include <errno.h>
 # include "libft.h"
 
+typedef	struct s_line
+{
+	char	**cmd;
+	int		cmdnmb;
+	char	**arg;
+	int		argnmb;
+	char	**optn;
+	int		pipenmb;
+}				t_line;
+
 typedef struct s_data
 {
 	char		*line;
@@ -36,24 +45,17 @@ typedef struct s_data
 	char	*pwd;
 	long long max;
 	pid_t	pid;
+	t_line	*pars;
 }				t_data;
 
-typedef	struct s_line
-{
-	char	**cmd;
-	int		cmdnmb;
-	char	**arg;
-	int		argnmb;
-	int		pipenmb;
-}				t_line;
 
-void		ft_exit(t_data *data, char *nbr);
+void		ft_exit(t_data *data, char **nbr);
 void		ft_findcmd(t_data *data);
 void		ft_changedir(t_data *data, char *path);
 void		ft_whoitis(t_data *data);
 void		ft_pwdorenv(char **newenv, char *tab);
 int			ft_strcmp(const char *s1, const char *s2);
-long long	ft_atoll(const char *str);
+long long 	ft_atoll(const char *str);
 int			ft_findpwd(char **env);
 char		*ft_copystring(char *env);
 char		*ft_get_access(t_data *data, char *cmd);
