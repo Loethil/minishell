@@ -88,9 +88,9 @@ void	ft_whoitis(t_data *data)
 			ft_changedir(data, data->linesplit[1]);
 	else if (ft_strcmp(data->linesplit[0], "pwd") == 0)
 			ft_pwdorenv(data->newenv, "PWD");
-	/*else if (ft_strcmp(data->linesplit[0], "export") == 0)
-			ft_echo(data);
-	else if (ft_strcmp(data->linesplit[0], "unset") == 0)
+	else if (ft_strcmp(data->linesplit[0], "export") == 0)
+			ft_export(data);
+	/*else if (ft_strcmp(data->linesplit[0], "unset") == 0)
 			ft_echo(data); */
 	else if (ft_strcmp(data->linesplit[0], "env") == 0)
 			ft_pwdorenv(data->newenv, "ENV");
