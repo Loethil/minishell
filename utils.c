@@ -28,15 +28,15 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-char	*ft_copystring(char *env)
+char	*ft_copystring(char *str)
 {
 	int	i;
 	char	*tab;
 
 	i = -1;
-	tab = malloc(ft_strlen(env)  * sizeof(char));
-	while (env[++i])
-		tab[i] = env[i];
+	tab = malloc(ft_strlen(str)  * sizeof(char));
+	while (str[++i])
+		tab[i] = str[i];
 	return (tab);
 }
 

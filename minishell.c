@@ -83,33 +83,10 @@ void	ft_changedir(t_data *data, char *path)
 // une fonction pour ranger les arguements, la commande et les options
 // une fonction qui verifie les commandes
 
-
-void	parser(t_data *data, char **linesplit)
-{
-	int	i;
-	int	j;
-
-	i = 1;
-	j = 0;
-	data->pars->cmd[0] = linesplit[0];
-	while(data->linesplit[i])
-	{
-		if (linesplit[i][0] == '-')
-			data->pars->optn[j] = data->linesplit[i];
-		else
-			data->pars->arg[j] = data->linesplit[i];
-		i++;
-		j++;
-	}
-	printf("cmd = %s\n", data->pars->cmd[0]);
-	printf("optn = %s\n", data->pars->optn[0]);
-	printf("arg = %s\n", data->pars->arg[0]);
-}
-
 void	ft_whoitis(t_data *data)
 {
-	// if (ft_strcmp(data->linesplit[0], "echo") == 0)
-	// 	// ft_echo(data, data->linesplit[1]); //
+	if (ft_strcmp(data->linesplit[0], "echo") == 0)
+		return ;
 	if (ft_strcmp(data->linesplit[0], "cd") == 0)
 		ft_changedir(data, data->linesplit[1]);
 	else if (ft_strcmp(data->linesplit[0], "pwd") == 0)
@@ -128,25 +105,25 @@ void	ft_whoitis(t_data *data)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_data	data;
-	int		i;
+	t_data	*data;
+	// int	i = 0;
+	// t_cmd	*cmd;
 	
 	(void)argv;
-	i = 0;
 	if (argc != 1)
 		return (0);
-	data.newenv = changeenv(&data, env);
+	data = malloc (1 *sizeof(t_data));
+	data->newenv = changeenv(data, env);
 	while (1)
 	{
-		data.line = readline("minishell:");
-		if (data.line[0] == '\0')
+		data->line = readline("minishell:");
+		if (data->line[0] == '\0')
 			continue ;
-		add_history(data.line);
-		data.linesplit = ft_split(data.line, ' ');
-		parser(&data, data.linesplit);
-		// printf("-%s\n", data.line);
-		// while (data.linesplit[i])
-		// 	printf("--%s\n", data.linesplit[i++]);
-		ft_whoitis(&data);
+		add_history(data->line);
+		printf ("%s\n", test(data, data->line));
+		printf ("%d\n", data->cnbr);
+		// data->linesplit = ft_split(data->line, ' ');
+		// parser(data, data->linesplit);
+		// ft_whoitis(data);
 	}
 }

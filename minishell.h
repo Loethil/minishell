@@ -24,19 +24,16 @@
 # include <errno.h>
 # include "libft.h"
 
-typedef	struct s_line
+typedef	struct s_cmd
 {
-	char	**cmd;
-	int		cmdnmb;
-	char	**arg;
-	int		argnmb;
-	char	**optn;
-	int		pipenmb;
-}				t_line;
+	char	*cmd;
+	char	*otn;
+	char	*arg;
+}				t_cmd;
 
 typedef struct s_data
 {
-	char		*line;
+	char	*line;
 	char	**all_path;
 	char	**linesplit;
 	char	**newenv;
@@ -44,8 +41,8 @@ typedef struct s_data
 	int		status;
 	char	*pwd;
 	long long max;
+	int		cnbr;
 	pid_t	pid;
-	t_line	*pars;
 }				t_data;
 
 
@@ -57,8 +54,10 @@ void		ft_pwdorenv(char **newenv, char *tab);
 int			ft_strcmp(const char *s1, const char *s2);
 long long 	ft_atoll(const char *str);
 int			ft_findpwd(char **env);
-char		*ft_copystring(char *env);
+char		*ft_copystring(char *str);
 char		*ft_get_access(t_data *data, char *cmd);
 char		**changeenv(t_data *data, char **env);
 char		**ft_find_path(t_data *data);
+char		*test(t_data *data, char *line);
+int			cmd_set(t_cmd *cmd);
 #endif
