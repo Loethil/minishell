@@ -26,16 +26,17 @@
 
 typedef	struct s_cmd
 {
-	char	*cmd;
-	char	*otn;
-	char	*arg;
+	char	**tub;
+	char	**cmd;
+	char	**otn;
+	char	**arg;
 }				t_cmd;
 
 typedef struct s_data
 {
 	char	*line;
 	char	**all_path;
-	char	**linesplit;
+	char	**splitl;
 	char	**newenv;
 	char	*true_path;
 	int		status;
@@ -58,6 +59,6 @@ char		*ft_copystring(char *str);
 char		*ft_get_access(t_data *data, char *cmd);
 char		**changeenv(t_data *data, char **env);
 char		**ft_find_path(t_data *data);
-char		*test(t_data *data, char *line);
-int			cmd_set(t_cmd *cmd);
+char		**parser(t_data *data, t_cmd *cmd, char *line);
+char		*quotes(char *line, char *tab, int *i);
 #endif
