@@ -15,6 +15,7 @@ NAME = minishell
 CCC = minishell.c\
 	utils.c \
 	export.c \
+	unset.c \
 	echo.c
 
 OOO = $(CCC:.c=.o)

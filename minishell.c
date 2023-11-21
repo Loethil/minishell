@@ -47,7 +47,7 @@ void	ft_pwdorenv(char **newenv, char *tab)
 {
 	int	i;
 
-	if ( strcmp(tab, "PWD") == 0)
+	if (strcmp(tab, "PWD") == 0)
 	{
 		i = ft_findpwd(newenv);
 		printf("%s\n", newenv[i] + 4);
@@ -90,8 +90,8 @@ void	ft_whoitis(t_data *data)
 			ft_pwdorenv(data->newenv, "PWD");
 	else if (ft_strcmp(data->linesplit[0], "export") == 0)
 			ft_export(data);
-	/*else if (ft_strcmp(data->linesplit[0], "unset") == 0)
-			ft_echo(data); */
+	else if (ft_strcmp(data->linesplit[0], "unset") == 0)
+			ft_unset(data);
 	else if (ft_strcmp(data->linesplit[0], "env") == 0)
 			ft_pwdorenv(data->newenv, "ENV");
 	else if (ft_strcmp(data->linesplit[0], "exit") == 0)
@@ -112,7 +112,7 @@ int	main(int argc, char **argv, char **env)
 	data.newenv = changeenv(&data, env);
 	while (1)
 	{
-		data.line = readline("minishell:");
+		data.line = readline("minishell: ");
 		if (data.line[0] == '\0')
 			continue ;
 		add_history(data.line);

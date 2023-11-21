@@ -57,4 +57,7 @@ long long	ft_atoll(const char *str);
 int			ft_echo(t_data *data, int i);
 int			ft_export(t_data *data);
 int			ft_tablen(char **tab);
+int			ft_check(t_data *data, int k);
+int			ft_export_input(char *linesplit);
+int			ft_unset(t_data *data);
 #endif
