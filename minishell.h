@@ -26,10 +26,10 @@
 
 typedef	struct s_cmd
 {
-	char	**tub;
-	char	**cmd;
-	char	**otn;
-	char	**arg;
+	char	*exe;
+	char	*cmd;
+	char	*otn;
+	char	*arg;
 }				t_cmd;
 
 typedef struct s_data
@@ -42,7 +42,6 @@ typedef struct s_data
 	int		status;
 	char	*pwd;
 	long long max;
-	int		cnbr;
 	pid_t	pid;
 }				t_data;
 
@@ -59,6 +58,7 @@ char		*ft_copystring(char *str);
 char		*ft_get_access(t_data *data, char *cmd);
 char		**changeenv(t_data *data, char **env);
 char		**ft_find_path(t_data *data);
-char		**parser(t_data *data, t_cmd *cmd, char *line);
+void		parser(t_data *data, char *line);
 char		*quotes(char *line, char *tab, int *i);
+int			countcmd(char *line);
 #endif

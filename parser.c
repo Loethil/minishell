@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	checkoption(char *splitl)
+int	ft_checkoption(char *splitl)
 {
 	int	i = 0;
 
@@ -25,42 +25,54 @@ int	checkoption(char *splitl)
 	return (0);
 }
 
-int	cmd_set(t_data *data, t_cmd *cmd)
+int	ft_countword(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
+
+int	ft_cmd_set(t_data *data, t_cmd *cmd)
 {
 	int	i;
 	int	j;
-	int	k;
-	int	l;
 
 	i = 0;
 	j = 0;
-	k = 0;
-	l = 0;
 	cmd->cmd = malloc (100 * sizeof(char *));
 	cmd->otn = malloc (100 * sizeof(char *));
 	cmd->arg = malloc (100 * sizeof(char *));
-	cmd->cmd[j++] = data->splitl[i];
+	cmd->cmd[0] = data->splitl[0];
 	while (data->splitl[++i])
 	{
 		if (ft_strcmp(data->splitl[i], "|") == 0)
 		{
-			cmd->cmd[j++] = data->splitl[i + 1];
-			i++;
+			j = ft_countword(cmd->cmd);
+			cmd->cmd[j] = data->splitl[i++ + 1];
 		}
-		else if (checkoption(data->splitl[i]) == 1)
-			cmd->otn[k++] = data->splitl[i];
+		else if (ft_checkoption(data->splitl[i]) == 1)
+		{
+			j = ft_countword(cmd->otn);
+			cmd->otn[j] = data->splitl[i];
+		}
 		else if (data->splitl[i])
-			cmd->arg[l++] = data->splitl[i];
+		{
+			j = ft_countword(cmd->arg);
+			cmd->arg[j] = data->splitl[i];
+		}
 	}
-	i = 0;
-	while (cmd->cmd[i])
-		printf("cmd = %s\n", cmd->cmd[i++]);
-	i = 0;
-	while (cmd->otn[i])
-		printf("otn = %s\n", cmd->otn[i++]);
-	i = 0;
-	while (cmd->arg[i])
-		printf("arg = %s\n", cmd->arg[i++]);
+	// i = 0;
+	// while (cmd->cmd[i])
+	// 	printf("cmd = %s\n", cmd->cmd[i++]);
+	// i = 0;
+	// while (cmd->otn[i])
+	// 	printf("otn = %s\n", cmd->otn[i++]);
+	// i = 0;
+	// while (cmd->arg[i])
+	// 	printf("arg = %s\n", cmd->arg[i++]);
 	return (0);
 }
 
@@ -83,25 +95,46 @@ char	*quotes(char *line, char *tab, int *i)
 	return (tab);
 }
 
-char	**parser(t_data *data, t_cmd *cmd, char *line)
-{
-	int		i = -1;
-	int		k = 0;
-	char 	*tab;
+// void	parser(t_data *data, char *line)
+// {
+// 	int		i = -1;
+// 	int		k = 0;
+// 	char 	*tab;
+// 	t_cmd	*cmd;
 
-	data->splitl = malloc (1000 * sizeof(char *));
-	data->cnbr = 1;
-	while (line[++i])
-	{
-		tab = malloc (1000 * sizeof(char));
-		if (line[i] == ' ')
-			continue ;
-		tab = quotes(line, tab, &i);
-		data->splitl[k++] = tab;
-		tab = NULL;
-		free (tab);
-	}
-	data->splitl[k] = NULL;
-	cmd_set(data, cmd);
-	return(data->splitl);
-}
+// 	data->splitl = malloc (1000 * sizeof(char *));
+// 	cmd = malloc ((countcmd(line) + 1) * sizeof (t_cmd));
+// 	while (line[++i])
+// 	{
+// 		tab = malloc (ft_strlen(line) * sizeof(char));
+// 		if (line[i] == ' ')
+// 			continue ;
+// 		tab = quotes(line, tab, &i);
+// 		data->splitl[k++] = tab;
+// 		tab = NULL;
+// 		free (tab);
+// 	}
+// 	data->splitl[k] = NULL;
+// 	ft_cmd_set(data, cmd);
+// 	return(data->splitl);
+// }
+
+// void	parser(t_data *data, char *line);
+// {
+// 	t_cmd	*cmd;
+// 	int		i = -1;
+// 	int		k = 0;
+
+// 	cmd = malloc ((countcmd(line) + 1) * sizeof (t_cmd));
+// 	data->splitl = malloc (1000 * sizeof(char *));
+// 	while (line[++i])
+// 	{
+// 		tab = malloc (ft_strlen(line) * sizeof(char));
+// 		if (line[i] == ' ')
+// 			continue ;
+// 		tab = quotes(line, tab, &i);
+// 		cmd[k++]->exe = tab;
+// 		tab = NULL;
+// 		free (tab);
+// 	}
+// }
