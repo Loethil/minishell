@@ -15,7 +15,6 @@ NAME = minishell
 CCC = minishell.c\
 	utils.c\
 	env.c\
-	parser.c\
 	parser2.c
 
 OOO = $(CCC:.c=.o)

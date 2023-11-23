@@ -39,6 +39,7 @@ typedef struct s_data
 	char	**splitl;
 	char	**newenv;
 	char	*true_path;
+	int		nbr;
 	int		status;
 	char	*pwd;
 	long long max;
