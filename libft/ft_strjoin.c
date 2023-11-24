@@ -30,6 +30,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2 && s2[a])
 		tab[r++] = s2[a++];
 	tab[r] = '\0';
-	// free(s1);
+	free(s1);
 	return (tab);
 }

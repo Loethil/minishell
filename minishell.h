@@ -62,4 +62,5 @@ char		**ft_find_path(t_data *data);
 void		parser(t_data *data, char *line);
 char		*quotes(char *line, char *tab, int *i);
 int			countcmd(char *line);
+int			ft_checkoption(char *line);
 #endif

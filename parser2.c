@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+int	ft_checkoption(char *line)
+{
+	int	i;
+	
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '-')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	countcmd(char *line)
 {
 	int	i;
@@ -43,7 +57,43 @@ int	countcmd(char *line)
 	return (j + 1);
 }
 
-char **splitcmd(t_data *data, char *line)
+void	splitexe(t_cmd *cmd, t_data *data)
+{
+	int	i;
+	int	j;
+	char	**line;
+
+	i = 0;
+	j = 0;
+	while (i < data->nbr)
+	{
+		line = ft_split(cmd[i].exe, ' ');
+		cmd[i].cmd = line[j++];
+		while (line[j] && ft_checkoption(line[j]) == 1)
+		{
+			cmd[i].otn = ft_strjoin(cmd[i].otn, line[j++]);
+		}
+		while (line[j])
+		{
+			printf("line ===%s\n", line[j]);
+			cmd[i].arg = ft_strjoin(cmd[i].arg, line[j++]);
+		}
+		j = 0;
+		i++;
+	}
+	i = 0;
+	while (i < data->nbr)
+	{
+		printf("exe = %s\n", cmd[i].exe);
+		printf("cmd = %s\n", cmd[i].cmd);
+		printf("otn = %s\n", cmd[i].otn);
+		printf("arg = %s\n", cmd[i].arg);
+		i++;
+	}
+}
+
+
+char **splitcmd(t_data *data, t_cmd *cmd, char *line)
 {
 	int		i;
 	int		j;
@@ -63,22 +113,28 @@ char **splitcmd(t_data *data, char *line)
 		while (line[i] != '|' && line[i])
 		{
 			if (line[i] == '"')
+			{
+				splitl[j][k++] = line[i];
 				while (line[++i] != '"' && line[i])
 					splitl[j][k++] = line[i];
+				splitl[j][k++] = line[i];
+			}
 			else if (line[i] == '\'')
+			{
+				splitl[j][k++] = line[i];
 				while (line[++i] != '\'' && line[i])
 					splitl[j][k++] = line[i];
+				splitl[j][k++] = line[i];
+			}
 			else if (line[i])
 					splitl[j][k++] = line[i];
 			i++;
 		}
 		splitl[j][k] = '\0';
 		splitl[j] = ft_strtrim(splitl[j], " ");
+		cmd[j].exe = splitl[j];
 	}
 	splitl[data->nbr] = NULL;
-	i = 0;
-	while (splitl[i])
-		printf("%s\n", splitl[i++]);
 	return (splitl);
 }
 
@@ -100,6 +156,15 @@ int	ft_cmd_set(t_cmd *cmd, t_data *data, char *line)
 	return (0);
 }
 
+// void	parscmd(t_cmd *cmd, char **splitl)
+// {
+// 	int	i
+	
+// 	i = 0;
+// 	while (data->splitl)
+
+// }
+
 void	parser(t_data *data, char *line)
 {
 	t_cmd	*cmd;
@@ -107,18 +172,11 @@ void	parser(t_data *data, char *line)
 	data->nbr = countcmd(line);
 	if (data->nbr == -1)
 	{
-		printf("error\n");
+		printf("error pipe ou quotes\n");
 		return ;
 	}
 	cmd = malloc (data->nbr * sizeof(t_cmd));
 	ft_cmd_set(cmd, data, line);
-	data->splitl = splitcmd(data, line);
+	data->splitl = splitcmd(data, cmd, line);
+	splitexe(cmd, data);
 }
-
-// int	main(int argc, char **argv)
-// {
-// 	if (argc < 1)
-// 		return (-1);
-// 	printf("%d\n", countcmd(argv[1]));
-// 	return (0);
-// }

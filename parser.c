@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	ft_checkoption(char *splitl)
+int	ft_checkoption(char *line)
 {
 	int	i = 0;
 
