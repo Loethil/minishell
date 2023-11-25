@@ -92,50 +92,86 @@ void	splitexe(t_cmd *cmd, t_data *data)
 	}
 }
 
+// char **splitcmd(t_data *data, t_cmd *cmd, char *line)
+// {
+// 	int		i;
+// 	int		j;
+// 	int		k;
+// 	char 	**splitl;
 
-char **splitcmd(t_data *data, t_cmd *cmd, char *line)
+// 	i = -1;
+// 	j = -1;
+// 	splitl = malloc (data->nbr * sizeof(char *));
+// 	while (line[++i])
+// 	{
+// 		k = 0;
+// 		j++;
+// 		splitl[j] = malloc (ft_strlen(line) * sizeof(char));
+// 		if (!splitl[j])
+// 			return (NULL);
+// 		while (line[i] != '|' && line[i])
+// 		{
+// 			if (line[i] == '"')
+// 			{
+// 				splitl[j][k++] = line[i];
+// 				while (line[++i] != '"' && line[i])
+// 					splitl[j][k++] = line[i];
+// 				splitl[j][k++] = line[i];
+// 			}
+// 			else if (line[i] == '\'')
+// 			{
+// 				splitl[j][k++] = line[i];
+// 				while (line[++i] != '\'' && line[i])
+// 					splitl[j][k++] = line[i];
+// 				splitl[j][k++] = line[i];
+// 			}
+// 			else if (line[i])
+// 					splitl[j][k++] = line[i];
+// 			i++;
+// 		}
+// 		splitl[j][k] = '\0';
+// 		splitl[j] = ft_strtrim(splitl[j], " ");
+// 		cmd[j].exe = splitl[j];
+// 	}
+// 	splitl[data->nbr] = NULL;
+// 	return (splitl);
+// }
+
+void	splitcmd(t_cmd *cmd, char *line)
 {
 	int		i;
 	int		j;
 	int		k;
-	char 	**splitl;
 
 	i = -1;
 	j = -1;
-	splitl = malloc (data->nbr * sizeof(char *));
-	while (line[++i])
+	while (i < countcmd(line))
 	{
 		k = 0;
 		j++;
-		splitl[j] = malloc (ft_strlen(line) * sizeof(char));
-		if (!splitl[j])
-			return (NULL);
 		while (line[i] != '|' && line[i])
 		{
 			if (line[i] == '"')
 			{
-				splitl[j][k++] = line[i];
+				cmd[i].exe[k++] = line[i];
 				while (line[++i] != '"' && line[i])
-					splitl[j][k++] = line[i];
-				splitl[j][k++] = line[i];
+					cmd[i].exe[k++] = line[i];
+				cmd[i].exe[k++] = line[i];
 			}
 			else if (line[i] == '\'')
 			{
-				splitl[j][k++] = line[i];
+				cmd[i].exe[k++] = line[i];
 				while (line[++i] != '\'' && line[i])
-					splitl[j][k++] = line[i];
-				splitl[j][k++] = line[i];
+					cmd[i].exe[k++] = line[i];
+				cmd[i].exe[k++] = line[i];
 			}
 			else if (line[i])
-					splitl[j][k++] = line[i];
+					cmd[i].exe[k++] = line[i];
 			i++;
 		}
-		splitl[j][k] = '\0';
-		splitl[j] = ft_strtrim(splitl[j], " ");
-		cmd[j].exe = splitl[j];
+		cmd[i].exe[k] = '\0';
+		cmd[i].exe = ft_strtrim(cmd[i].exe, " ");
 	}
-	splitl[data->nbr] = NULL;
-	return (splitl);
 }
 
 int	ft_cmd_set(t_cmd *cmd, t_data *data, char *line)
@@ -156,15 +192,6 @@ int	ft_cmd_set(t_cmd *cmd, t_data *data, char *line)
 	return (0);
 }
 
-// void	parscmd(t_cmd *cmd, char **splitl)
-// {
-// 	int	i
-	
-// 	i = 0;
-// 	while (data->splitl)
-
-// }
-
 void	parser(t_data *data, char *line)
 {
 	t_cmd	*cmd;
@@ -177,6 +204,6 @@ void	parser(t_data *data, char *line)
 	}
 	cmd = malloc (data->nbr * sizeof(t_cmd));
 	ft_cmd_set(cmd, data, line);
-	data->splitl = splitcmd(data, cmd, line);
-	splitexe(cmd, data);
+	splitcmd(cmd, line);
+	// splitexe(cmd, data);
 }
