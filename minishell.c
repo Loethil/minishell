@@ -16,6 +16,8 @@
 exemple : cmd 1 c'est le premier argument
 redir si il y a un '>' etc*/
 
+t_sig sig;
+
 void	ft_exit(t_data *data, char *nbr)
 {
 	if (nbr == NULL)
@@ -100,26 +102,34 @@ void	ft_whoitis(t_data *data)
 		ft_findcmd(data);
 }
 
+void	sigint_hdl(int signo)
+{
+	(void)signo;
+	printf("\nminishell: ");
+	sig.sigint = 1;
+}
+
+void	sigquit_hdl(int signo)
+{
+	(void)signo;
+	sig.sigquit = 1;
+}
+
 int	main(int argc, char **argv, char **env)
 {
-	t_data	data;
+	t_data	*data;
 	int		i;
-	
+
 	(void)argv;
-	i = 0;
+	data = malloc(sizeof(t_data) * 1);
+	i = -1;
 	if (argc != 1)
 		return (0);
-	data.newenv = changeenv(&data, env);
-	while (1)
-	{
-		data.line = readline("minishell: ");
-		if (data.line[0] == '\0')
-			continue ;
-		add_history(data.line);
-		data.linesplit = ft_split(data.line, ' ');
-		// printf("-%s\n", data.line);
-		// while (data.linesplit[i])
-		// 	printf("--%s\n", data.linesplit[i++]);
-		ft_whoitis(&data);
-	}
+	data->newenv = changeenv(data, env);
+	signal(SIGINT, &sigint_hdl);
+	signal(SIGQUIT, &sigquit_hdl);
+	ft_prompt(data);
+	if (sig.sigquit == 1)
+		return (1);
+	return (0);
 }

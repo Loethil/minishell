@@ -28,6 +28,19 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
+char	*ft_strcpy(char *dst, const char *src)
+{
+	unsigned int	i;
+	unsigned int	j;
+
+	i = ft_strlen(src);
+	j = -1;
+	while (++j < i + 1)
+		dst[j] = src[j];
+	dst[j] = '\0';
+	return (dst);
+}
+
 char	**ft_find_path(t_data *data)
 {
 	int	i;

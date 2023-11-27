@@ -32,7 +32,7 @@ int	ft_unset_input(char *linesplit)
 	i = 0;
 	while (linesplit[i])
 	{
-		if (ft_isalpha(linesplit[i]) == 0)
+		if (ft_invalid(linesplit[i]))
 		{
 			printf("minishell: unset: `%s': not a valid identifier\n",
 				linesplit);
@@ -45,14 +45,15 @@ int	ft_unset_input(char *linesplit)
 
 char	**ft_newenv(t_data *data, int i, int j)
 {
-	int	x;
+	int		x;
 	char	**oldenv;
 
 	x = 0;
 	oldenv = malloc(sizeof(char *) * (ft_tablen(data->newenv) + 1));
 	while (data->newenv[++i])
 	{
-		if (!ft_strncmp(data->newenv[i], data->linesplit[j], ft_strlen(data->linesplit[j])))
+		if (!ft_strncmp(data->newenv[i], data->linesplit[j],
+				ft_strlen(data->linesplit[j])))
 			i++;
 		oldenv[x++] = ft_linecpy(data->newenv[i]);
 	}
@@ -66,19 +67,24 @@ int	ft_unset(t_data *data)
 	int		j;
 	char	**oldenv;
 
-	j = 1;
-	while (data->linesplit[j][0] == '_' && data->linesplit[j][1] == 0)
-		j++;
-	while (data->linesplit[j])
+	j = 0;
+	while (data->linesplit[++j])
 	{
 		i = -1;
-		ft_unset_input(data->linesplit[j]);
+		if (ft_unset_input(data->linesplit[j]))
+			continue ;
+		if (j >= ft_tablen(data->linesplit))
+			return (1);
+		if (!ft_strncmp(data->linesplit[j], data->newenv[ft_tablen(data->newenv) - 1], ft_strlen(data->linesplit[j])))
+		{
+			data->newenv[ft_tablen(data->newenv) - 1] = NULL;
+			continue ;
+		}
 		oldenv = ft_newenv(data, i, j);
 		while (data->newenv[++i])
 			free(data->newenv[i]);
 		free(data->newenv);
 		data->newenv = oldenv;
-		j++;
 	}
 	return (0);
 }

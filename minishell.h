@@ -23,6 +23,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <signal.h>
 # include "libft.h"
 
 typedef struct s_data
@@ -47,6 +48,12 @@ typedef	struct s_line
 	int		pipenmb;
 }				t_line;
 
+typedef struct s_sig
+{
+	int		sigint;
+	int		sigquit;
+}				t_sig;
+
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_findpwd(char **env);
 char		**ft_find_path(t_data *data);
@@ -57,7 +64,12 @@ long long	ft_atoll(const char *str);
 int			ft_echo(t_data *data, int i);
 int			ft_export(t_data *data);
 int			ft_tablen(char **tab);
-int			ft_check(t_data *data, int k);
 int			ft_export_input(char *linesplit);
 int			ft_unset(t_data *data);
+void		ft_prompt(t_data *data);
+void		ft_whoitis(t_data *data);
+char		*ft_strcpy(char *dst, const char *src);
+int			ft_invalid(char i);
+
+extern t_sig sig;
 #endif
