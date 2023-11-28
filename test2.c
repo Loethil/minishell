@@ -21,11 +21,10 @@
 #include <sys/wait.h>
 #include <errno.h>
 
-typedef	struct s_cmd
+typedef struct s_cmd
 {
 	char	**tab;
-	char	*tmp;
-	char	*stk;
+	char	*str;
 	int		max;
 	int		nbr;
 }				t_cmd;
@@ -42,11 +41,11 @@ int	ft_strlen(const char *str)
 
 char	*ft_copystring(char *str)
 {
-	int	i;
+	int		i;
 	char	*tab;
 
 	i = -1;
-	tab = malloc(ft_strlen(str)  * sizeof(char));
+	tab = malloc(ft_strlen(str) * sizeof(char));
 	while (str[++i])
 		tab[i] = str[i];
 	return (tab);
@@ -58,15 +57,38 @@ int	quotes(char *str, int *i, int j, int max)
 	{
 		while (str[++(*i)] != '\'' && (*i) < max)
 			;
-		j++;	
+		if (str[*i] != '\'' && (*i) == max)
+			return (-1);
+		j++;
 	}
 	else if (str[(*i)] == '"')
 	{
 		while (str[++(*i)] != '"' && (*i) < max)
 			;
-		j++;	
+		if (str[*i] != '"' && (*i) == max)
+			return (-1);
+		j++;
 	}
 	return (j);
+}
+
+void	ft_quotes(t_cmd *cmd, char *line, int *i)
+{
+	int	j;
+
+	j = 0;
+	if (line[(*i)] == '\'')
+	{
+		while (line[++(*i)] != '\'' && (*i) < cmd->max)
+			cmd->str[j++] = line[(*i)];
+	}
+	else if (line[(*i)] == '"')
+	{
+		while (line[++(*i)] != '"' && (*i) < cmd->max)
+			cmd->str[j++] = line[(*i)];
+	}
+	cmd->str[j] = '\0';
+	(*i)++;
 }
 
 int	countword(char *str)
@@ -78,12 +100,14 @@ int	countword(char *str)
 	i = 0;
 	j = 0;
 	max = ft_strlen(str);
-	// printf("%d\n", ft_strlen(str));
-	// printf("%s\n", str);
 	while (i < max)
 	{
 		if (str[i] == '"' || str[i] == '\'')
+		{
 			j = quotes(str, &i, j, max);
+			if (j == -1)
+				return (-1);
+		}
 		else if (str[i] == '|')
 			j++;
 		else if (str[i] != ' ')
@@ -101,92 +125,82 @@ int	countword(char *str)
 	return (j);
 }
 
-
-
-char *ft_quotes(t_cmd *cmd, char *line, int *i)
+void	ft_word(t_cmd *cmd, char *line, int *i, int *j)
 {
-	int j = 0;
+	while (cmd->str[(*i)] != ' ' && (*i) < cmd->max)
+	{
+		if (cmd->str[(*i)] == '|')
+		{
+			cmd->str[(*j)] = '\0';
+			return ;
+		}
+		cmd->str[(*j)++] = line[(*i)++];
+	}
+	cmd->str[(*j)] = '\0';
+	(*i)++;
+}
 
-	if (line[(*i)] == '\'')
-	{
-		while (line[++(*i)] != '\'' && (*i) < cmd->max)
-			cmd->tmp[j++] = line[(*i)];
-	}
-	else if (line[(*i)] == '"')
-	{
-		while (line[++(*i)] != '"' && (*i) < cmd->max)
-			cmd->tmp[j++] = line[(*i)];
-	}
-	cmd->tmp[j] = '\0';
-	return (cmd->tmp);
+void	ft_pipes(t_cmd *cmd, int *i)
+{
+	if (cmd->str[(*i) + 1] == '|')
+		return ;
+	if (cmd->str[(*i)] == '|' && (*i) == cmd->max)
+		return ;
+	cmd->str = "|";
+	(*i)++;
+}
+
+void	ft_chevron(t_cmd *cmd, int *i)
+{
+	if (cmd->str[(*i)] == '<')
+		cmd->str = "<";
+	else
+		cmd->str = ">";
+	(*i)++;
 }
 
 char	*ft_getline(t_cmd *cmd, char *line, int *i)
 {
-	int	j = 0;
+	int	j;
 
-	cmd->tmp = ft_copystring(line);
-	cmd->tmp[ft_strlen(line)] = '\0';
+	j = 0;
+	cmd->str = ft_copystring(line);
 	cmd->max = ft_strlen(line);
 	if ((*i) >= cmd->max)
 		return (NULL);
-	while (cmd->tmp[(*i)] == ' ')
-			(*i)++;
-	if (cmd->tmp[(*i)] == '"' || cmd->tmp[(*i)] == '\'')
-	{
+	while (cmd->str[(*i)] == ' ')
+		(*i)++;
+	if (cmd->str[(*i)] == '"' || cmd->str[(*i)] == '\'')
 		ft_quotes(cmd, line, i);
-		(*i)++;
-	}
-	else if (cmd->tmp[(*i)] == '|')
-	{
-		cmd->tmp = "|";
-		(*i)++;
-	}
-	else if (cmd->tmp[(*i)] == '<' || cmd->tmp[(*i)] == '>')
-	{
-		if (cmd->tmp[(*i)] == '<')
-			cmd->tmp = "<";
-		else
-			cmd->tmp = ">";
-		(*i)++;
-	}
-	else if (cmd->tmp[(*i)] != ' ')
-	{
-		while ( cmd->tmp[(*i)] != ' ' && (*i) < ft_strlen(line))
-		{
-			if (cmd->tmp[(*i)] == '|')
-			{
-				cmd->tmp[j] = '\0';
-				return (cmd->tmp);
-			}
-			cmd->tmp[j++] = line[(*i)++];
-		}
-		(*i)++;
-		cmd->tmp[j] = '\0';
-	}
-	return (cmd->tmp);
+	else if (cmd->str[(*i)] == '|')
+		ft_pipes(cmd, i);
+	else if (cmd->str[(*i)] == '<' || cmd->str[(*i)] == '>')
+		ft_chevron(cmd, i);
+	else if (cmd->str[(*i)] != ' ')
+		ft_word(cmd, line, i, &j);
+	return (cmd->str);
 }
 
 void	get_tab(t_cmd *cmd, char *line)
 {
-	int	i = 0;
-	int	j = 0;
+	int	i;
+	int	j;
 
+	i = 0;
+	j = 0;
 	cmd->tab = malloc (cmd->nbr * sizeof(char *));
 	while (j < cmd->nbr)
 	{
 		cmd->tab[j] = ft_getline(cmd, line, &i);
 		printf("%s\n", cmd->tab[j]);
-		// free(cmd->tmp);
 		j++;
 	}
 	cmd->tab[j] = NULL;
 }
 
-
 int	main(int argc, char **argv)
 {
-	char *line;
+	char	*line;
 	t_cmd	*cmd;
 
 	(void)argc;
@@ -198,6 +212,11 @@ int	main(int argc, char **argv)
 		if (line[0] == '\0')
 			continue ;
 		add_history(line);
+		if (countword(line) == -1)
+		{
+			printf("error quotes\n");
+			return (-1);
+		}
 		cmd->nbr = countword(line);
 		get_tab(cmd, line);
 		free(line);
