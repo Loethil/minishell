@@ -17,6 +17,7 @@ CCC = minishell.c\
 	export.c \
 	unset.c \
 	prompt.c \
+	sort_env.c \
 	echo.c
 
 OOO = $(CCC:.c=.o)

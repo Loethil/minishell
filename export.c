@@ -81,6 +81,11 @@ int	ft_export(t_data *data)
 	int	k;
 
 	k = 0;
+	if (data->linesplit[1] == 0)
+	{
+		ft_export_no_args(data);
+		return (0);
+	}
 	while (data->linesplit[++k])
 	{
 		i = -1;

@@ -66,10 +66,12 @@ int			ft_export(t_data *data);
 int			ft_tablen(char **tab);
 int			ft_export_input(char *linesplit);
 int			ft_unset(t_data *data);
+void		ft_exit(t_data *data, char *nbr);
 void		ft_prompt(t_data *data);
 void		ft_whoitis(t_data *data);
 char		*ft_strcpy(char *dst, const char *src);
 int			ft_invalid(char i);
+void		ft_export_no_args(t_data *data);
 
 extern t_sig sig;
 #endif

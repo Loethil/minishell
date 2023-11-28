@@ -129,7 +129,5 @@ int	main(int argc, char **argv, char **env)
 	signal(SIGINT, &sigint_hdl);
 	signal(SIGQUIT, &sigquit_hdl);
 	ft_prompt(data);
-	if (sig.sigquit == 1)
-		return (1);
 	return (0);
 }
