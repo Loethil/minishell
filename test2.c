@@ -35,9 +35,42 @@ typedef	struct s_exe
 	char	**exe; //stock la cmd jusqu'a un pipe ou fin si une seul commande
 	char	**cmd; //stock la cmd et ses options
 	char	**arg; //stock les arguments de la commande
-	char	**rdr; //stock les arg de la redirection
-	int		dlr;
+	char	*rdr;  //stock les arg de la redirection
+	int		dlr;   // dollar macro
 }				t_exe;
+
+int	ft_checkoption(char *str)
+{
+	int	i = 0;
+
+	while (str[i])
+	{
+		if (str[i] == '-')
+			return (1);
+		else if (str[(i)] == '\'')
+		{
+			while (str[++(i)] != '\'' && str[i])
+				;
+		}
+		else if (str[(i)] == '"')
+		{
+			while (str[++(i)] != '"' && str[i])
+				;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	ft_lentab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
@@ -269,6 +302,30 @@ void	set_data(t_cmd *cmd, t_exe *exe)
 	}
 }
 
+void	range(t_cmd *cmd, t_exe exe)
+{
+	int	i;
+	int	j;
+	int	k;
+
+	i = 0;
+	k = 0;
+	j = 0;
+	exe.cmd[j++] = exe.exe[i++];  
+	while (i < ft_tablen(exe.exe))
+	{
+		if (ft_checkoption(exe.exe[i]) == 1)
+			exe.cmd[j++] = exe.exe[i];
+		else if (ft_checkoption(exe.exe[i] == 0))
+			exe.arg[k++] = exe.exe[i];
+		else if (ft_checkredir(exe.exe[i] == 1))
+			exe.rdr = exe.exe[i + 1]; // pas sure de sa
+		i++;
+	}
+	// possible fonctionnement mais a revoir demain
+	// prototype d'un'rangeur'
+}
+
 int	main(int argc, char **argv)
 {
 	char	*line;
@@ -295,6 +352,5 @@ int	main(int argc, char **argv)
 		get_tab(cmd, line);
 		set_data(cmd, exe);
 		stock_cmd(cmd, exe);
-		// free(line);
 	}
 }
