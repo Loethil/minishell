@@ -12,22 +12,41 @@
 
 #include "minishell.h"
 
+char	**ft_swap(char **env, int i)
+{
+	char	*temp;
+
+	temp = env[i];
+	env[i] = env[i + 1];
+	env[i + 1] = temp;
+	return (env);
+}
+
 char	**ft_sort_env(char **env)
 {
 	int		i;
-	char	*temp;
 
-	i = 0;
-	while (env[i])
+	i = -1;
+	while (env[++i + 1])
 	{
-		if (ft_strcmp(env[i], env[i + 1]) < 0)
+		if (ft_strcmp(env[i], env[i + 1]) > 0)
 		{
-			temp = env[i];
-			env[i] = env[i + 1];
-			env[i + 1] = 0;
+			env = ft_swap(env, i);
 			i = 0;
 		}
-		i++;
+	}
+	if (ft_strcmp(env[0], env[1]) > 0)
+	{
+		i = 0;
+		while (env[i + 1])
+		{
+			if (ft_strcmp(env[i], env[i + 1]) > 0)
+			{
+				env = ft_swap(env, i);
+				i = 0;
+			}
+			i++;
+		}
 	}
 	return (env);
 }
@@ -42,7 +61,7 @@ void	ft_export_no_args(t_data *data)
 	env = malloc(sizeof(char *) * (ft_tablen(data->newenv) + 1));
 	env = data->newenv;
 	env = ft_sort_env(env);
-	while (env[i])
+	while (env[i + 1])
 	{
 		j = 0;
 		printf("declare -x ");
@@ -53,10 +72,7 @@ void	ft_export_no_args(t_data *data)
 		}
 		printf("\"");
 		while (env[i][j])
-		{
-			printf("%c", env[i][j]);
-			j++;
-		}
+			printf("%c", env[i][j++]);
 		printf("\"\n");
 		i++;
 	}
