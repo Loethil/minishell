@@ -23,11 +23,37 @@
 
 typedef struct s_cmd
 {
-	char	**tab;
-	char	*str;
-	int		max;
-	int		nbr;
+	char	**tab;  //stock la ligne entiere dans un char **
+	char	*str;	//stock la string de readline
+	int		nbr;    //nombre de mot
+	int		max;    //taille de line
+	int		pnbr;   //pipe nbr
 }				t_cmd;
+
+typedef	struct s_exe
+{
+	char	**exe; //stock la cmd jusqu'a un pipe ou fin si une seul commande
+	char	**cmd; //stock la cmd et ses options
+	char	**arg; //stock les arguments de la commande
+	char	**rdr; //stock les arg de la redirection
+	int		dlr;
+}				t_exe;
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i])
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	if (s2[i])
+		return (-1);
+	return (0);
+}
 
 int	ft_strlen(const char *str)
 {
@@ -91,7 +117,7 @@ void	ft_quotes(t_cmd *cmd, char *line, int *i)
 	(*i)++;
 }
 
-int	countword(char *str)
+int	countword(t_cmd *cmd, char *str)
 {
 	int	i;
 	int	j;
@@ -99,6 +125,7 @@ int	countword(char *str)
 
 	i = 0;
 	j = 0;
+	cmd->pnbr = 1;
 	max = ft_strlen(str);
 	while (i < max)
 	{
@@ -109,13 +136,19 @@ int	countword(char *str)
 				return (-1);
 		}
 		else if (str[i] == '|')
+		{
+			cmd->pnbr++;
 			j++;
+		}
 		else if (str[i] != ' ')
 		{
 			while (str[i] != ' ' && i < max)
 			{
 				if (str[i] == '|')
+				{
+					cmd->pnbr++;
 					j += 2;
+				}
 				i++;
 			}
 			j++;
@@ -145,7 +178,7 @@ void	ft_pipes(t_cmd *cmd, int *i)
 	if (cmd->str[(*i) + 1] == '|')
 		return ;
 	if (cmd->str[(*i)] == '|' && (*i) == cmd->max)
-		return ;
+		return ; //bug avec trop de pipes a regler
 	cmd->str = "|";
 	(*i)++;
 }
@@ -198,6 +231,44 @@ void	get_tab(t_cmd *cmd, char *line)
 	cmd->tab[j] = NULL;
 }
 
+void	stock_cmd(t_cmd *cmd, t_exe *exe)
+{
+	int	i;
+	int	j;
+	int	k;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	while (j < cmd->pnbr)
+	{
+		if (!cmd->tab[i])
+			return ;
+		if (ft_strcmp(cmd->tab[i], "|") == 0)
+		{
+			k = 0;
+			i++;
+			j++;
+		}
+		exe[j].exe[k] = cmd->tab[i];
+		printf("exe %d = %s\n", j, exe[j].exe[k]);
+		k++;
+		i++;
+	}
+}
+
+void	set_data(t_cmd *cmd, t_exe *exe)
+{
+	int	i;
+
+	i = 0;
+	while (i < cmd->pnbr)
+	{
+		exe[i].exe = malloc (1000 * sizeof(char *));
+		i++;
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	char	*line;
@@ -205,20 +276,25 @@ int	main(int argc, char **argv)
 
 	(void)argc;
 	(void)argv;
-	cmd = malloc (2 * sizeof(t_cmd));
+	cmd = malloc (sizeof(t_cmd));
 	while (1)
 	{
 		line = readline("minishell:");
 		if (line[0] == '\0')
 			continue ;
 		add_history(line);
-		if (countword(line) == -1)
+		if (countword(cmd, line) == -1)
 		{
 			printf("error quotes\n");
 			return (-1);
 		}
-		cmd->nbr = countword(line);
+		t_exe	*exe;
+
+		exe = malloc (100 * sizeof(t_exe));
+		cmd->nbr = countword(cmd, line);
 		get_tab(cmd, line);
-		free(line);
+		set_data(cmd, exe);
+		stock_cmd(cmd, exe);
+		// free(line);
 	}
 }
