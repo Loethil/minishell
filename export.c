@@ -21,7 +21,7 @@ int	ft_invalid(char i)
 		|| i == '{' || i == '}' || i == '~'
 		|| i == '*' || i == '#' || i == '&'
 		|| i == '(' || i == ')' || i == ':'
-		|| i == ';' || i == '\\' || i == '='
+		|| i == ';' || i == '\\'
 		|| (i >= '0' && i <= '9'))
 		return (1);
 	return (0);
@@ -63,7 +63,7 @@ int	ft_sub_export(t_data *data, int i, int k)
 			data->linesplit[k]);
 		return (++k);
 	}
-	while (data->linesplit[k][j] && data->linesplit[k][j + 1] != '=')
+	while (data->linesplit[k][j] && data->linesplit[k][j] != '=')
 		j++;
 	if (ft_strncmp(data->newenv[i], data->linesplit[k], j) == 0)
 	{

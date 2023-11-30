@@ -17,12 +17,12 @@ void	ft_prompt(t_data *data)
 	while (1)
 	{
 		data->line = readline("minishell: ");
-		if (data->line[0] == '\0' && sig.sigquit == 1)
+		if (data->line == NULL)
 		{
-			sig.sigquit = 0;
-			ft_exit(data, NULL);
+			printf("exit\n");
+			return ;
 		}
-		else if (data->line[0] == '\0')
+		if (data->line[0] == '\0')
 			continue ;
 		add_history(data->line);
 		data->linesplit = ft_split(data->line, ' ');
@@ -31,11 +31,6 @@ void	ft_prompt(t_data *data)
 		{
 			sig.sigint = 0;
 			continue ;
-		}
-		if (sig.sigquit == 1)
-		{
-			sig.sigquit = 0;
-			ft_exit(data, NULL);
 		}
 	}
 }

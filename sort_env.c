@@ -57,12 +57,14 @@ void	ft_export_no_args(t_data *data)
 	int		j;
 	char	**env;
 
-	i = 0;
+	i = -1;
 	env = malloc(sizeof(char *) * (ft_tablen(data->newenv) + 1));
 	env = data->newenv;
 	env = ft_sort_env(env);
-	while (env[i + 1])
+	while (env[++i])
 	{
+		if (env[i][0] == '_')
+			continue ;
 		j = 0;
 		printf("declare -x ");
 		while (env[i][j] && env[i][j - 1] != '=')
@@ -74,6 +76,5 @@ void	ft_export_no_args(t_data *data)
 		while (env[i][j])
 			printf("%c", env[i][j++]);
 		printf("\"\n");
-		i++;
 	}
 }
