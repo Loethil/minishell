@@ -258,10 +258,49 @@ void	get_tab(t_cmd *cmd, char *line)
 	while (j < cmd->nbr)
 	{
 		cmd->tab[j] = ft_getline(cmd, line, &i);
-		printf("%s\n", cmd->tab[j]);
+		// printf("%s\n", cmd->tab[j]);
 		j++;
 	}
 	cmd->tab[j] = NULL;
+}
+
+void	range(t_exe *exe)
+{
+	int	i;
+	int	j;
+	int	k;
+
+	i = 0;
+	k = 0;
+	j = 0;
+	exe->cmd = malloc (ft_lentab(exe->exe) * sizeof(char *));
+	exe->arg = malloc (ft_lentab(exe->exe) * sizeof(char *));
+	exe->cmd[j++] = exe->exe[i++];
+	printf("cmd = %s\n", exe->cmd[0]);
+	while (i < ft_lentab(exe->exe))
+	{
+		if (ft_strcmp(exe->exe[i], "-") == 0)
+		{
+			exe->cmd[j] = exe->exe[i];
+			printf("otn = %s\n", exe->cmd[j++]);
+		}
+		else if (ft_strcmp(exe->exe[i], "-") > 0)
+		{
+			exe->arg[k] = exe->exe[i];
+			printf("arg = %s\n", exe->arg[k++]);
+		}
+		else if (ft_strcmp(exe->exe[i], ">") == 0 || ft_strcmp(exe->exe[i], "<") == 0)
+		{
+			exe->rdr = malloc (ft_strlen(exe->exe[i + 1]) * sizeof(char));
+			exe->rdr = exe->exe[i + 1]; // pas sure de sa
+			printf("rdr = %s\n", exe->rdr);
+		}
+		i++;
+	}
+	// possible fonctionnement mais a revoir demain
+	// prototype d'un'rangeur'
+	//fonctionne mais autant remplir les donnes de la struc
+	// avec cmd->tab directement plutot que de passer par exe->exe
 }
 
 void	stock_cmd(t_cmd *cmd, t_exe *exe)
@@ -284,7 +323,8 @@ void	stock_cmd(t_cmd *cmd, t_exe *exe)
 			j++;
 		}
 		exe[j].exe[k] = cmd->tab[i];
-		printf("exe %d = %s\n", j, exe[j].exe[k]);
+		// printf("exe %d = %s\n", j, exe[j].exe[k]);
+		range(&exe[j]);
 		k++;
 		i++;
 	}
@@ -300,30 +340,6 @@ void	set_data(t_cmd *cmd, t_exe *exe)
 		exe[i].exe = malloc (1000 * sizeof(char *));
 		i++;
 	}
-}
-
-void	range(t_cmd *cmd, t_exe exe)
-{
-	int	i;
-	int	j;
-	int	k;
-
-	i = 0;
-	k = 0;
-	j = 0;
-	exe.cmd[j++] = exe.exe[i++];  
-	while (i < ft_tablen(exe.exe))
-	{
-		if (ft_checkoption(exe.exe[i]) == 1)
-			exe.cmd[j++] = exe.exe[i];
-		else if (ft_checkoption(exe.exe[i] == 0))
-			exe.arg[k++] = exe.exe[i];
-		else if (ft_checkredir(exe.exe[i] == 1))
-			exe.rdr = exe.exe[i + 1]; // pas sure de sa
-		i++;
-	}
-	// possible fonctionnement mais a revoir demain
-	// prototype d'un'rangeur'
 }
 
 int	main(int argc, char **argv)
