@@ -28,6 +28,7 @@ typedef struct s_cmd
 	int		nbr;    //nombre de mot
 	int		max;    //taille de line
 	int		pnbr;   //pipe nbr
+	int		len;
 }				t_cmd;
 
 typedef	struct s_exe
@@ -86,7 +87,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	return (ptr);
 }
 
-int	ft_checkoption(char *str)
+int	ft_checkoption(char *str) // a rename
 {
 	int	i = 0;
 
@@ -109,7 +110,7 @@ int	ft_checkoption(char *str)
 	return (0);
 }
 
-int	ft_lentab(char **tab)
+int	ft_lentab(char **tab) // a rename
 {
 	int	i;
 
@@ -157,7 +158,7 @@ char	*ft_copystring(char *str)
 	return (tab);
 }
 
-int	quotes(char *str, int *i, int j, int max)
+int	quotes(char *str, int *i, int j, int max) // a rename 
 {
 	if (str[(*i)] == '\'')
 	{
@@ -178,7 +179,7 @@ int	quotes(char *str, int *i, int j, int max)
 	return (j);
 }
 
-void	ft_quotes(t_cmd *cmd, char *line, int *i)
+void	ft_quotes(t_cmd *cmd, char *line, int *i) // a rename
 {
 	int	j;
 
@@ -238,7 +239,7 @@ int	countword(t_cmd *cmd, char *str)
 	return (j);
 } // a reduire norminette
 
-void	ft_word(t_cmd *cmd, char *line, int *i, int *j)
+void	ft_word(t_cmd *cmd, char *line, int *i, int *j) // a rename
 {
 	while (cmd->str[(*i)] != ' ' && (*i) < cmd->max)
 	{
@@ -253,7 +254,7 @@ void	ft_word(t_cmd *cmd, char *line, int *i, int *j)
 	(*i)++;
 }
 
-void	ft_pipes(t_cmd *cmd, int *i)
+void	ft_pipes(t_cmd *cmd, int *i) // a rename
 {
 	if (cmd->str[(*i) + 1] == '|')
 		return ;
@@ -272,7 +273,7 @@ void	ft_chevron(t_cmd *cmd, int *i)
 	(*i)++;
 }
 
-char	*ft_getline(t_cmd *cmd, char *line, int *i)
+char	*ft_getline(t_cmd *cmd, char *line, int *i) // a rename
 {
 	int	j;
 
@@ -294,7 +295,7 @@ char	*ft_getline(t_cmd *cmd, char *line, int *i)
 	return (cmd->str);
 }
 
-void	get_tab(t_cmd *cmd, char *line)
+void	get_tab(t_cmd *cmd, char *line) //  a rename
 {
 	int	i;
 	int	j;
@@ -311,7 +312,7 @@ void	get_tab(t_cmd *cmd, char *line)
 	cmd->tab[j] = NULL;
 }
 
-void	set_data(t_cmd *cmd, t_exe *exe, char **tab)
+void	set_data(t_cmd *cmd, t_exe *exe, char **tab) //  a rename de zinzin
 {
 	int	i;
 	int	j;
@@ -323,7 +324,7 @@ void	set_data(t_cmd *cmd, t_exe *exe, char **tab)
 		exe[j].cmd = ft_calloc (ft_lentab(tab), sizeof(char *));
 		exe[j].arg = ft_calloc (ft_lentab(tab), sizeof(char *));
 		j++;
-	} // sa remplacer par une data set plus abouti
+	} // a remplacer par une data set plus abouti
 	j = 0;
 	exe[j].cmd[0] = tab[i++];
 	exe[j].cmd[1] = NULL; // uniquement pour printf bug resolu
