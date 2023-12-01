@@ -189,7 +189,7 @@ int	countword(t_cmd *cmd, char *str)
 		i++;
 	}
 	return (j);
-}
+} // a reduire norminette
 
 void	ft_word(t_cmd *cmd, char *line, int *i, int *j)
 {
@@ -258,89 +258,49 @@ void	get_tab(t_cmd *cmd, char *line)
 	while (j < cmd->nbr)
 	{
 		cmd->tab[j] = ft_getline(cmd, line, &i);
-		// printf("%s\n", cmd->tab[j]);
+		printf("%s\n", cmd->tab[j]);
 		j++;
 	}
 	cmd->tab[j] = NULL;
 }
 
-void	range(t_exe *exe)
+void	set_data(t_cmd *cmd, t_exe *exe, char **tab)
 {
 	int	i;
 	int	j;
-	int	k;
 
-	i = 0;
-	k = 0;
 	j = 0;
-	exe->cmd = malloc (ft_lentab(exe->exe) * sizeof(char *));
-	exe->arg = malloc (ft_lentab(exe->exe) * sizeof(char *));
-	exe->cmd[j++] = exe->exe[i++];
-	printf("cmd = %s\n", exe->cmd[0]);
-	while (i < ft_lentab(exe->exe))
-	{
-		if (ft_strcmp(exe->exe[i], "-") == 0)
-		{
-			exe->cmd[j] = exe->exe[i];
-			printf("otn = %s\n", exe->cmd[j++]);
-		}
-		else if (ft_strcmp(exe->exe[i], "-") > 0)
-		{
-			exe->arg[k] = exe->exe[i];
-			printf("arg = %s\n", exe->arg[k++]);
-		}
-		else if (ft_strcmp(exe->exe[i], ">") == 0 || ft_strcmp(exe->exe[i], "<") == 0)
-		{
-			exe->rdr = malloc (ft_strlen(exe->exe[i + 1]) * sizeof(char));
-			exe->rdr = exe->exe[i + 1]; // pas sure de sa
-			printf("rdr = %s\n", exe->rdr);
-		}
-		i++;
-	}
-	// possible fonctionnement mais a revoir demain
-	// prototype d'un'rangeur'
-	//fonctionne mais autant remplir les donnes de la struc
-	// avec cmd->tab directement plutot que de passer par exe->exe
-}
-
-void	stock_cmd(t_cmd *cmd, t_exe *exe)
-{
-	int	i;
-	int	j;
-	int	k;
-
 	i = 0;
-	j = 0;
-	k = 0;
 	while (j < cmd->pnbr)
 	{
-		if (!cmd->tab[i])
-			return ;
-		if (ft_strcmp(cmd->tab[i], "|") == 0)
-		{
-			k = 0;
-			i++;
-			j++;
-		}
-		exe[j].exe[k] = cmd->tab[i];
-		// printf("exe %d = %s\n", j, exe[j].exe[k]);
-		range(&exe[j]);
-		k++;
-		i++;
+		exe[j].cmd = calloc (ft_lentab(tab), sizeof(char *));
+		exe[j].arg = calloc (ft_lentab(tab), sizeof(char *));
+		j++;
 	}
-}
-
-void	set_data(t_cmd *cmd, t_exe *exe)
-{
-	int	i;
-
-	i = 0;
-	while (i < cmd->pnbr)
+	j = 0;
+	exe[j].cmd[0] = tab[i++];
+	while (tab[i])
 	{
-		exe[i].exe = malloc (1000 * sizeof(char *));
+		if (ft_strcmp(tab[i], "|") == 0)
+			j++;
+		else if (ft_strcmp(tab[i], "-") == 0) // faire en sorte que sa marche pour toutes les options
+			exe[j].cmd[ft_lentab(exe[j].cmd)] = tab[i];
+		else if (ft_strcmp(tab[i], "-") > 0)
+			exe[j].arg[ft_lentab(exe[j].arg)] = tab[i];
 		i++;
 	}
-}
+	j = 0;
+	while (j < cmd->pnbr)
+	{
+		i = 0;
+		while (i < ft_lentab(exe[j].cmd))
+			printf("cmd = %s\n", exe[j].cmd[i++]);
+		i = 0;
+		while (i < ft_lentab(exe[j].arg))
+			printf("arg = %s\n", exe[j].arg[i++]);
+		j++;
+	}
+}	//command apres le pipe non gerer, + otn, + redir + sa rendre sa plus beau
 
 int	main(int argc, char **argv)
 {
@@ -359,14 +319,13 @@ int	main(int argc, char **argv)
 		if (countword(cmd, line) == -1)
 		{
 			printf("error quotes\n");
-			return (-1);
+			continue ;
 		}
 		t_exe	*exe;
 
 		exe = malloc (100 * sizeof(t_exe));
 		cmd->nbr = countword(cmd, line);
 		get_tab(cmd, line);
-		set_data(cmd, exe);
-		stock_cmd(cmd, exe);
+		set_data(cmd, exe, cmd->tab);
 	}
 }
