@@ -51,7 +51,6 @@ void	ft_pars(t_cmd *cmd, char **tab)
 	// 	j++;
 	// }
 
-
 void	ft_dta_init(t_dta *dta, t_cmd *cmd, char **tab)
 {
 	int	j;
