@@ -20,14 +20,24 @@ t_sig	g_sig;
 
 void	ft_exit(t_dta *dta, char *nbr)
 {
-	if (nbr == NULL)
-	{
-		printf("exit\n");
+	char	*verifnbr;
+
+	printf ("exit\n");
+	if (nbr[1] == NULL)
 		exit (0);
+	dta->max = ft_atoll(nbr[2]);
+	verifnbr = ft_itoa(dta->max);
+	if (strcmp(nbr[1], verifnbr) != 0)
+	{
+		printf("minishell: exit: %s: numeric argument required\n", nbr[1]);
+		exit (2);
 	}
-	dta->max = ft_atoll(nbr);
 	dta->max %= 256;
-	printf("exit\n");
+	if (nbr[2])
+	{
+		printf("minishell: exit: too many arguments\n");
+		return ;	
+	}
 	exit(dta->max);
 }
 
