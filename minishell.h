@@ -26,18 +26,30 @@
 # include <signal.h>
 # include "libft.h"
 
-typedef struct s_data
+typedef struct s_dta
 {
-	char		*line;
-	char	**all_path;
-	char	**linesplit;
-	char	**newenv;
-	char	*true_path;
-	int		status;
-	char	*pwd;
-	long long max;
-	pid_t	pid;
-}				t_data;
+	char		*str;
+	char		**all_path;
+	char		**lsplit;
+	char		**newenv;
+	char		*true_path;
+	int			status;
+	char		*pwd;
+	long long 	max;
+	pid_t		pid;
+	int			nbr;
+	int			lmax;
+	int			pnbr;
+	int			len;
+}				t_dta;
+
+typedef	struct s_cmd
+{
+	char		**cmd; //stock la cmd
+	char		**arg; //stock les arguments de la commande
+	char		*rdr;  //stock les arg de la redirection
+	int			dlr;   // dollar macro
+}				t_cmd;
 
 typedef struct s_sig
 {
