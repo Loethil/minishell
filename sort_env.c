@@ -51,15 +51,15 @@ char	**ft_sort_env(char **env)
 	return (env);
 }
 
-void	ft_export_no_args(t_data *data)
+void	ft_export_no_args(t_dta *dta)
 {
 	int		i;
 	int		j;
 	char	**env;
 
 	i = -1;
-	env = malloc(sizeof(char *) * (ft_tablen(data->newenv) + 1));
-	env = data->newenv;
+	env = malloc(sizeof(char *) * (ft_tablen(dta->newenv) + 1));
+	env = dta->newenv;
 	env = ft_sort_env(env);
 	while (env[++i])
 	{

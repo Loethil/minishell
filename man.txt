@@ -8,7 +8,7 @@ readline = Readline will read a line from the terminal and return it, using
 
 rl_clear_history = Clear the history list by deleting all of the entries, 
 		in the same manner as the History library’s clear_history() function. 
-		This differs from clear_history because it frees private data Readline
+		This differs from clear_history because it frees private dta Readline
 		saves in the history list.
 
 rl_on_new_line = Tell the update functions that we have moved onto a new (empty) line, 
@@ -22,7 +22,7 @@ rl_redisplay = Change what’s displayed on the screen to
 		reflect the current contents of rl_line_buffer.
 
 add_history = Place string at the end of the history list. 
-		The associated data field (if any) is set to NULL.
+		The associated dta field (if any) is set to NULL.
 
 access = access() vérifie si le processus appelant peut accéder au fichier pathname. 
 		Si pathname est un lien symbolique, il est déréférencé.

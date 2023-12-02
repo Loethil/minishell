@@ -41,33 +41,33 @@ char	*ft_strcpy(char *dst, const char *src)
 	return (dst);
 }
 
-char	**ft_find_path(t_data *data)
+char	**ft_find_path(t_dta *dta)
 {
 	int	i;
 
 	i = 0;
-	data->all_path = ft_split(getenv("PATH"), ':');
-	while (data->all_path[i])
+	dta->all_path = ft_split(getenv("PATH"), ':');
+	while (dta->all_path[i])
 	{
-		data->all_path[i] = ft_strjoin(data->all_path[i], "/");
+		dta->all_path[i] = ft_strjoin(dta->all_path[i], "/");
 		i++;
 	}
-	return(data->all_path);
+	return(dta->all_path);
 }
 
-char	*ft_get_access(t_data *data, char *cmd)
+char	*ft_get_access(t_dta *dta, char *cmd)
 {
 	int	i;
 
 	i = 0;
 	if (access(cmd, X_OK) == 0)
 			return (cmd);
-	while (data->all_path[i])
+	while (dta->all_path[i])
 	{
-		data->true_path = ft_strjoin(data->all_path[i], cmd);
-		if (access(data->true_path, X_OK) == 0)
-			return (data->true_path);
-		free(data->true_path);
+		dta->true_path = ft_strjoin(dta->all_path[i], cmd);
+		if (access(dta->true_path, X_OK) == 0)
+			return (dta->true_path);
+		free(dta->true_path);
 		i++;
 	}
 	printf("%s command not found\n", cmd);

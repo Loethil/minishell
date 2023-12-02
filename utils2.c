@@ -24,18 +24,18 @@ char	*ft_copystring(char *env)
 	return (tab);
 }
 
-char	**changeenv(t_data *data, char **env)
+char	**changeenv(t_dta *dta, char **env)
 {
 	int	i;
 
 	i = 0;
-	data->newenv = malloc(10000 * sizeof(char *));
+	dta->newenv = malloc(10000 * sizeof(char *));
 	while (env[i])
 	{
-		data->newenv[i] = ft_copystring(env[i]);
+		dta->newenv[i] = ft_copystring(env[i]);
 		i++;
 	}
-	return (data->newenv);
+	return (dta->newenv);
 }
 
 int	ft_findpwd(char **env)

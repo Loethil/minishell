@@ -29,22 +29,22 @@ void	ft_pwdorenv(char **newenv, char *tab)
 	}
 }
 
-void	ft_changedir(t_data *data, char *path)
+void	ft_changedir(t_dta *dta, char *path)
 {
 	int	i;
 
-	i = ft_findpwd(data->newenv);
-	if (data->linesplit[1][0] == '~')
+	i = ft_findpwd(dta->newenv);
+	if (dta->linesplit[1][0] == '~')
 	{
-		data->newenv[i] = ft_strjoin("PWD=/home/mbatteux", path + 1);
+		dta->newenv[i] = ft_strjoin("PWD=/home/mbatteux", path + 1);
 		path = ft_strjoin("/home/mbatteux/", path + 1);
 		if (chdir(path) == -1)
 			printf("ERROR CHDIR\n");
 		return ;
 	}
-	data->true_path = ft_strjoin(data->newenv[i], "/");
-	data->true_path = ft_strjoin(data->true_path, path);
-	data->newenv[i] = data->true_path;
+	dta->true_path = ft_strjoin(dta->newenv[i], "/");
+	dta->true_path = ft_strjoin(dta->true_path, path);
+	dta->newenv[i] = dta->true_path;
 	if (chdir(path) == -1)
 		printf("ERROR CHDIR\n");
 }

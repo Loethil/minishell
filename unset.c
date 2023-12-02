@@ -43,48 +43,48 @@ int	ft_unset_input(char *linesplit)
 	return (0);
 }
 
-char	**ft_newenv(t_data *data, int i, int j)
+char	**ft_newenv(t_dta *dta, int i, int j)
 {
 	int		x;
 	char	**oldenv;
 
 	x = 0;
-	oldenv = malloc(sizeof(char *) * (ft_tablen(data->newenv) + 1));
-	while (data->newenv[++i])
+	oldenv = malloc(sizeof(char *) * (ft_tablen(dta->newenv) + 1));
+	while (dta->newenv[++i])
 	{
-		if (!ft_strncmp(data->newenv[i], data->linesplit[j],
-				ft_strlen(data->linesplit[j])))
+		if (!ft_strncmp(dta->newenv[i], dta->linesplit[j],
+				ft_strlen(dta->linesplit[j])))
 			i++;
-		oldenv[x++] = ft_linecpy(data->newenv[i]);
+		oldenv[x++] = ft_linecpy(dta->newenv[i]);
 	}
 	oldenv[x] = NULL;
 	return (oldenv);
 }
 
-int	ft_unset(t_data *data)
+int	ft_unset(t_dta *dta)
 {
 	int		i;
 	int		j;
 	char	**oldenv;
 
 	j = 0;
-	while (data->linesplit[++j])
+	while (dta->linesplit[++j])
 	{
 		i = -1;
-		if (ft_unset_input(data->linesplit[j]))
+		if (ft_unset_input(dta->linesplit[j]))
 			continue ;
-		if (j >= ft_tablen(data->linesplit))
+		if (j >= ft_tablen(dta->linesplit))
 			return (1);
-		if (!ft_strncmp(data->linesplit[j], data->newenv[ft_tablen(data->newenv) - 1], ft_strlen(data->linesplit[j])))
+		if (!ft_strncmp(dta->linesplit[j], dta->newenv[ft_tablen(dta->newenv) - 1], ft_strlen(dta->linesplit[j])))
 		{
-			data->newenv[ft_tablen(data->newenv) - 1] = NULL;
+			dta->newenv[ft_tablen(dta->newenv) - 1] = NULL;
 			continue ;
 		}
-		oldenv = ft_newenv(data, i, j);
-		while (data->newenv[++i])
-			free(data->newenv[i]);
-		free(data->newenv);
-		data->newenv = oldenv;
+		oldenv = ft_newenv(dta, i, j);
+		while (dta->newenv[++i])
+			free(dta->newenv[i]);
+		free(dta->newenv);
+		dta->newenv = oldenv;
 	}
 	return (0);
 }

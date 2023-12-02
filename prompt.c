@@ -24,27 +24,27 @@ int		ft_whitespace(char *line)
 	return (1);
 }
 
-void	ft_prompt(t_data *data)
+void	ft_prompt(t_dta *dta)
 {
 	while (1)
 	{
-		data->line = readline("minishell: ");
-		if (data->line == NULL)
+		dta->line = readline("minishell: ");
+		if (dta->line == NULL)
 		{
 			printf("exit\n");
 			return ;
 		}
-		if (data->line[0] == '\0' || ft_whitespace(data->line))
+		if (dta->line[0] == '\0' || ft_whitespace(dta->line))
 			continue ;
 		if (g_sig.sigint == 1)
 		{
 			g_sig.sigint = 0;
-			free(data->line);
-			data->line[0] = '\0';
+			free(dta->line);
+			dta->line[0] = '\0';
 			continue ;
 		}
-		add_history(data->line);
-		data->linesplit = ft_split(data->line, ' ');
-		ft_whoitis(data);
+		add_history(dta->line);
+		dta->linesplit = ft_split(dta->line, ' ');
+		ft_whoitis(dta);
 	}
 }

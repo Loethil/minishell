@@ -52,7 +52,7 @@ void	ft_pars(t_cmd *cmd, char **tab)
 	// }
 
 
-void	ft_data_init(t_dta *dta, t_cmd *cmd, char **tab)
+void	ft_dta_init(t_dta *dta, t_cmd *cmd, char **tab)
 {
 	int	j;
 
@@ -89,7 +89,7 @@ void	ft_data_init(t_dta *dta, t_cmd *cmd, char **tab)
 // 		cmd = ft_calloc (100, sizeof(t_cmd));
 // 		dta->nbr = ft_countword(dta, line);
 // 		ft_create_tab(dta, line);
-// 		ft_data_init(dta, cmd, dta->tab);
+// 		ft_dta_init(dta, cmd, dta->tab);
 // 		ft_pars(cmd, dta->tab);
 // 	}
 // }

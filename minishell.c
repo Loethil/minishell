@@ -18,66 +18,66 @@ redir si il y a un '>' etc*/
 
 t_sig	g_sig;
 
-void	ft_exit(t_data *data, char *nbr)
+void	ft_exit(t_dta *dta, char *nbr)
 {
 	if (nbr == NULL)
 	{
 		printf("exit\n");
 		exit (0);
 	}
-	data->max = ft_atoll(nbr);
-	data->max %= 256;
+	dta->max = ft_atoll(nbr);
+	dta->max %= 256;
 	printf("exit\n");
-	exit(data->max);
+	exit(dta->max);
 }
 
-void	ft_findcmd(t_data *data)
+void	ft_findcmd(t_dta *dta)
 {
-	data->pid = fork();
-	if (data->pid == 0)
+	dta->pid = fork();
+	if (dta->pid == 0)
 	{
-		data->all_path = ft_find_path(data);
-		data->true_path = ft_get_access(data, data->linesplit[0]);
-		if (execve(data->true_path,  &data->linesplit[0], data->newenv) == -1)
+		dta->all_path = ft_find_path(dta);
+		dta->true_path = ft_get_access(dta, dta->linesplit[0]);
+		if (execve(dta->true_path,  &dta->linesplit[0], dta->newenv) == -1)
 			printf("error execve\n");
 	}
 	else
-		waitpid(data->pid, &data->status, 0);
+		waitpid(dta->pid, &dta->status, 0);
 }
 
-void	ft_whoitis(t_data *data)
+void	ft_whoitis(t_dta *dta)
 {
-	if (ft_strcmp(data->linesplit[0], "echo") == 0)
-			ft_echo(data, 1);
-	else if (ft_strcmp(data->linesplit[0], "cd") == 0)
-			ft_changedir(data, data->linesplit[1]);
-	else if (ft_strcmp(data->linesplit[0], "pwd") == 0)
-			ft_pwdorenv(data->newenv, "PWD");
-	else if (ft_strcmp(data->linesplit[0], "export") == 0)
-			ft_export(data);
-	else if (ft_strcmp(data->linesplit[0], "unset") == 0)
-			ft_unset(data);
-	else if (ft_strcmp(data->linesplit[0], "env") == 0)
-			ft_pwdorenv(data->newenv, "ENV");
-	else if (ft_strcmp(data->linesplit[0], "exit") == 0)
-			ft_exit(data, data->linesplit[1]);
+	if (ft_strcmp(dta->linesplit[0], "echo") == 0)
+			ft_echo(dta, 1);
+	else if (ft_strcmp(dta->linesplit[0], "cd") == 0)
+			ft_changedir(dta, dta->linesplit[1]);
+	else if (ft_strcmp(dta->linesplit[0], "pwd") == 0)
+			ft_pwdorenv(dta->newenv, "PWD");
+	else if (ft_strcmp(dta->linesplit[0], "export") == 0)
+			ft_export(dta);
+	else if (ft_strcmp(dta->linesplit[0], "unset") == 0)
+			ft_unset(dta);
+	else if (ft_strcmp(dta->linesplit[0], "env") == 0)
+			ft_pwdorenv(dta->newenv, "ENV");
+	else if (ft_strcmp(dta->linesplit[0], "exit") == 0)
+			ft_exit(dta, dta->linesplit[1]);
 	else
-		ft_findcmd(data);
+		ft_findcmd(dta);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_data	*data;
+	t_dta	*dta;
 	int		i;
 
 	(void)argv;
-	data = malloc(sizeof(t_data) * 1);
+	dta = malloc(sizeof(t_dta) * 1);
 	i = -1;
 	if (argc != 1)
 		return (0);
-	data->newenv = changeenv(data, env);
+	dta->newenv = changeenv(dta, env);
 	signal(SIGINT, &ft_sigint_hdl);
 	signal(SIGQUIT, &ft_sigquit_hdl);
-	ft_prompt(data);
+	ft_prompt(dta);
 	return (0);
 }

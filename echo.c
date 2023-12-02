@@ -34,29 +34,29 @@ void	ft_print_echo(char **linesplit, int i)
 	}
 }
 
-int	ft_echo(t_data *data, int i)
+int	ft_echo(t_dta *dta, int i)
 {
 	int	j;
 
-	if (strncmp(data->linesplit[1], "-n", 2) == 0)
+	if (strncmp(dta->linesplit[1], "-n", 2) == 0)
 	{
-		while (strncmp(data->linesplit[i], "-n", 2) == 0)
+		while (strncmp(dta->linesplit[i], "-n", 2) == 0)
 		{
 			j = 1;
-			while (data->linesplit[i][j] == 'n')
+			while (dta->linesplit[i][j] == 'n')
 				j++;
-			if (data->linesplit[i][j])
+			if (dta->linesplit[i][j])
 			{
-				ft_print_echo(data->linesplit, i);
+				ft_print_echo(dta->linesplit, i);
 				return (0);
 			}
 			i++;
 		}
-		ft_print_echo(data->linesplit, i);
+		ft_print_echo(dta->linesplit, i);
 	}
 	else
 	{
-		ft_print_echo(data->linesplit, i);
+		ft_print_echo(dta->linesplit, i);
 		printf("\n");
 	}
 	return (0);
