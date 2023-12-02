@@ -39,39 +39,68 @@ typedef struct s_data
 	pid_t	pid;
 }				t_data;
 
-typedef	struct s_line
-{
-	char	**cmd;
-	int		cmdnmb;
-	char	**arg;
-	int		argnmb;
-	int		pipenmb;
-}				t_line;
-
 typedef struct s_sig
 {
 	int		sigint;
 	int		sigquit;
 }				t_sig;
 
+// UTILS //
+
 int			ft_strcmp(const char *s1, const char *s2);
+char		*ft_copystring(char *env);
+char		*ft_strcpy(char *dst, const char *src);
+long long	ft_atoll(const char *str);
+int			ft_tablen(char **tab);
+int			ft_invalid(char i);
+char		**ft_swap(char **env, int i);
+int			ft_whitespace(char *line);
+
+// PWD OR ENV //
+
 int			ft_findpwd(char **env);
+void		ft_pwdorenv(char **newenv, char *tab);
+void		ft_changedir(t_data *data, char *path);
 char		**ft_find_path(t_data *data);
 char		*ft_get_access(t_data *data, char *argv);
-char		*ft_copystring(char *env);
 char		**changeenv(t_data *data, char **env);
-long long	ft_atoll(const char *str);
-int			ft_echo(t_data *data, int i);
+
+// EXPORT //
+
 int			ft_export(t_data *data);
-int			ft_tablen(char **tab);
+int			ft_sub_export(t_data *data, int i, int k);
 int			ft_export_input(char *linesplit);
-int			ft_unset(t_data *data);
-void		ft_exit(t_data *data, char *nbr);
-void		ft_prompt(t_data *data);
-void		ft_whoitis(t_data *data);
-char		*ft_strcpy(char *dst, const char *src);
-int			ft_invalid(char i);
+void		ft_export_malloc(t_data *data, int i, int k);
+void		ft_export_no_args(t_data *data);
+char		**ft_sort_env(char **env);
 void		ft_export_no_args(t_data *data);
 
-extern t_sig sig;
+// UNSET //
+
+int			ft_unset(t_data *data);
+char		**ft_newenv(t_data *data, int i, int j);
+int			ft_unset_input(char *linesplit);
+char		*ft_linecpy(char *src);
+
+// EXIT //
+
+void		ft_exit(t_data *data, char *nbr);
+
+// ECHO //
+
+int			ft_echo(t_data *data, int i);
+void		ft_print_echo(char **linesplit, int i);
+
+// SIGNAL //
+
+void		ft_sigint_hdl(int signo);
+void		ft_sigquit_hdl(int signo);
+
+// MAIN //
+
+void		ft_prompt(t_data *data);
+void		ft_whoitis(t_data *data);
+void		ft_findcmd(t_data *data);
+
+extern t_sig g_sig;
 #endif

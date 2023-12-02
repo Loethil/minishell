@@ -16,7 +16,7 @@
 exemple : cmd 1 c'est le premier argument
 redir si il y a un '>' etc*/
 
-t_sig sig;
+t_sig	g_sig;
 
 void	ft_exit(t_data *data, char *nbr)
 {
@@ -45,43 +45,6 @@ void	ft_findcmd(t_data *data)
 		waitpid(data->pid, &data->status, 0);
 }
 
-void	ft_pwdorenv(char **newenv, char *tab)
-{
-	int	i;
-
-	if (strcmp(tab, "PWD") == 0)
-	{
-		i = ft_findpwd(newenv);
-		printf("%s\n", newenv[i] + 4);
-	}
-	if (strcmp(tab, "ENV") == 0)
-	{
-		i = 0;
-		while(newenv[i])
-			printf("%s\n", newenv[i++]);
-	}
-}
-
-void	ft_changedir(t_data *data, char *path)
-{
-	int	i;
-
-	i = ft_findpwd(data->newenv);
-	if (data->linesplit[1][0] == '~')
-	{
-		data->newenv[i] = ft_strjoin("PWD=/home/mbatteux", path + 1);
-		path = ft_strjoin("/home/mbatteux/", path + 1);
-		if (chdir(path) == -1)
-			printf("ERROR CHDIR\n");
-		return ;
-	}
-	data->true_path = ft_strjoin(data->newenv[i], "/");
-	data->true_path = ft_strjoin(data->true_path, path);
-	data->newenv[i] = data->true_path;
-	if (chdir(path) == -1)
-		printf("ERROR CHDIR\n");
-}
-
 void	ft_whoitis(t_data *data)
 {
 	if (ft_strcmp(data->linesplit[0], "echo") == 0)
@@ -102,19 +65,6 @@ void	ft_whoitis(t_data *data)
 		ft_findcmd(data);
 }
 
-void	sigint_hdl(int signo)
-{
-	(void)signo;
-	printf("\nminishell: ");
-	sig.sigint = 1;
-}
-
-void	sigquit_hdl(int signo)
-{
-	(void)signo;
-	sig.sigquit = 1;
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	t_data	*data;
@@ -126,8 +76,8 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		return (0);
 	data->newenv = changeenv(data, env);
-	signal(SIGINT, &sigint_hdl);
-	signal(SIGQUIT, &sigquit_hdl);
+	signal(SIGINT, &ft_sigint_hdl);
+	signal(SIGQUIT, &ft_sigquit_hdl);
 	ft_prompt(data);
 	return (0);
 }

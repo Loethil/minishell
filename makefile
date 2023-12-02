@@ -14,10 +14,13 @@ NAME = minishell
 
 CCC = minishell.c\
 	utils.c \
-	export.c \
+	utils2.c \
 	unset.c \
 	prompt.c \
 	sort_env.c \
+	pwd.c \
+	signal.c \
+	export.c \
 	echo.c
 
 OOO = $(CCC:.c=.o)

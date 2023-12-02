@@ -36,9 +36,9 @@ void	ft_prompt(t_data *data)
 		}
 		if (data->line[0] == '\0' || ft_whitespace(data->line))
 			continue ;
-		if (sig.sigint == 1)
+		if (g_sig.sigint == 1)
 		{
-			sig.sigint = 0;
+			g_sig.sigint = 0;
 			free(data->line);
 			data->line[0] = '\0';
 			continue ;
