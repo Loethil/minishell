@@ -10,48 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <errno.h>
-
-typedef struct s_dta
-{
-	char	**tab;  //stock la ligne entiere dans un char **
-	char	*str;	//stock la string de readline
-	int		nbr;    //nombre de mot
-	int		lmax;    //taille de line
-	int		pnbr;   //pipe nbr
-	int		len;
-}				t_dta;
-
-typedef	struct s_cmd
-{
-	// char	**exe; //stock la cmd jusqu'a un pipe ou fin si une seul commande
-	char	**cmd; //stock la cmd et ses options
-	char	**arg; //stock les arguments de la commande
-	char	*rdr;  //stock les arg de la redirection
-	int		dlr;   // dollar macro
-}				t_cmd;
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*ptr;
-
-	if (nmemb == 0 || size == 0)
-		return (malloc(0));
-	ptr = malloc(nmemb * size);
-	if (!ptr)
-		return (NULL);
-	ft_memset((unsigned char *)ptr, 0, nmemb * size);
-	return (ptr);
-}
+#include "minishell.h"
 
 void	ft_pars(t_cmd *cmd, char **tab)
 {
