@@ -72,35 +72,35 @@ int			ft_whitespace(char *line);
 
 int			ft_findpwd(char **env);
 void		ft_pwdorenv(char **newenv, char *tab);
-void		ft_changedir(t_data *data, char *path);
-char		**ft_find_path(t_data *data);
-char		*ft_get_access(t_data *data, char *argv);
-char		**changeenv(t_data *data, char **env);
+void		ft_changedir(t_dta *dta, char *path);
+char		**ft_find_path(t_dta *dta);
+char		*ft_get_access(t_dta *dta, char *argv);
+char		**changeenv(t_dta *dta, char **env);
 
 // EXPORT //
 
-int			ft_export(t_data *data);
-int			ft_sub_export(t_data *data, int i, int k);
+int			ft_export(t_dta *dta);
+int			ft_sub_export(t_dta *dta, int i, int k);
 int			ft_export_input(char *linesplit);
-void		ft_export_malloc(t_data *data, int i, int k);
-void		ft_export_no_args(t_data *data);
+void		ft_export_malloc(t_dta *dta, int i, int k);
+void		ft_export_no_args(t_dta *dta);
 char		**ft_sort_env(char **env);
-void		ft_export_no_args(t_data *data);
+void		ft_export_no_args(t_dta *dta);
 
 // UNSET //
 
-int			ft_unset(t_data *data);
-char		**ft_newenv(t_data *data, int i, int j);
+int			ft_unset(t_dta *dta);
+char		**ft_newenv(t_dta *dta, int i, int j);
 int			ft_unset_input(char *linesplit);
 char		*ft_linecpy(char *src);
 
 // EXIT //
 
-void		ft_exit(t_data *data, char *nbr);
+void		ft_exit(t_dta *dta, char *nbr);
 
 // ECHO //
 
-int			ft_echo(t_data *data, int i);
+int			ft_echo(t_dta *dta, int i);
 void		ft_print_echo(char **linesplit, int i);
 
 // SIGNAL //
@@ -110,9 +110,9 @@ void		ft_sigquit_hdl(int signo);
 
 // MAIN //
 
-void		ft_prompt(t_data *data);
-void		ft_whoitis(t_data *data);
-void		ft_findcmd(t_data *data);
+void		ft_prompt(t_dta *dta);
+void		ft_whoitis(t_dta *dta);
+void		ft_findcmd(t_dta *dta);
 
 extern t_sig g_sig;
 #endif
