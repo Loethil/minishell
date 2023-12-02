@@ -72,14 +72,14 @@ void	ft_changedir(t_data *data, char *path)
 		data->newenv[i] = ft_strjoin("PWD=/home/mbatteux", path + 1);
 		path = ft_strjoin("/home/mbatteux/", path + 1);
 		if (chdir(path) == -1)
-			printf("ERROR CHDIR");
+			printf("ERROR CHDIR\n");
 		return ;
 	}
 	data->true_path = ft_strjoin(data->newenv[i], "/");
 	data->true_path = ft_strjoin(data->true_path, path);
 	data->newenv[i] = data->true_path;
 	if (chdir(path) == -1)
-		printf("ERROR CHDIR");
+		printf("ERROR CHDIR\n");
 }
 
 void	ft_whoitis(t_data *data)

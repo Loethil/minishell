@@ -60,6 +60,8 @@ char	*ft_get_access(t_data *data, char *cmd)
 	int	i;
 
 	i = 0;
+	if (access(cmd, X_OK) == 0)
+			return (cmd);
 	while (data->all_path[i])
 	{
 		data->true_path = ft_strjoin(data->all_path[i], cmd);
