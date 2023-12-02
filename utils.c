@@ -17,7 +17,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 	size_t	i;
 
 	i = 0;
-	while (s1[i])
+	while (s1[i] && s2[i])
 	{
 		if (s1[i] != s2[i])
 			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
@@ -26,6 +26,19 @@ int	ft_strcmp(const char *s1, const char *s2)
 	if (s2[i])
 		return (-1);
 	return (0);
+}
+
+char	*ft_strcpy(char *dst, const char *src)
+{
+	unsigned int	i;
+	unsigned int	j;
+
+	i = ft_strlen(src);
+	j = -1;
+	while (++j < i + 1)
+		dst[j] = src[j];
+	dst[j] = '\0';
+	return (dst);
 }
 
 char	**ft_find_path(t_data *data)
@@ -47,6 +60,8 @@ char	*ft_get_access(t_data *data, char *cmd)
 	int	i;
 
 	i = 0;
+	if (access(cmd, X_OK) == 0)
+			return (cmd);
 	while (data->all_path[i])
 	{
 		data->true_path = ft_strjoin(data->all_path[i], cmd);

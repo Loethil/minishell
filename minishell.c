@@ -16,12 +16,7 @@
 exemple : cmd 1 c'est le premier argument
 redir si il y a un '>' etc*/
 
-int	ft_echo(t_data *data, char *linesplit)
-{
-	if (execve("/usr/bin/echo", &linesplit, data->newenv) == -1)
-		printf("error");
-	return (0);
-}
+t_sig sig;
 
 void	ft_exit(t_data *data, char *nbr)
 {
@@ -54,7 +49,7 @@ void	ft_pwdorenv(char **newenv, char *tab)
 {
 	int	i;
 
-	if ( strcmp(tab, "PWD") == 0)
+	if (strcmp(tab, "PWD") == 0)
 	{
 		i = ft_findpwd(newenv);
 		printf("%s\n", newenv[i] + 4);
@@ -77,28 +72,28 @@ void	ft_changedir(t_data *data, char *path)
 		data->newenv[i] = ft_strjoin("PWD=/home/mbatteux", path + 1);
 		path = ft_strjoin("/home/mbatteux/", path + 1);
 		if (chdir(path) == -1)
-			printf("ERROR CHDIR");
+			printf("ERROR CHDIR\n");
 		return ;
 	}
 	data->true_path = ft_strjoin(data->newenv[i], "/");
 	data->true_path = ft_strjoin(data->true_path, path);
 	data->newenv[i] = data->true_path;
 	if (chdir(path) == -1)
-		printf("ERROR CHDIR");
+		printf("ERROR CHDIR\n");
 }
 
 void	ft_whoitis(t_data *data)
 {
 	if (ft_strcmp(data->linesplit[0], "echo") == 0)
-			ft_echo(data, data->linesplit[1]); //
+			ft_echo(data, 1);
 	else if (ft_strcmp(data->linesplit[0], "cd") == 0)
 			ft_changedir(data, data->linesplit[1]);
 	else if (ft_strcmp(data->linesplit[0], "pwd") == 0)
 			ft_pwdorenv(data->newenv, "PWD");
 	else if (ft_strcmp(data->linesplit[0], "export") == 0)
-			ft_echo(data, data->linesplit[1]); //
+			ft_export(data);
 	else if (ft_strcmp(data->linesplit[0], "unset") == 0)
-			ft_echo(data, data->linesplit[1]); //
+			ft_unset(data);
 	else if (ft_strcmp(data->linesplit[0], "env") == 0)
 			ft_pwdorenv(data->newenv, "ENV");
 	else if (ft_strcmp(data->linesplit[0], "exit") == 0)
@@ -107,26 +102,32 @@ void	ft_whoitis(t_data *data)
 		ft_findcmd(data);
 }
 
+void	sigint_hdl(int signo)
+{
+	(void)signo;
+	printf("\nminishell: ");
+	sig.sigint = 1;
+}
+
+void	sigquit_hdl(int signo)
+{
+	(void)signo;
+	sig.sigquit = 1;
+}
+
 int	main(int argc, char **argv, char **env)
 {
-	t_data	data;
+	t_data	*data;
 	int		i;
-	
+
 	(void)argv;
-	i = 0;
+	data = malloc(sizeof(t_data) * 1);
+	i = -1;
 	if (argc != 1)
 		return (0);
-	data.newenv = changeenv(&data, env);
-	while (1)
-	{
-		data.line = readline("minishell:");
-		if (data.line[0] == '\0')
-			continue ;
-		add_history(data.line);
-		data.linesplit = ft_split(data.line, ' ');
-		// printf("-%s\n", data.line);
-		// while (data.linesplit[i])
-		// 	printf("--%s\n", data.linesplit[i++]);
-		ft_whoitis(&data);
-	}
+	data->newenv = changeenv(data, env);
+	signal(SIGINT, &sigint_hdl);
+	signal(SIGQUIT, &sigquit_hdl);
+	ft_prompt(data);
+	return (0);
 }
