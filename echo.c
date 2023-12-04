@@ -22,41 +22,42 @@ int	ft_tablen(char **tab)
 	return (i);
 }
 
-void	ft_print_echo(char **linesplit, int i)
+void	ft_print_echo(char **arg, int i)
 {
-	while (linesplit[i])
+	while (arg[i])
 	{
-		if (ft_tablen(linesplit) <= 2 || i == ft_tablen(linesplit) - 1)
-			printf("%s", linesplit[i]);
+		if (ft_tablen(arg) <= 2 || i == ft_tablen(arg) - 1)
+			printf("%s", arg[i]);
 		else
-			printf("%s ", linesplit[i]);
+			printf("%s ", arg[i]);
 		i++;
 	}
 }
 
-int	ft_echo(t_dta *dta, int i)
+int	ft_echo(t_dta *dta, t_cmd *cmd, int i)
 {
 	int	j;
 
-	if (strncmp(dta->linesplit[1], "-n", 2) == 0)
+	(void)dta;
+	if (strncmp(cmd->arg[0], "-n", 2) == 0)
 	{
-		while (strncmp(dta->linesplit[i], "-n", 2) == 0)
+		while (strncmp(cmd->arg[i], "-n", 2) == 0)
 		{
 			j = 1;
-			while (dta->linesplit[i][j] == 'n')
+			while (cmd->arg[i][j] == 'n')
 				j++;
-			if (dta->linesplit[i][j])
+			if (cmd->arg[i][j])
 			{
-				ft_print_echo(dta->linesplit, i);
+				ft_print_echo(cmd->arg, i);
 				return (0);
 			}
 			i++;
 		}
-		ft_print_echo(dta->linesplit, i);
+		ft_print_echo(cmd->arg, i);
 	}
 	else
 	{
-		ft_print_echo(dta->linesplit, i);
+		ft_print_echo(cmd->arg, i);
 		printf("\n");
 	}
 	return (0);

@@ -12,67 +12,63 @@
 
 #include "minishell.h"
 
-/*faire une fonction qui decoupe la ligne et qui range dans les bonnes varaibles
-exemple : cmd 1 c'est le premier argument
-redir si il y a un '>' etc*/
-
 t_sig	g_sig;
 
-void	ft_exit(t_dta *dta, char *nbr)
+void	ft_exit(t_dta *dta, t_cmd *cmd)
 {
-	char	*verifnbr;
+	char	*chk; // check
 
 	printf ("exit\n");
-	if (nbr[1] == NULL)
+	if (cmd->arg[0] == NULL)
 		exit (0);
-	dta->max = ft_atoll(nbr[2]);
-	verifnbr = ft_itoa(dta->max);
-	if (strcmp(nbr[1], verifnbr) != 0)
+	dta->ext = ft_atoll(cmd->arg[0]);
+	chk = ft_itoa(dta->ext);
+	if (strcmp(cmd->arg[0], chk) != 0)
 	{
-		printf("minishell: exit: %s: numeric argument required\n", nbr[1]);
+		printf("minishell: exit: %s: numeric argument required\n", cmd->arg[0]);
 		exit (2);
 	}
-	dta->max %= 256;
-	if (nbr[2])
+	dta->ext %= 256;
+	if (cmd->arg[1])
 	{
 		printf("minishell: exit: too many arguments\n");
 		return ;	
 	}
-	exit(dta->max);
+	exit(dta->ext);
 }
 
-void	ft_findcmd(t_dta *dta)
+void	ft_findcmd(t_dta *dta, t_cmd *cmd)
 {
 	dta->pid = fork();
 	if (dta->pid == 0)
 	{
 		dta->all_path = ft_find_path(dta);
-		dta->true_path = ft_get_access(dta, dta->linesplit[0]);
-		if (execve(dta->true_path,  &dta->linesplit[0], dta->newenv) == -1)
+		dta->true_path = ft_get_access(dta, cmd->cmd[0]);
+		if (execve(dta->true_path,  &cmd->cmd[0], dta->newenv) == -1)
 			printf("error execve\n");
 	}
 	else
 		waitpid(dta->pid, &dta->status, 0);
 }
 
-void	ft_whoitis(t_dta *dta)
+void	ft_whoitis(t_dta *dta, t_cmd *cmd)
 {
-	if (ft_strcmp(dta->linesplit[0], "echo") == 0)
-			ft_echo(dta, 1);
-	else if (ft_strcmp(dta->linesplit[0], "cd") == 0)
-			ft_changedir(dta, dta->linesplit[1]);
-	else if (ft_strcmp(dta->linesplit[0], "pwd") == 0)
+	if (ft_strcmp(cmd->cmd[0], "echo") == 0)
+			ft_echo(dta, cmd, 0);
+	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
+			ft_changedir(dta, cmd->arg[0]);
+	else if (ft_strcmp(cmd->cmd[0], "pwd") == 0)
 			ft_pwdorenv(dta->newenv, "PWD");
-	else if (ft_strcmp(dta->linesplit[0], "export") == 0)
-			ft_export(dta);
-	else if (ft_strcmp(dta->linesplit[0], "unset") == 0)
-			ft_unset(dta);
-	else if (ft_strcmp(dta->linesplit[0], "env") == 0)
+	else if (ft_strcmp(cmd->cmd[0], "export") == 0)
+			ft_export(dta, cmd);
+	else if (ft_strcmp(cmd->cmd[0], "unset") == 0)
+			ft_unset(dta, cmd);
+	else if (ft_strcmp(cmd->cmd[0], "env") == 0)
 			ft_pwdorenv(dta->newenv, "ENV");
-	else if (ft_strcmp(dta->linesplit[0], "exit") == 0)
-			ft_exit(dta, dta->linesplit[1]);
+	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
+			ft_exit(dta, cmd);
 	else
-		ft_findcmd(dta);
+		ft_findcmd(dta, cmd);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -81,7 +77,7 @@ int	main(int argc, char **argv, char **env)
 	int		i;
 
 	(void)argv;
-	dta = malloc(sizeof(t_dta) * 1);
+	dta = ft_calloc (1, sizeof(t_dta));
 	i = -1;
 	if (argc != 1)
 		return (0);

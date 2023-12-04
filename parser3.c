@@ -9,7 +9,7 @@
 /*   Updated: 2023/12/02 15:40:05 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+#include "minishell.h"
 
 int	ft_countword(t_dta *dta, char *str)
 {
@@ -100,7 +100,7 @@ void	ft_create_tab(t_dta *dta, char *line)
 	while (j < dta->nbr)
 	{
 		dta->tab[j] = ft_getstr(dta, line, &i);
-		printf("%s\n", dta->tab[j]);
+		// printf("%s\n", dta->tab[j]);
 		j++;
 	}
 	dta->tab[j] = NULL;

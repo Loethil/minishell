@@ -44,7 +44,7 @@ void	ft_prompt(t_dta *dta)
 			continue ;
 		}
 		add_history(dta->line);
-		dta->linesplit = ft_split(dta->line, ' ');
-		ft_whoitis(dta);
+		ft_set_up(dta, dta->line);
+		// ft_whoitis(dta, cmd);
 	}
 }

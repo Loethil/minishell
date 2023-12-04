@@ -9,7 +9,7 @@
 /*   Updated: 2023/12/02 15:37:33 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+#include "minishell.h"
 
 int	ft_check_quotes(char *str, int *i, int j, int lmax)
 {

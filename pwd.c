@@ -34,7 +34,7 @@ void	ft_changedir(t_dta *dta, char *path)
 	int	i;
 
 	i = ft_findpwd(dta->newenv);
-	if (dta->linesplit[1][0] == '~')
+	if (path[0] == '~')
 	{
 		dta->newenv[i] = ft_strjoin("PWD=/home/mbatteux", path + 1);
 		path = ft_strjoin("/home/mbatteux/", path + 1);

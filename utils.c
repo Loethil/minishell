@@ -74,7 +74,7 @@ char	*ft_get_access(t_dta *dta, char *cmd)
 	exit(1);
 }
 
-long long	ft_atoll(const char *str)
+long long	ft_atoll(char *str)
 {
 	long long	res;
 	int	o;
@@ -83,9 +83,12 @@ long long	ft_atoll(const char *str)
 	o = 0;
 	res = 0;
 	s = 0;
-	if (str[o++] == '-' )
+	if (str[o] == '-' )
+	{
+		o++;
 		s++;
-	while (str[o] && (ft_isdigit(str[o]) == 1))
+	}
+	while (str[o] && ft_isdigit(str[o]) == 1)
 		res = res * 10 + str[o++] - '0';
 	if (s == 1)
 		return (-res);

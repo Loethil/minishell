@@ -45,63 +45,64 @@ int	ft_export_input(char *linesplit)
 	return (0);
 }
 
-void	ft_export_malloc(t_dta *dta, int i, int k)
+void	ft_export_malloc(t_dta *dta, t_cmd *cmd, int i, int k)
 {
 	dta->newenv[i] = malloc(sizeof(char)
-			* (ft_strlen(dta->linesplit[k]) + 1));
-	ft_strcpy(dta->newenv[i], dta->linesplit[k]);
+			* (ft_strlen(cmd->arg[k]) + 1));
+	ft_strcpy(dta->newenv[i], cmd->arg[k]);
 }
 
-int	ft_sub_export(t_dta *dta, int i, int k)
+int	ft_sub_export(t_dta *dta, t_cmd *cmd, int i, int k)
 {
 	int	j;
 
 	j = 0;
-	if (dta->linesplit[k][0] == '=')
+	if (cmd->arg[k][0] == '=')
 	{
 		printf("minishell: export: `%s': not a valid identifier\n",
-			dta->linesplit[k]);
+			cmd->arg[k]);
 		return (++k);
 	}
-	while (dta->linesplit[k][j] && dta->linesplit[k][j] != '=')
+	while (cmd->arg[k][j] && cmd->arg[k][j] != '=')
 		j++;
-	if (ft_strncmp(dta->newenv[i], dta->linesplit[k], j) == 0)
+	if (ft_strncmp(dta->newenv[i], cmd->arg[k], j) == 0)
 	{
 		free(dta->newenv[i]);
-		ft_export_malloc(dta, i, k);
+		ft_export_malloc(dta, cmd, i, k);
 		i = 0;
 		k++;
 	}
 	return (k);
 }
 
-int	ft_export(t_dta *dta)
+int	ft_export(t_dta *dta, t_cmd *cmd)
 {
 	int	i;
 	int	k;
 
-	k = 0;
-	if (!dta->linesplit[1])
+	k = -1;
+	if (!cmd->arg[0])
 	{
 		ft_export_no_args(dta);
 		return (0);
 	}
-	while (dta->linesplit[++k])
+	while (cmd->arg[++k])
 	{
 		i = -1;
 		while (dta->newenv[++i])
 		{
-			if (k < ft_sub_export(dta, i, k))
+			if (k < ft_sub_export(dta, cmd, i, k))
 			{
 				k++;
 				i = -1;
 			}
-			if (k >= ft_tablen(dta->linesplit))
+			if (k >= ft_tablen(cmd->arg))
 				return (1);
 		}
-		if (i == ft_tablen(dta->newenv) && !ft_export_input(dta->linesplit[k])
-			&& ft_strchr(dta->linesplit[k], '='))
-			ft_export_malloc(dta, i, k);
+		if (i == ft_tablen(dta->newenv) && !ft_export_input(cmd->arg[k])
+			&& ft_strchr(cmd->arg[k], '='))
+			ft_export_malloc(dta, cmd, i, k);
+		k++;
 	}
 	return (0);
 }

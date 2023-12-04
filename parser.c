@@ -9,7 +9,6 @@
 /*   Updated: 2023/11/27 13:38:28 by mbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "minishell.h"
 
 void	ft_pars(t_cmd *cmd, char **tab)
@@ -51,7 +50,7 @@ void	ft_pars(t_cmd *cmd, char **tab)
 	// 	j++;
 	// }
 
-void	ft_dta_init(t_dta *dta, t_cmd *cmd, char **tab)
+void	ft_cmd_init(t_dta *dta, t_cmd *cmd, char **tab)
 {
 	int	j;
 
@@ -64,31 +63,19 @@ void	ft_dta_init(t_dta *dta, t_cmd *cmd, char **tab)
 	}
 }
 
-// int	main(int argc, char **argv)
-// {
-// 	char	*line;
-// 	t_dta	*dta;
+void	ft_set_up(t_dta *dta, char *line)
+{
+	t_cmd	*cmd;
 
-// 	(void)argc;
-// 	(void)argv;
-// 	dta = ft_calloc (1, sizeof(t_dta));
-// 	while (1)
-// 	{
-// 		line = readline("minishell: ");
-// 		if (line[0] == '\0')
-// 			continue ;
-// 		add_history(line);
-// 		if (ft_countword(dta, line) == -1)
-// 		{
-// 			printf("error quotes\n");
-// 			continue ;
-// 		}
-// 		t_cmd	*cmd;
-
-// 		cmd = ft_calloc (100, sizeof(t_cmd));
-// 		dta->nbr = ft_countword(dta, line);
-// 		ft_create_tab(dta, line);
-// 		ft_dta_init(dta, cmd, dta->tab);
-// 		ft_pars(cmd, dta->tab);
-// 	}
-// }
+	if (ft_countword(dta, line) == -1)
+	{
+		printf("error quotes\n");
+		return ;
+	}
+	dta->nbr = ft_countword(dta, line);
+	cmd = ft_calloc(dta->pnbr, sizeof(t_cmd));
+	ft_create_tab(dta, line);
+	ft_cmd_init(dta, cmd, dta->tab);
+	ft_pars(cmd, dta->tab);
+	ft_whoitis(dta, cmd);
+}

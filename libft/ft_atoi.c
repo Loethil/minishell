@@ -35,6 +35,5 @@ int	ft_atoi(const char *str)
 		return (0);
 	else if (s == 1)
 		return (-res);
-	else
-		return (res);
+	return (res);
 }
