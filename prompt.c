@@ -40,7 +40,7 @@ void	ft_prompt(t_dta *dta)
 		{
 			g_sig.sigint = 0;
 			free(dta->line);
-			dta->line[0] = '\0';
+			dta->line = NULL;
 			continue ;
 		}
 		add_history(dta->line);

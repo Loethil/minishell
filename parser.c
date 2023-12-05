@@ -32,7 +32,7 @@ void	ft_pars(t_cmd *cmd, char **tab)
 			cmd[j].arg[ft_tablen(cmd[j].arg)] = tab[i];
 			cmd[j].arg[ft_tablen(cmd[j].arg) + 1] = NULL; // uniquement pour printf bug resolu
 		}
-		else if (ft_strncmp(tab[i], "-", 1) > 0)
+		else if (ft_strncmp(tab[i], "-", 1)) // modifie " > 0" pour le '$' ca marchait pas
 			cmd[j].arg[ft_tablen(cmd[j].arg)] = tab[i];
 		i++;
 	} // marche du tonnerre juste a rajouter les redirs
@@ -73,6 +73,7 @@ void	ft_set_up(t_dta *dta, char *line)
 		return ;
 	}
 	dta->nbr = ft_countword(dta, line);
+	dta->var = NULL;
 	cmd = ft_calloc(dta->pnbr, sizeof(t_cmd));
 	ft_create_tab(dta, line);
 	ft_cmd_init(dta, cmd, dta->tab);

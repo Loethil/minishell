@@ -38,6 +38,7 @@ typedef struct s_dta
 	char		**newenv;
 	int			status;
 	char		*pwd;
+	char		*var; // variable pour les var d'env
 	long long	ext; // variable pour exit
 	pid_t		pid;
 	int			nbr;
@@ -103,7 +104,7 @@ void		ft_exit(t_dta *dta, t_cmd *cmd);
 // ECHO //
 
 int			ft_echo(t_dta *dta, t_cmd *cmd, int i);
-void		ft_print_echo(char **linesplit, int i);
+void		ft_print_echo(char **arg, t_dta *dta, int i);
 
 // SIGNAL //
 
