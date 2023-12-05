@@ -24,7 +24,7 @@ void	ft_pwdorenv(char **newenv, char *tab)
 	if (strcmp(tab, "ENV") == 0)
 	{
 		i = 0;
-		while(newenv[i])
+		while (newenv[i])
 			printf("%s\n", newenv[i++]);
 	}
 }

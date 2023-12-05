@@ -51,7 +51,7 @@ char	**ft_sort_env(char **env)
 	return (env);
 }
 
-void	ft_export_no_args(t_dta *dta)
+int	ft_export_no_args(t_dta *dta)
 {
 	int		i;
 	int		j;
@@ -77,4 +77,5 @@ void	ft_export_no_args(t_dta *dta)
 			printf("%c", env[i][j++]);
 		printf("\"\n");
 	}
+	return (0);
 }

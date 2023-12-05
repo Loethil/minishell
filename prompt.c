@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int		ft_whitespace(char *line)
+int	ft_whitespace(char *line)
 {
 	size_t	i;
 

@@ -14,11 +14,11 @@
 
 char	*ft_copystring(char *env)
 {
-	int	i;
+	int		i;
 	char	*tab;
 
 	i = -1;
-	tab = malloc(ft_strlen(env)  * sizeof(char));
+	tab = malloc(ft_strlen(env) * sizeof(char));
 	while (env[++i])
 		tab[i] = env[i];
 	return (tab);

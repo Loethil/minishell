@@ -38,7 +38,7 @@ typedef struct s_dta
 	char		**newenv;
 	int			status;
 	char		*pwd;
-	long long 	ext; // variable pour exit
+	long long	ext; // variable pour exit
 	pid_t		pid;
 	int			nbr;
 	int			lmax;
@@ -46,12 +46,12 @@ typedef struct s_dta
 	int			len;
 }				t_dta;
 
-typedef	struct s_cmd
+typedef struct s_cmd
 {
-	char		**cmd; //stock la cmd
-	char		**arg; //stock les arguments de la commande
-	char		*rdr;  //stock les arg de la redirection
-	int			dlr;   // dollar macro
+	char	**cmd; //stock la cmd
+	char	**arg; //stock les arguments de la commande
+	char	*rdr;  //stock les arg de la redirection
+	int		dlr;   // dollar macro
 }				t_cmd;
 
 typedef struct s_sig
@@ -86,9 +86,8 @@ int			ft_export(t_dta *dta, t_cmd *cmd);
 int			ft_sub_export(t_dta *dta, t_cmd *cmd, int i, int k);
 int			ft_export_input(char *linesplit);
 void		ft_export_malloc(t_dta *dta, t_cmd *cmd, int i, int k);
-void		ft_export_no_args(t_dta *dta);
+int			ft_export_no_args(t_dta *dta);
 char		**ft_sort_env(char **env);
-void		ft_export_no_args(t_dta *dta);
 
 // UNSET //
 

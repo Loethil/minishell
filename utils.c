@@ -52,7 +52,7 @@ char	**ft_find_path(t_dta *dta)
 		dta->all_path[i] = ft_strjoin(dta->all_path[i], "/");
 		i++;
 	}
-	return(dta->all_path);
+	return (dta->all_path);
 }
 
 char	*ft_get_access(t_dta *dta, char *cmd)
@@ -61,7 +61,7 @@ char	*ft_get_access(t_dta *dta, char *cmd)
 
 	i = 0;
 	if (access(cmd, X_OK) == 0)
-			return (cmd);
+		return (cmd);
 	while (dta->all_path[i])
 	{
 		dta->true_path = ft_strjoin(dta->all_path[i], cmd);
@@ -77,8 +77,8 @@ char	*ft_get_access(t_dta *dta, char *cmd)
 long long	ft_atoll(char *str)
 {
 	long long	res;
-	int	o;
-	int	s;
+	int			o;
+	int			s;
 
 	o = 0;
 	res = 0;
