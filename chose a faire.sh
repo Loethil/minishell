@@ -1,0 +1,9 @@
+
+
+echo $?
+
+redir < > << >>
+
+pipe
+
+cd . ..
