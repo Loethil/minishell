@@ -104,6 +104,8 @@ void		ft_exit(t_dta *dta, t_cmd *cmd);
 
 int			ft_echo(t_dta *dta, t_cmd *cmd, int i);
 void		ft_print_echo(char **arg, t_dta *dta, int i);
+void 		ft_manage_echo(t_dta *dta, t_cmd *cmd);
+void		ft_print_var(t_dta *dta);
 
 // SIGNAL //
 

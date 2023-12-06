@@ -12,7 +12,7 @@
 
 NAME = minishell
 
-CCC = minishell.c\
+CCC = minishell.c \
 	utils.c \
 	utils2.c \
 	unset.c \
@@ -21,10 +21,11 @@ CCC = minishell.c\
 	pwd.c \
 	signal.c \
 	export.c \
-	echo.c\
-	parser.c\
-	parser2.c\
-	parser3.c\
+	echo.c \
+	echo2.c \
+	parser.c \
+	parser2.c \
+	parser3.c
 
 OOO = $(CCC:.c=.o)
 
