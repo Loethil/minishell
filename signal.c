@@ -16,11 +16,11 @@ void	ft_sigint_hdl(int signo)
 {
 	(void)signo;
 	printf("\nminishell: ");
-	g_sig.sigint = 1;
+	sigint = 1;
 }
 
-void	ft_sigquit_hdl(int signo)
-{
-	(void)signo;
-	g_sig.sigquit = 1;
-}
+// void	ft_sigquit_hdl(int signo)
+// {
+// 	(void)signo;
+// 	g_sig.sigquit = 1;
+// }

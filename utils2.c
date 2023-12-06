@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+int	ft_tablen(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
+
 char	*ft_copystring(char *env)
 {
 	int		i;
@@ -29,7 +39,7 @@ char	**changeenv(t_dta *dta, char **env)
 	int	i;
 
 	i = 0;
-	dta->newenv = malloc(10000 * sizeof(char *));
+	dta->newenv = malloc((ft_tablen(env) + 1) * sizeof(char *));
 	while (env[i])
 	{
 		dta->newenv[i] = ft_copystring(env[i]);

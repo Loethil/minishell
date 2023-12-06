@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-int	ft_tablen(char **tab)
+void	ft_var_alloc(t_dta *dta, char *cmd, int i)
 {
-	int	i;
+	int	j;
 
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
+	j = 0;
+	dta->var = ft_calloc(ft_strlen(cmd), sizeof(char));
+	while (cmd[i])
+		dta->var[j++] = cmd[i++];
 }
 
 void	ft_print_var(t_dta *dta)
@@ -51,27 +51,24 @@ void	ft_print_var(t_dta *dta)
 int	ft_var_hdl(t_dta *dta, char *cmd)
 {
 	int	i;
-	int	j;
 
 	i = -1;
 	while (cmd[++i])
 	{
-		if (cmd[i] == '$')
+		if (cmd[i] == '$' && i == 0)
 		{
 			i++;
-			if (cmd[i] == '?')
-			{
-				// a coder
-				return (1);
-			}
-			else
-			{
-				j = 0;
-				dta->var = ft_calloc(ft_strlen(cmd), sizeof(char));
-				while (cmd[i])
-					dta->var[j++] = cmd[i++];
-				return (1);
-			}
+			ft_var_alloc(dta, cmd, i);
+			return (1);
+		}
+		else if (cmd[i] == '$' && i)
+		{
+			i = 0;
+			while (cmd[i] != '$')
+				printf("%c", cmd[i++]);
+			i++;
+			ft_var_alloc(dta, cmd, i);
+			return (1);
 		}
 	}
 	return (0);
@@ -91,7 +88,7 @@ void	ft_print_echo(char **arg, t_dta *dta, int i)
 				printf(" ");
 			}
 		}
-		else if (ft_tablen(arg) <= 2 || i == ft_tablen(arg) - 1)
+		else if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
 			printf("%s", arg[i]);
 		else
 			printf("%s ", arg[i]);

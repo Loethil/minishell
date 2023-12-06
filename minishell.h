@@ -55,12 +55,6 @@ typedef struct s_cmd
 	int		dlr;   // dollar macro
 }				t_cmd;
 
-typedef struct s_sig
-{
-	int		sigint;
-	int		sigquit;
-}				t_sig;
-
 // UTILS //
 
 int			ft_strcmp(const char *s1, const char *s2);
@@ -132,5 +126,5 @@ void		ft_prompt(t_dta *dta);
 void		ft_whoitis(t_dta *dta, t_cmd *cmd);
 void		ft_findcmd(t_dta *dta, t_cmd *cmd);
 
-extern t_sig g_sig;
+extern int sigint;
 #endif

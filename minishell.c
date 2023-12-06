@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_sig	g_sig;
+int	sigint;
 
 void	ft_exit(t_dta *dta, t_cmd *cmd)
 {
@@ -83,7 +83,6 @@ int	main(int argc, char **argv, char **env)
 		return (0);
 	dta->newenv = changeenv(dta, env);
 	signal(SIGINT, &ft_sigint_hdl);
-	signal(SIGQUIT, &ft_sigquit_hdl);
 	ft_prompt(dta);
 	return (0);
 }
