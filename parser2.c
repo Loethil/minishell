@@ -81,8 +81,10 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 	j = 0;
 	if (line[(*i)] == '\'')
 	{
+		dta->str[j++] = '\'';
 		while (line[++(*i)] != '\'' && (*i) < dta->lmax)
 			dta->str[j++] = line[(*i)];
+		dta->str[j++] = '\'';
 	}
 	else if (line[(*i)] == '"')
 	{

@@ -54,7 +54,7 @@ void	ft_findcmd(t_dta *dta, t_cmd *cmd)
 void	ft_whoitis(t_dta *dta, t_cmd *cmd)
 {
 	if (ft_strcmp(cmd->cmd[0], "echo") == 0)
-		ft_echo(dta, cmd, 0);
+		ft_manage_echo(dta, cmd);
 	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
 		ft_changedir(dta, cmd->arg[0]);
 	else if (ft_strcmp(cmd->cmd[0], "pwd") == 0)
