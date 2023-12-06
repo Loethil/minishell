@@ -39,9 +39,8 @@ void	ft_prompt(t_dta *dta)
 		if (sigint == 1)
 		{
 			sigint = 0;
-			free(dta->str);
 			free(dta->line);
-			continue ;
+			dta->line = readline("minishell: ");
 		}
 		add_history(dta->line);
 		ft_set_up(dta, dta->line);
