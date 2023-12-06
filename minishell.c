@@ -53,19 +53,22 @@ void	ft_findcmd(t_dta *dta, t_cmd *cmd)
 
 void	ft_whoitis(t_dta *dta, t_cmd *cmd)
 {
-	if (ft_strcmp(cmd->cmd[0], "echo") == 0)
+	int	len;
+
+	len = ft_strlen(cmd->cmd[0]);
+	if (ft_strncmp(cmd->cmd[0], "echo", len) == 0)
 		ft_echo(dta, cmd, 0);
-	else if (ft_strcmp(cmd->cmd[0], "cd") == 0)
+	else if (ft_strncmp(cmd->cmd[0], "cd", len) == 0)
 		ft_changedir(dta, cmd->arg[0]);
-	else if (ft_strcmp(cmd->cmd[0], "pwd") == 0)
+	else if (ft_strncmp(cmd->cmd[0], "pwd", len) == 0)
 		ft_pwdorenv(dta->newenv, "PWD");
-	else if (ft_strcmp(cmd->cmd[0], "export") == 0)
+	else if (ft_strncmp(cmd->cmd[0], "export", len) == 0)
 		ft_export(dta, cmd);
-	else if (ft_strcmp(cmd->cmd[0], "unset") == 0)
+	else if (ft_strncmp(cmd->cmd[0], "unset", len) == 0)
 		ft_unset(dta, cmd);
-	else if (ft_strcmp(cmd->cmd[0], "env") == 0)
+	else if (ft_strncmp(cmd->cmd[0], "env", len) == 0)
 		ft_pwdorenv(dta->newenv, "ENV");
-	else if (ft_strcmp(cmd->cmd[0], "exit") == 0)
+	else if (ft_strncmp(cmd->cmd[0], "exit", len) == 0)
 		ft_exit(dta, cmd);
 	else
 		ft_findcmd(dta, cmd);
@@ -82,7 +85,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		return (0);
 	dta->newenv = changeenv(dta, env);
-	signal(SIGINT, &ft_sigint_hdl);
+	// signal(SIGINT, &ft_sigint_hdl);
 	ft_prompt(dta);
 	return (0);
 }

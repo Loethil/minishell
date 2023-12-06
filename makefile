@@ -24,7 +24,7 @@ CCC = minishell.c\
 	echo.c\
 	parser.c\
 	parser2.c\
-	parser3.c
+	parser3.c\
 
 OOO = $(CCC:.c=.o)
 

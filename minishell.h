@@ -34,7 +34,6 @@ typedef struct s_dta
 	char		**all_path;
 	char		*true_path;
 	char		*line;
-	char		**lsplit;
 	char		**newenv;
 	int			status;
 	char		*pwd;
@@ -54,6 +53,12 @@ typedef struct s_cmd
 	char	*rdr;  //stock les arg de la redirection
 	int		dlr;   // dollar macro
 }				t_cmd;
+
+typedef struct s_sig
+{
+	int		sigint;
+	int		sigquit;
+}				t_sig;
 
 // UTILS //
 
@@ -126,5 +131,5 @@ void		ft_prompt(t_dta *dta);
 void		ft_whoitis(t_dta *dta, t_cmd *cmd);
 void		ft_findcmd(t_dta *dta, t_cmd *cmd);
 
-extern int sigint;
+extern t_sig g_sig;
 #endif

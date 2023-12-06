@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-void	ft_sigint_hdl(int signo)
-{
-	(void)signo;
-	printf("\nminishell: ");
-	sigint = 1;
-}
+// void	ft_sigint_hdl(int signo)
+// {
+// 	(void)signo;
+// 	printf("\nminishell: ");
+// 	g_sig.sigint = 1;
+// }
 
 // void	ft_sigquit_hdl(int signo)
 // {
