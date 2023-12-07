@@ -74,6 +74,7 @@ void	ft_set_up(t_dta *dta, char *line)
 	}
 	dta->nbr = ft_countword(dta, line);
 	dta->var = NULL;
+	dta->ext_val = 0;
 	cmd = ft_calloc(dta->pnbr, sizeof(t_cmd));
 	ft_create_tab(dta, line);
 	ft_cmd_init(dta, cmd, dta->tab);

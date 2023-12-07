@@ -25,22 +25,28 @@ void	ft_print_sq_echo(char **arg, int i)
 		printf(" ");
 }
 
+void	ft_var_master(char **arg, t_dta *dta, int i)
+{
+	if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
+	{
+		ft_var(arg[i], dta);
+		return ;
+	}
+	else
+	{
+		ft_var(arg[i], dta);
+		printf(" ");
+	}
+}
+
 void	ft_print_echo(char **arg, t_dta *dta, int i)
 {
 	while (arg[i])
 	{
 		if (arg[i][0] == '\'')
 			ft_print_sq_echo(arg, i);
-		else if (ft_var_hdl(dta, arg[i]))
-		{
-			if (i == ft_tablen(arg) - 1)
-				ft_print_var(dta);
-			else
-			{
-				ft_print_var(dta);
-				printf(" ");
-			}
-		}
+		else if (ft_var_hdl(arg[i]) == 1)
+			ft_var_master(arg, dta, i);
 		else if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
 			printf("%s", arg[i]);
 		else
@@ -49,18 +55,24 @@ void	ft_print_echo(char **arg, t_dta *dta, int i)
 	}
 }
 
+int	ft_sub_echo(char *arg, int j)
+{
+	while (arg[j] && arg[j] == 'n')
+		j++;
+	return (j);
+}
+
 int	ft_echo(t_dta *dta, t_cmd *cmd, int i)
 {
 	int	j;
 
-	(void)dta;
-	if (ft_strncmp(cmd->arg[0], "-n", 2) == 0)
+	if (cmd->arg[0] == NULL)
+		printf("\n");
+	else if (ft_strncmp(cmd->arg[0], "-n", 2) == 0)
 	{
 		while (ft_strncmp(cmd->arg[i], "-n", 2) == 0)
 		{
-			j = 1;
-			while (cmd->arg[i][j] == 'n')
-				j++;
+			j = ft_sub_echo(cmd->arg[i], 1);
 			if (cmd->arg[i][j])
 			{
 				ft_print_echo(cmd->arg, dta, i);

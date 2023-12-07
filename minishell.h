@@ -44,6 +44,7 @@ typedef struct s_dta
 	int			lmax;
 	int			pnbr;
 	int			len;
+	int			ext_val; // variable pour $?
 }				t_dta;
 
 typedef struct s_cmd
@@ -100,8 +101,10 @@ void		ft_exit(t_dta *dta, t_cmd *cmd);
 int			ft_echo(t_dta *dta, t_cmd *cmd, int i);
 void		ft_print_echo(char **arg, t_dta *dta, int i);
 void		ft_var_alloc(t_dta *dta, char *cmd, int i);
-int			ft_var_hdl(t_dta *dta, char *cmd);
+int			ft_var_hdl(char *arg);
 void		ft_print_var(t_dta *dta);
+void		ft_var(char *arg, t_dta *dta);
+void		ft_var_master(char **arg, t_dta *dta, int i);
 void		ft_print_sq_echo(char **arg, int i);
 
 // SIGNAL //

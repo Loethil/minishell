@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-void	ft_var_alloc(t_dta *dta, char *cmd, int i)
+void	ft_var_alloc(t_dta *dta, char *arg, int i)
 {
 	int	j;
 
 	j = 0;
-	dta->var = ft_calloc(ft_strlen(cmd), sizeof(char));
-	while (cmd[i])
-		dta->var[j++] = cmd[i++];
+	dta->var = ft_calloc(ft_strlen(arg), sizeof(char));
+	while (arg[i] && arg[i] != '$')
+		dta->var[j++] = arg[i++];
 }
 
 void	ft_print_var(t_dta *dta)
@@ -48,28 +48,40 @@ void	ft_print_var(t_dta *dta)
 	}
 }
 
-int	ft_var_hdl(t_dta *dta, char *cmd)
+void	ft_var(char *arg, t_dta *dta)
 {
 	int	i;
 
 	i = -1;
-	while (cmd[++i])
+	while (arg[++i])
 	{
-		if (cmd[i] == '$' && i == 0)
+		if (arg[i] == '$' && arg[i + 1] == '?')
+		{
+			printf("%d", dta->ext_val);
+			i++;
+			continue ;
+		}
+		else if (arg[i] == '$' && arg[i + 1])
 		{
 			i++;
-			ft_var_alloc(dta, cmd, i);
-			return (1);
+			ft_var_alloc(dta, arg, i);
+			ft_print_var(dta);
+			i += ft_strlen(dta->var) - 1;
+			continue ;
 		}
-		else if (cmd[i] == '$' && i)
-		{
-			i = 0;
-			while (cmd[i] != '$')
-				printf("%c", cmd[i++]);
-			i++;
-			ft_var_alloc(dta, cmd, i);
+		printf("%c", arg[i]);
+	}
+}
+
+int	ft_var_hdl(char *arg)
+{
+	int	i;
+
+	i = -1;
+	while (arg[++i])
+	{
+		if (arg[i] == '$')
 			return (1);
-		}
 	}
 	return (0);
 }
