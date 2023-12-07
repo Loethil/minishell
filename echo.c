@@ -25,20 +25,6 @@ void	ft_print_sq_echo(char **arg, int i)
 		printf(" ");
 }
 
-void	ft_var_master(char **arg, t_dta *dta, int i)
-{
-	if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
-	{
-		ft_var(arg[i], dta);
-		return ;
-	}
-	else
-	{
-		ft_var(arg[i], dta);
-		printf(" ");
-	}
-}
-
 void	ft_print_echo(char **arg, t_dta *dta, int i)
 {
 	while (arg[i])
@@ -87,5 +73,6 @@ int	ft_echo(t_dta *dta, t_cmd *cmd, int i)
 		ft_print_echo(cmd->arg, dta, i);
 		printf("\n");
 	}
+	dta->ext_val = 0;
 	return (0);
 }

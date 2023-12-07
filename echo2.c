@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+int	ft_var_hdl(char *arg)
+{
+	int	i;
+
+	i = -1;
+	while (arg[++i])
+	{
+		if (arg[i] == '$')
+			return (1);
+	}
+	return (0);
+}
+
 void	ft_var_alloc(t_dta *dta, char *arg, int i)
 {
 	int	j;
@@ -73,15 +86,16 @@ void	ft_var(char *arg, t_dta *dta)
 	}
 }
 
-int	ft_var_hdl(char *arg)
+void	ft_var_master(char **arg, t_dta *dta, int i)
 {
-	int	i;
-
-	i = -1;
-	while (arg[++i])
+	if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
 	{
-		if (arg[i] == '$')
-			return (1);
+		ft_var(arg[i], dta);
+		return ;
 	}
-	return (0);
+	else
+	{
+		ft_var(arg[i], dta);
+		printf(" ");
+	}
 }

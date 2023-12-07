@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	sigint;
+int	g_sigint;
 
 void	ft_exit(t_dta *dta, t_cmd *cmd)
 {
@@ -23,7 +23,7 @@ void	ft_exit(t_dta *dta, t_cmd *cmd)
 		exit (0);
 	dta->ext = ft_atoll(cmd->arg[0]);
 	chk = ft_itoa(dta->ext);
-	if (strcmp(cmd->arg[0], chk) != 0)
+	if (ft_strcmp(cmd->arg[0], chk) != 0)
 	{
 		printf("minishell: exit: %s: numeric argument required\n", cmd->arg[0]);
 		exit (2);
@@ -32,26 +32,33 @@ void	ft_exit(t_dta *dta, t_cmd *cmd)
 	if (cmd->arg[1])
 	{
 		printf("minishell: exit: too many arguments\n");
+		dta->ext_val = 1;
 		return ;
 	}
 	exit(dta->ext);
 }
 
-void	ft_findcmd(t_dta *dta, t_cmd *cmd)
+int	ft_findcmd(t_dta *dta, t_cmd *cmd)
 {
 	dta->pid = fork();
 	if (dta->pid == 0)
 	{
 		dta->all_path = ft_find_path(dta);
+		// if (ft_get_access(dta, cmd->cmd[0]) == NULL)
+		// {
+		// 	dta->ext_val = 127;
+		// 	return (1);
+		// }
 		dta->true_path = ft_get_access(dta, cmd->cmd[0]);
 		if (execve(dta->true_path,  &cmd->cmd[0], dta->newenv) == -1)
 			printf("error execve\n");
 	}
 	else
 		waitpid(dta->pid, &dta->status, 0);
+	return (0);
 }
 
-void	ft_whoitis(t_dta *dta, t_cmd *cmd)
+int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 {
 	int	len;
 
@@ -71,7 +78,11 @@ void	ft_whoitis(t_dta *dta, t_cmd *cmd)
 	else if (ft_strncmp(cmd->cmd[0], "exit", len) == 0)
 		ft_exit(dta, cmd);
 	else
+	{
 		ft_findcmd(dta, cmd);
+		return (1);
+	}
+	return (0);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -85,6 +96,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		return (0);
 	dta->newenv = changeenv(dta, env);
+	dta->ext_val = 0;
 	signal(SIGINT, &ft_sigint_hdl);
 	ft_prompt(dta);
 	return (0);

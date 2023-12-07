@@ -15,8 +15,11 @@
 void	ft_sigint_hdl(int signo)
 {
 	(void)signo;
-	printf("\nminishell: ");
-	sigint = 1;
+    rl_replace_line("", 0);
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_redisplay();
+	g_sigint = 1;
 }
 
 // void	ft_sigquit_hdl(int signo)

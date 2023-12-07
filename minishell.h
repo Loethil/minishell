@@ -110,7 +110,6 @@ void		ft_print_sq_echo(char **arg, int i);
 // SIGNAL //
 
 void		ft_sigint_hdl(int signo);
-void		ft_sigquit_hdl(int signo);
 
 // PARS //
 
@@ -130,8 +129,8 @@ void		ft_create_tab(t_dta *dta, char *line);
 // MAIN //
 
 void		ft_prompt(t_dta *dta);
-void		ft_whoitis(t_dta *dta, t_cmd *cmd);
-void		ft_findcmd(t_dta *dta, t_cmd *cmd);
+int			ft_whoitis(t_dta *dta, t_cmd *cmd);
+int			ft_findcmd(t_dta *dta, t_cmd *cmd);
 
-extern int sigint;
+extern int	g_sigint;
 #endif
