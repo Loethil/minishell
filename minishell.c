@@ -85,7 +85,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		return (0);
 	dta->newenv = changeenv(dta, env);
-	// signal(SIGINT, &ft_sigint_hdl);
+	signal(SIGINT, &ft_sigint_hdl);
 	ft_prompt(dta);
 	return (0);
 }

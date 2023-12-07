@@ -12,59 +12,64 @@
 
 #include "minishell.h"
 
-void	ft_print_sq_echo(char **arg, t_dta *dta, int i)
+void	ft_var_alloc(t_dta *dta, char *cmd, int i)
 {
 	int	j;
 
-	(void)dta;
-	while (arg[i])
-	{
-		j = 1;
-		while (arg[i][j] && arg[i][j] != '\'')
-			printf("%c", arg[i][j++]);
-		i++;
-	}
+	j = 0;
+	dta->var = ft_calloc(ft_strlen(cmd), sizeof(char));
+	while (cmd[i])
+		dta->var[j++] = cmd[i++];
 }
 
-void	ft_sq_echo(t_dta *dta, t_cmd *cmd, int i)
+void	ft_print_var(t_dta *dta)
 {
+	int	i;
 	int	j;
 
-	(void)dta;
-	if (ft_strncmp(cmd->arg[0], "-n", 2) == 0)
+	i = -1;
+	while (dta->newenv[++i])
 	{
-		while (ft_strncmp(cmd->arg[i], "-n", 2) == 0)
+		if (ft_strncmp(dta->newenv[i], dta->var, ft_strlen(dta->var)) == 0)
 		{
-			j = 1;
-			while (cmd->arg[i][j] == 'n')
+			j = 0;
+			while (dta->newenv[i][j] != '=')
 				j++;
-			if (cmd->arg[i][j])
+			if (dta->newenv[i][j] == '=' && dta->newenv[i][j])
+				j++;
+			else
 			{
-				ft_print_sq_echo(cmd->arg, dta, i);
+				printf("\n");
 				return ;
 			}
-			i++;
+			while (dta->newenv[i][j] && dta->newenv[i][j] != '\n')
+				printf("%c", dta->newenv[i][j++]);
 		}
-		ft_print_sq_echo(cmd->arg, dta, i);
-	}
-	else
-	{
-		ft_print_sq_echo(cmd->arg, dta, i);
-		printf("\n");
 	}
 }
 
-void ft_manage_echo(t_dta *dta, t_cmd *cmd)
+int	ft_var_hdl(t_dta *dta, char *cmd)
 {
 	int	i;
 
-	i = 0;
-	while (cmd->arg[i])
+	i = -1;
+	while (cmd[++i])
 	{
-		if (cmd->arg[i][0] == '\'')
-			ft_sq_echo(dta, cmd, 0);
-		else
-			ft_echo(dta, cmd, 0);
-		i++;
+		if (cmd[i] == '$' && i == 0)
+		{
+			i++;
+			ft_var_alloc(dta, cmd, i);
+			return (1);
+		}
+		else if (cmd[i] == '$' && i)
+		{
+			i = 0;
+			while (cmd[i] != '$')
+				printf("%c", cmd[i++]);
+			i++;
+			ft_var_alloc(dta, cmd, i);
+			return (1);
+		}
 	}
+	return (0);
 }

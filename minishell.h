@@ -54,11 +54,6 @@ typedef struct s_cmd
 	int		dlr;   // dollar macro
 }				t_cmd;
 
-typedef struct s_sig
-{
-	int		sigint;
-	int		sigquit;
-}				t_sig;
 
 // UTILS //
 
@@ -104,8 +99,10 @@ void		ft_exit(t_dta *dta, t_cmd *cmd);
 
 int			ft_echo(t_dta *dta, t_cmd *cmd, int i);
 void		ft_print_echo(char **arg, t_dta *dta, int i);
-void 		ft_manage_echo(t_dta *dta, t_cmd *cmd);
+void		ft_var_alloc(t_dta *dta, char *cmd, int i);
+int			ft_var_hdl(t_dta *dta, char *cmd);
 void		ft_print_var(t_dta *dta);
+void		ft_print_sq_echo(char **arg, int i);
 
 // SIGNAL //
 
@@ -133,5 +130,5 @@ void		ft_prompt(t_dta *dta);
 void		ft_whoitis(t_dta *dta, t_cmd *cmd);
 void		ft_findcmd(t_dta *dta, t_cmd *cmd);
 
-extern t_sig g_sig;
+extern int sigint;
 #endif

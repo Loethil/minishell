@@ -36,13 +36,13 @@ void	ft_prompt(t_dta *dta)
 		}
 		if (dta->line[0] == '\0' || ft_whitespace(dta->line))
 			continue ;
-		// if (g_sig.sigint == 1)
-		// {
-		// 	g_sig.sigint = 0;
-		// 	free(dta->line);
-		// 	dta->line = NULL;
-		// 	continue ;
-		// }
+		if (sigint == 1)
+		{
+			sigint = 0;
+			free(dta->line);
+			dta->line = NULL;
+			continue ;
+		}
 		add_history(dta->line);
 		ft_set_up(dta, dta->line);
 		// ft_whoitis(dta, cmd);
