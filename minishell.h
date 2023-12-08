@@ -129,8 +129,8 @@ void		ft_create_tab(t_dta *dta, char *line);
 // MAIN //
 
 void		ft_prompt(t_dta *dta);
-int			ft_whoitis(t_dta *dta, t_cmd *cmd);
-int			ft_findcmd(t_dta *dta, t_cmd *cmd);
+void		ft_whoitis(t_dta *dta, t_cmd *cmd);
+void		ft_findcmd(t_dta *dta, t_cmd *cmd);
 
 extern int	g_sigint;
 #endif

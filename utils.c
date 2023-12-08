@@ -70,8 +70,7 @@ char	*ft_get_access(t_dta *dta, char *cmd)
 		free(dta->true_path);
 		i++;
 	}
-	printf("%s: command not found\n", cmd);
-	exit(1);
+	return (NULL);
 }
 
 long long	ft_atoll(char *str)

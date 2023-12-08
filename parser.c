@@ -79,5 +79,4 @@ void	ft_set_up(t_dta *dta, char *line)
 	ft_cmd_init(dta, cmd, dta->tab);
 	ft_pars(cmd, dta->tab);
 	ft_whoitis(dta, cmd);
-	//	dta->ext_val = 127;
 }

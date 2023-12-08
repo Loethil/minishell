@@ -16,7 +16,7 @@ int	g_sigint;
 
 void	ft_exit(t_dta *dta, t_cmd *cmd)
 {
-	char	*chk; // check
+	char	*chk;
 
 	printf ("exit\n");
 	if (cmd->arg[0] == NULL)
@@ -38,27 +38,35 @@ void	ft_exit(t_dta *dta, t_cmd *cmd)
 	exit(dta->ext);
 }
 
-int	ft_findcmd(t_dta *dta, t_cmd *cmd)
+void	ft_findcmd(t_dta *dta, t_cmd *cmd)
 {
 	dta->pid = fork();
 	if (dta->pid == 0)
 	{
 		dta->all_path = ft_find_path(dta);
-		// if (ft_get_access(dta, cmd->cmd[0]) == NULL)
-		// {
-		// 	dta->ext_val = 127;
-		// 	return (1);
-		// }
 		dta->true_path = ft_get_access(dta, cmd->cmd[0]);
-		if (execve(dta->true_path,  &cmd->cmd[0], dta->newenv) == -1)
-			printf("error execve\n");
+		if (dta->true_path == NULL)
+		{
+			printf("%s: command or path not found\n", cmd->cmd[0]);
+			exit (127);
+		}
+		if (execve(dta->true_path, (char *const *)ft_strjoin(cmd->cmd[0],
+					cmd->arg[0]), dta->newenv) == -1)
+		{
+			printf("%s: cannot access '%s': No such file or directory\n",
+				cmd->cmd[0], cmd->arg[0]);
+			exit (2);
+		}
 	}
 	else
+	{
 		waitpid(dta->pid, &dta->status, 0);
-	return (0);
+		if (WIFEXITED(dta->status))
+			dta->ext_val = WEXITSTATUS(dta->status);
+	}
 }
 
-int	ft_whoitis(t_dta *dta, t_cmd *cmd)
+void	ft_whoitis(t_dta *dta, t_cmd *cmd)
 {
 	int	len;
 
@@ -78,11 +86,7 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 	else if (ft_strncmp(cmd->cmd[0], "exit", len) == 0)
 		ft_exit(dta, cmd);
 	else
-	{
 		ft_findcmd(dta, cmd);
-		return (1);
-	}
-	return (0);
 }
 
 int	main(int argc, char **argv, char **env)
