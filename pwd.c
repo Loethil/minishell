@@ -12,21 +12,60 @@
 
 #include "minishell.h"
 
-void	ft_pwdorenv(char **newenv, char *tab)
+void	ft_dot_cd(t_dta *dta, char *path, int i)
 {
-	int	i;
+	int	j;
+	int	k;
 
-	if (strcmp(tab, "PWD") == 0)
+	k = 0;
+	while (path[k])
 	{
-		i = ft_findpwd(newenv);
-		printf("%s\n", newenv[i] + 4);
+		if (path[k] == '.' && path[k + 1] == '.')
+		{
+			j = ft_strlen(dta->newenv[i]) - 1;
+			while (dta->newenv[i][j] != '/')
+				j--;
+			dta->newenv[i][j] = '\0';
+			if (chdir(path) == -1)
+				printf("minishell: cd: %s: No such file or directory\n", path);
+			k++;
+		}
+		k++;
 	}
-	if (strcmp(tab, "ENV") == 0)
+}
+
+void	ft_chdir_err(char *path)
+{
+	if (chdir(path) == -1)
+		printf("minishell: cd: %s: No such file or directory\n", path);
+}
+
+char	*ft_sub_cd(t_dta *dta, char *path, int i)
+{
+	int		j;
+	int		k;
+	int		l;
+	char	*new_path;
+
+	j = 0;
+	k = 0;
+	while (dta->newenv[i][j] && dta->newenv[i][j - 1] != '=')
+		j++;
+	new_path = ft_calloc(ft_strlen(dta->newenv[i]) + ft_strlen(path), sizeof(char));
+	while (dta->newenv[i][j] && dta->newenv[i][j] != 'D')
+		new_path[k++] = dta->newenv[i][j++];
+	if (!path[1])
 	{
-		i = 0;
-		while (newenv[i])
-			printf("%s\n", newenv[i++]);
+		dta->newenv[i][j - 1] = '\0';
+		return (new_path);
 	}
+	l = 2;
+	while (path[l])
+		new_path[k++] = path[l++];
+	new_path[k] = '\0';
+	dta->newenv[i] = new_path;
+	path = dta->newenv[i];
+	return (path);
 }
 
 void	ft_changedir(t_dta *dta, char *path)
@@ -34,17 +73,25 @@ void	ft_changedir(t_dta *dta, char *path)
 	int	i;
 
 	i = ft_findpwd(dta->newenv);
+	if (!path)
+		path = "~";
 	if (path[0] == '~')
 	{
-		dta->newenv[i] = ft_strjoin("PWD=/home/mbatteux", path + 1);
-		path = ft_strjoin("/home/mbatteux/", path + 1);
-		if (chdir(path) == -1)
-			printf("ERROR CHDIR\n");
+		path = ft_sub_cd(dta, path, i);
+		ft_chdir_err(path);
 		return ;
 	}
+	if (path[0] == '.')
+	{
+		ft_dot_cd(dta, path, i);
+		return ;
+	}
+	if (!path[0])
+		return ;
 	dta->true_path = ft_strjoin(dta->newenv[i], "/");
+	if (path[ft_strlen(path) - 1] == '/')
+		path[ft_strlen(path) - 1] = '\0';
 	dta->true_path = ft_strjoin(dta->true_path, path);
 	dta->newenv[i] = dta->true_path;
-	if (chdir(path) == -1)
-		printf("ERROR CHDIR\n");
+	ft_chdir_err(path);
 }

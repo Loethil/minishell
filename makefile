@@ -15,6 +15,7 @@ NAME = minishell
 CCC = minishell.c \
 	utils.c \
 	utils2.c \
+	utils3.c \
 	unset.c \
 	prompt.c \
 	sort_env.c \

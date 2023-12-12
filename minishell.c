@@ -50,8 +50,7 @@ void	ft_findcmd(t_dta *dta, t_cmd *cmd)
 			printf("%s: command or path not found\n", cmd->cmd[0]);
 			exit (127);
 		}
-		if (execve(dta->true_path, (char *const *)ft_strjoin(cmd->cmd[0],
-					cmd->arg[0]), dta->newenv) == -1)
+		if (execve(dta->true_path, &cmd->arg[0], dta->newenv) == -1)
 		{
 			printf("%s: cannot access '%s': No such file or directory\n",
 				cmd->cmd[0], cmd->arg[0]);
@@ -74,7 +73,14 @@ void	ft_whoitis(t_dta *dta, t_cmd *cmd)
 	if (ft_strncmp(cmd->cmd[0], "echo", len) == 0)
 		ft_echo(dta, cmd, 0);
 	else if (ft_strncmp(cmd->cmd[0], "cd", len) == 0)
+	{
+		if (cmd->arg[1])
+		{
+			printf("minishell: cd: too many arguments\n");
+			return ;
+		}
 		ft_changedir(dta, cmd->arg[0]);
+	}
 	else if (ft_strncmp(cmd->cmd[0], "pwd", len) == 0)
 		ft_pwdorenv(dta->newenv, "PWD");
 	else if (ft_strncmp(cmd->cmd[0], "export", len) == 0)

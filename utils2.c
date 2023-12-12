@@ -12,25 +12,16 @@
 
 #include "minishell.h"
 
-int	ft_tablen(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
-
 char	*ft_copystring(char *env)
 {
 	int		i;
 	char	*tab;
 
 	i = -1;
-	tab = malloc(ft_strlen(env) * sizeof(char));
+	tab = ft_calloc((ft_strlen(env) + 1), sizeof(char));
 	while (env[++i])
 		tab[i] = env[i];
+	tab[i] = '\0';
 	return (tab);
 }
 
@@ -39,12 +30,13 @@ char	**changeenv(t_dta *dta, char **env)
 	int	i;
 
 	i = 0;
-	dta->newenv = malloc((ft_tablen(env) + 1) * sizeof(char *));
+	dta->newenv = ft_calloc((ft_explen(env) + 1), sizeof(char *));
 	while (env[i])
 	{
 		dta->newenv[i] = ft_copystring(env[i]);
 		i++;
 	}
+	dta->newenv[i] = NULL;
 	return (dta->newenv);
 }
 
@@ -55,9 +47,26 @@ int	ft_findpwd(char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (strncmp(env[i], "PWD=", 4) == 0)
+		if (ft_strncmp(env[i], "PWD=", 4) == 0)
 			return (i);
 		i++;
 	}
 	return (-1);
+}
+
+void	ft_pwdorenv(char **newenv, char *tab)
+{
+	int	i;
+
+	if (ft_strncmp(tab, "PWD", 3) == 0)
+	{
+		i = ft_findpwd(newenv);
+		printf("%s\n", newenv[i] + 4);
+	}
+	if (ft_strncmp(tab, "ENV", 3) == 0)
+	{
+		i = 0;
+		while (newenv[i])
+			printf("%s\n", newenv[i++]);
+	}
 }

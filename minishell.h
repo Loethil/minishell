@@ -63,6 +63,7 @@ char		*ft_copystring(char *env);
 char		*ft_strcpy(char *dst, const char *src);
 long long	ft_atoll(char *str);
 int			ft_tablen(char **tab);
+int			ft_explen(char **tab);
 int			ft_invalid(char i);
 char		**ft_swap(char **env, int i);
 int			ft_whitespace(char *line);
@@ -78,7 +79,7 @@ char		**changeenv(t_dta *dta, char **env);
 
 // EXPORT //
 
-int			ft_export(t_dta *dta, t_cmd *cmd);
+void		ft_export(t_dta *dta, t_cmd *cmd);
 int			ft_sub_export(t_dta *dta, t_cmd *cmd, int i, int k);
 int			ft_export_input(char *linesplit);
 void		ft_export_malloc(t_dta *dta, t_cmd *cmd, int i, int k);
