@@ -55,7 +55,6 @@ typedef struct s_cmd
 	int		dlr;   // dollar macro
 }				t_cmd;
 
-
 // UTILS //
 
 int			ft_strcmp(const char *s1, const char *s2);
@@ -83,7 +82,7 @@ void		ft_export(t_dta *dta, t_cmd *cmd);
 int			ft_sub_export(t_dta *dta, t_cmd *cmd, int i, int k);
 int			ft_export_input(char *linesplit);
 void		ft_export_malloc(t_dta *dta, t_cmd *cmd, int i, int k);
-int			ft_export_no_args(t_dta *dta);
+void		ft_export_no_args(t_dta *dta);
 char		**ft_sort_env(char **env);
 
 // UNSET //

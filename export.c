@@ -87,7 +87,7 @@ void	ft_export(t_dta *dta, t_cmd *cmd)
 	while (cmd->arg[++k])
 	{
 		if (k >= ft_tablen(cmd->arg))
-			return (1);
+			return ;
 		if (ft_export_input(cmd->arg[k]) || !ft_strchr(cmd->arg[k], '='))
 			continue ;
 		i = -1;

@@ -30,8 +30,6 @@ int	ft_explen(char **tab)
 	i = -1;
 	j = 0;
 	while (tab[++i])
-	{
 		j += ft_strlen(tab[i]);
-	}
 	return (j);
 }
