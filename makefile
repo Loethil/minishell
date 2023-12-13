@@ -27,7 +27,8 @@ CCC = minishell.c \
 	parser.c \
 	parser2.c \
 	parser3.c \
-	redirs.c
+	redirs.c \
+	pipe.c
 
 OOO = $(CCC:.c=.o)
 
@@ -40,7 +41,7 @@ LIBFT = $(I) -Llibft -lft
 all: $(NAME)
 
 $(NAME): $(OOO)
-	make -C libft/
+	@make -s -C libft/
 	cc $(OOO) $(LIBFT) $(FLAG) -o $(NAME) -lreadline -g3
 .c.o:
 	cc $(I) $(FLAG) -c $< -o ${<:.c=.o} -g3

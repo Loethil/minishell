@@ -50,7 +50,9 @@ void	ft_findcmd(t_dta *dta, t_cmd *cmd)
 			printf("%s: command or path not found\n", cmd->cmd[0]);
 			exit (127);
 		}
-		if (execve(dta->true_path, &cmd->arg[0], dta->newenv) == -1)
+		if (execve(dta->true_path, (char *const *)ft_strjoin(cmd->cmd[0],
+					cmd->arg[0]), dta->newenv) == -1) // j'ai fait un tableau de chaine de 
+					//caractere avec toutes la commandes dedans pour pas avoir besoin de join
 		{
 			printf("%s: cannot access '%s': No such file or directory\n",
 				cmd->cmd[0], cmd->arg[0]);

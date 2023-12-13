@@ -11,76 +11,118 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	set_pid(t_pip *pip, int nbr)
+void	free_tabs(char **tab)
 {
-	pip->pid = malloc (nbr * sizeof(pid_t));
-	return ;
-}
-
-void	proc(t_pip *pip, t_dta *dta, t_cmd *cmd, int *pipe_fd, int num)
-{
-	close(pipe_fd[0]);
-	pip->true_path = ft_get_access(pip->dta, cmd->cmd[num]);
-	if (num == dta->pnbr)
-	{
-		if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
-			printf("error\n");
-		close(pipe_fd[1]);
-		if (execve(pip->true_path, &cmd->cmd[num], dta->newenv) == -1)\
-			printf("error\n");
-	}
-	else
-	{
-		if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
-			printf("error\n");
-		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-			printf("error\n");
-		close(pipe_fd[1]);
-		if (execve(pip->true_path, &cmd->cmd[num], dta->newenv) == -1)
-			printf("error\n");
-	}
-}
-
-void	ft_pipe(t_pip *pip, int *pipe_fd, t_cmd *cmd)
-{
-	int	status;
-	int	nbr;
 	int	i;
 
-	nbr = 2;
 	i = 0;
-	set_pid(pip, nbr);
-	pip->true_path = NULL;
-	ft_find_path(pip->dta);
-	while (i < nbr)
+	while (tab[i])
 	{
-		pip->pid[i] = fork();
-		// if (pip->pid[i] == -1)
-		// 	error("Error pid\n", pip);
-		if (pip->pid[i] == 0)
-			proc(pip, pip->dta, cmd, pipe_fd, i);
-		else
-			waitpid(pip->pid[i], &status, 0);
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
+void	error(t_cmd *cmd, t_dta *dta, char *err)
+{
+	int	i;
+
+	i = 0;
+	while (i < dta->pnbr)
+	{
+		free_tabs(cmd[i].lne);
+		free_tabs(cmd[i].cmd);
+		free_tabs(cmd[i].arg);
+		i++;
+	}
+	perror (err);
+	exit (-1);
+}
+
+void	set_cmd(t_dta *dta, t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	dta->all_path = ft_find_path(dta);
+	while (i < dta->pnbr)
+	{
+		if (ft_get_access(dta, cmd[i].cmd[0]) == NULL)
+			error(cmd, dta, "error");
+		cmd[i].tpath = ft_get_access(dta, cmd[i].cmd[0]);
 		i++;
 	}
 }
 
-int	main(int argc, char **argv, char **env)
+void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 {
-	t_dta	*dta;
-	t_pip	*pip;
-	int		i;
-
-	(void)argv;
-	if (pipe(pip->pipe_fd) == -1)
-		printf("error\n");
-	pip = ft_calloc(1, sizeof(t_pip));
-	dta = ft_calloc (1, sizeof(t_dta));
-	i = -1;
-	if (argc != 1)
-		return (0);
-	dta->newenv = changeenv(dta, env);
-	ft_prompt(dta);
-	return (0);
+	if (dta->pnbr != 1)
+		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+			error(cmd, dta, "error");
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
+		error(cmd, dta, "error");
 }
 
+void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
+{
+	close(pipe_fd[0]);
+	if (dup2(cmd->input_fd, STDIN_FILENO) == -1)
+		error(cmd, dta, "error");
+	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+		error(cmd, dta, "error");
+	close(pipe_fd[1]);
+	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
+		error(cmd, dta, "error");
+}
+
+void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
+{
+	close(pipe_fd[1]);
+	close(pipe_fd[0]);
+	if (dup2(cmd->input_fd, STDIN_FILENO) == -1)
+		error(cmd, dta, "error");
+	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
+		error(cmd, dta, "error");
+}
+
+void	choose_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2], int *j)
+{
+	if (cmd[(*j)].pid == 0)
+	{
+		if ((*j) == 0)
+			first_proc(dta, &cmd[(*j)], pipe_fd);
+		else if ((*j) == dta->pnbr - 1)
+			final_proc(dta, &cmd[(*j)], pipe_fd);
+		else
+			middle_proc(dta, &cmd[(*j)], pipe_fd);
+	}
+	else
+	{
+		close(pipe_fd[1]);
+		waitpid(cmd[(*j)].pid, &dta->status, 0);
+		(*j)++;
+		cmd[(*j)].input_fd = pipe_fd[0];
+	}
+}
+
+void	pipex(t_dta *dta, t_cmd *cmd)
+{
+	int	j;
+	int	pipe_fd[2];
+
+	j = 0;
+	set_cmd(dta, cmd);
+	while (j < dta->pnbr)
+	{
+		if (pipe(pipe_fd) == -1)
+			error(cmd, dta, "error");
+		cmd[j].pid = fork();
+		if (cmd[j].pid == -1)
+			error(cmd, dta, "error");
+		choose_proc(dta, cmd, pipe_fd, &j);
+	}
+	error(cmd, dta, "");
+}

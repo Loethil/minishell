@@ -42,21 +42,25 @@ typedef struct s_dta
 	pid_t		pid;
 	int			nbr;
 	int			lmax;
-	int			pnbr;
+	int			pnbr; // nombre de pipes
 	int			len;
 	int			ext_val; // variable pour $?
 }				t_dta;
 
 typedef struct s_cmd
 {
+	t_dta	*dta;
+	char	**lne;  //ligne entiere
 	char	**cmd; //stock la cmd
 	char	**arg; //stock les arguments de la commande
 	char	*rdr;  //stock les arg de la redirection
-	int		dlr;   // dollar macro
+	char	*tpath; //pass pour execve
+	pid_t	pid; // un pid pour chque case dans le tableau de struct cmd
+	int		input_fd; //pipe
 }				t_cmd;
 
 // UTILS //
-
+void		error(t_cmd *cmd, t_dta *dta, char *err);
 int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_copystring(char *env);
 char		*ft_strcpy(char *dst, const char *src);
@@ -125,6 +129,9 @@ int			ft_countword(t_dta *dta, char *str);
 void		ft_word(t_dta *dta, char *line, int *i, int *j);
 char		*ft_getstr(t_dta *dta, char *line, int *i);
 void		ft_create_tab(t_dta *dta, char *line);
+
+// PIPE//
+void		pipex(t_dta *dta, t_cmd *cmd);
 
 // MAIN //
 

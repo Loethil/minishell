@@ -54,13 +54,15 @@ int	ft_countword(t_dta *dta, char *str)
 
 void	ft_word(t_dta *dta, char *line, int *i, int *j)
 {
-	while (dta->str[(*i)] != ' ' && (*i) < dta->lmax)
+	while ((*i) < dta->lmax)
 	{
 		if (dta->str[(*i)] == '|')
 		{
 			dta->str[(*j)] = '\0';
 			return ;
 		}
+		if (dta->str[(*i)] == ' ')
+			break ;
 		dta->str[(*j)++] = line[(*i)++];
 	}
 	dta->str[(*j)] = '\0';
@@ -96,7 +98,7 @@ void	ft_create_tab(t_dta *dta, char *line)
 
 	i = 0;
 	j = 0;
-	dta->tab = ft_calloc (dta->nbr, sizeof(char *));
+	dta->tab = ft_calloc (dta->nbr + 1, sizeof(char *));
 	while (j < dta->nbr)
 	{
 		dta->tab[j] = ft_getstr(dta, line, &i);

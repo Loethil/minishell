@@ -12,15 +12,18 @@
 
 #include "minishell.h"
 
-char	*ft_copystring(char *env)
+char	*ft_copystring(char *str)
 {
 	int		i;
 	char	*tab;
 
-	i = -1;
-	tab = ft_calloc((ft_strlen(env) + 1), sizeof(char));
-	while (env[++i])
-		tab[i] = env[i];
+	i = 0;
+	tab = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	while (str[i])
+	{
+		tab[i] = str[i];
+		i++;
+	}
 	tab[i] = '\0';
 	return (tab);
 }
