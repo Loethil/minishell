@@ -38,36 +38,36 @@ void	ft_exit(t_dta *dta, t_cmd *cmd)
 	exit(dta->ext);
 }
 
-void	ft_findcmd(t_dta *dta, t_cmd *cmd)
-{
-	dta->pid = fork();
-	if (dta->pid == 0)
-	{
-		dta->all_path = ft_find_path(dta);
-		dta->true_path = ft_get_access(dta, cmd->cmd[0]);
-		if (dta->true_path == NULL)
-		{
-			printf("%s: command or path not found\n", cmd->cmd[0]);
-			exit (127);
-		}
-		if (execve(dta->true_path, (char *const *)ft_strjoin(cmd->cmd[0],
-					cmd->arg[0]), dta->newenv) == -1) // j'ai fait un tableau de chaine de 
-					//caractere avec toutes la commandes dedans pour pas avoir besoin de join
-		{
-			printf("%s: cannot access '%s': No such file or directory\n",
-				cmd->cmd[0], cmd->arg[0]);
-			exit (2);
-		}
-	}
-	else
-	{
-		waitpid(dta->pid, &dta->status, 0);
-		if (WIFEXITED(dta->status))
-			dta->ext_val = WEXITSTATUS(dta->status);
-	}
-}
+// void	ft_findcmd(t_dta *dta, t_cmd *cmd)
+// {
+// 	dta->pid = fork();
+// 	if (dta->pid == 0)
+// 	{
+// 		dta->all_path = ft_find_path(dta);
+// 		dta->true_path = ft_get_access(dta, cmd->cmd[0]);
+// 		if (dta->true_path == NULL)
+// 		{
+// 			printf("%s: command or path not found\n", cmd->cmd[0]);
+// 			exit (127);
+// 		}
+// 		if (execve(dta->true_path, (char *const *)ft_strjoin(cmd->cmd[0],
+// 					cmd->arg[0]), dta->newenv) == -1) // j'ai fait un tableau de chaine de 
+// 					//caractere avec toutes la commandes dedans pour pas avoir besoin de join
+// 		{
+// 			printf("%s: cannot access '%s': No such file or directory\n",
+// 				cmd->cmd[0], cmd->arg[0]);
+// 			exit (2);
+// 		}
+// 	}
+// 	else
+// 	{
+// 		waitpid(dta->pid, &dta->status, 0);  	
+// 		if (WIFEXITED(dta->status))
+// 			dta->ext_val = WEXITSTATUS(dta->status);
+// 	}
+// }
 
-void	ft_whoitis(t_dta *dta, t_cmd *cmd)
+int		ft_whoitis(t_dta *dta, t_cmd *cmd)
 {
 	int	len;
 
@@ -79,7 +79,7 @@ void	ft_whoitis(t_dta *dta, t_cmd *cmd)
 		if (cmd->arg[1])
 		{
 			printf("minishell: cd: too many arguments\n");
-			return ;
+			return (-1);
 		}
 		ft_changedir(dta, cmd->arg[0]);
 	}
@@ -93,8 +93,9 @@ void	ft_whoitis(t_dta *dta, t_cmd *cmd)
 		ft_pwdorenv(dta->newenv, "ENV");
 	else if (ft_strncmp(cmd->cmd[0], "exit", len) == 0)
 		ft_exit(dta, cmd);
-	else
-		ft_findcmd(dta, cmd);
+	return (-1);
+	// else
+	// 	ft_findcmd(dta, cmd);
 }
 
 int	main(int argc, char **argv, char **env)

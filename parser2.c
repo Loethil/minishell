@@ -32,19 +32,19 @@ int	ft_check_quotes(char *str, int *i, int j, int lmax)
 	return (j);
 }
 
-void	ft_pipes(t_dta *dta, int *i)
+void	ft_pipes(t_dta *dta, char *line, int *i)
 {
-	if (dta->str[(*i) + 1] == '|')
+	if (line[(*i) + 1] == '|')
 		return ;
-	if (dta->str[(*i)] == '|' && (*i) == dta->lmax)
+	if (line[(*i)] == '|' && (*i) == dta->lmax)
 		return ; //bug avec trop de pipes a regler
 	dta->str = "|";
 	(*i)++;
 }
 
-void	ft_chevron(t_dta *dta, int *i)
+void	ft_chevron(t_dta *dta, char *line, int *i)
 {
-	if (dta->str[(*i)] == '<')
+	if (line[(*i)] == '<')
 		dta->str = "<";
 	else
 		dta->str = ">";
@@ -77,20 +77,27 @@ int	ft_checkoption(char *str)
 void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 {
 	int	j;
+	char *tab;
 
 	j = 0;
 	if (line[(*i)] == '\'')
 	{
-		dta->str[j++] = line[(*i)];
 		while (line[++(*i)] != '\'' && (*i) < dta->lmax)
 			dta->str[j++] = line[(*i)];
-		dta->str[j++] = line[(*i)];
+		dta->str[j] = '\0';
 	}
 	else if (line[(*i)] == '"')
 	{
 		while (line[++(*i)] != '"' && (*i) < dta->lmax)
+		{
+			if (line[(*i)] == '$')
+			{
+				tab =  replace_var(dta, line, i);
+				dta->str = ft_freestrjoin(dta->str, tab);
+				continue ;
+			}
 			dta->str[j++] = line[(*i)];
+		}
 	}
-	dta->str[j] = '\0';
 	(*i)++;
 }

@@ -35,7 +35,7 @@ void	ft_var_alloc(t_dta *dta, char *arg, int i)
 		dta->var[j++] = arg[i++];
 }
 
-void	ft_print_var(t_dta *dta)
+void	ft_print_var(t_dta *dta, int *k)
 {
 	int	i;
 	int	j;
@@ -52,16 +52,15 @@ void	ft_print_var(t_dta *dta)
 				j++;
 			else
 			{
-				printf("\n");
 				return ;
 			}
 			while (dta->newenv[i][j] && dta->newenv[i][j] != '\n')
-				printf("%c", dta->newenv[i][j++]);
+				dta->str[(*k)++] = dta->newenv[i][j++];
 		}
 	}
 }
 
-void	ft_var(char *arg, t_dta *dta)
+char	*ft_var(char *arg, t_dta *dta, int *j)
 {
 	int	i;
 
@@ -78,24 +77,26 @@ void	ft_var(char *arg, t_dta *dta)
 		{
 			i++;
 			ft_var_alloc(dta, arg, i);
-			ft_print_var(dta);
+			ft_print_var(dta, j);
 			i += ft_strlen(dta->var) - 1;
 			continue ;
 		}
-		printf("%c", arg[i]);
+		dta->str[(*j)++] = arg[i];
+		dta->str[(*j)] = '\0';
 	}
+	return(dta->str);
 }
 
 void	ft_var_master(char **arg, t_dta *dta, int i)
 {
 	if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
 	{
-		ft_var(arg[i], dta);
+		ft_var(arg[i], dta, &i);
 		return ;
 	}
 	else
 	{
-		ft_var(arg[i], dta);
+		ft_var(arg[i], dta, &i);
 		printf(" ");
 	}
 }

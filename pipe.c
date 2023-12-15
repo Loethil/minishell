@@ -28,14 +28,17 @@ void	error(t_cmd *cmd, t_dta *dta, char *err)
 {
 	int	i;
 
+	(void)cmd;
+	(void)dta;
+	// (void)err;
 	i = 0;
-	while (i < dta->pnbr)
-	{
-		free_tabs(cmd[i].lne);
-		free_tabs(cmd[i].cmd);
-		free_tabs(cmd[i].arg);
-		i++;
-	}
+	// while (i < dta->pnbr)
+	// {
+	// 	// free_tabs(cmd[i].lne);
+	// 	// free_tabs(cmd[i].cmd);
+	// 	// free_tabs(cmd[i].arg);
+	// 	i++;
+	// }
 	perror (err);
 	exit (-1);
 }
@@ -62,6 +65,7 @@ void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 			error(cmd, dta, "error");
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
+	ft_whoitis(dta, cmd);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		error(cmd, dta, "error");
 }
@@ -74,6 +78,7 @@ void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
 		error(cmd, dta, "error");
 	close(pipe_fd[1]);
+	ft_whoitis(dta, cmd);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		error(cmd, dta, "error");
 }
@@ -84,6 +89,7 @@ void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 	close(pipe_fd[0]);
 	if (dup2(cmd->input_fd, STDIN_FILENO) == -1)
 		error(cmd, dta, "error");
+	ft_whoitis(dta, cmd);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		error(cmd, dta, "error");
 }
@@ -124,5 +130,5 @@ void	pipex(t_dta *dta, t_cmd *cmd)
 			error(cmd, dta, "error");
 		choose_proc(dta, cmd, pipe_fd, &j);
 	}
-	error(cmd, dta, "");
+	// error(cmd, dta, "");
 }

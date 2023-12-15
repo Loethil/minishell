@@ -48,7 +48,7 @@ int	ft_sub_echo(char *arg, int j)
 	return (j);
 }
 
-int	ft_echo(t_dta *dta, t_cmd *cmd, int i)
+void	ft_echo(t_dta *dta, t_cmd *cmd, int i)
 {
 	int	j;
 
@@ -62,7 +62,7 @@ int	ft_echo(t_dta *dta, t_cmd *cmd, int i)
 			if (cmd->arg[i][j])
 			{
 				ft_print_echo(cmd->arg, dta, i);
-				return (0);
+				exit (0);
 			}
 			i++;
 		}
@@ -74,5 +74,5 @@ int	ft_echo(t_dta *dta, t_cmd *cmd, int i)
 		printf("\n");
 	}
 	dta->ext_val = 0;
-	return (0);
+	exit (0);
 }

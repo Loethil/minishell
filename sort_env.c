@@ -77,4 +77,5 @@ void	ft_export_no_args(t_dta *dta)
 			printf("%c", env[i][j++]);
 		printf("\"\n");
 	}
+	exit (0);
 }

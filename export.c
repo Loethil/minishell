@@ -87,7 +87,7 @@ void	ft_export(t_dta *dta, t_cmd *cmd)
 	while (cmd->arg[++k])
 	{
 		if (k >= ft_tablen(cmd->arg))
-			return ;
+			exit (0);
 		if (ft_export_input(cmd->arg[k]) || !ft_strchr(cmd->arg[k], '='))
 			continue ;
 		i = -1;
@@ -103,4 +103,5 @@ void	ft_export(t_dta *dta, t_cmd *cmd)
 			ft_export_malloc(dta, cmd, i, k);
 		dta->newenv[++i] = NULL;
 	}
+	exit (0);
 }

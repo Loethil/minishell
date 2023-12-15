@@ -42,7 +42,7 @@ all: $(NAME)
 
 $(NAME): $(OOO)
 	@make -s -C libft/
-	cc $(OOO) $(LIBFT) $(FLAG) -o $(NAME) -lreadline -g3
+	cc $(OOO) $(LIBFT) $(FLAG) -o $(NAME) -lreadline #-fsanitize=address# -g3
 .c.o:
 	cc $(I) $(FLAG) -c $< -o ${<:.c=.o} -g3
 clean:

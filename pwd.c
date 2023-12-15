@@ -79,19 +79,20 @@ void	ft_changedir(t_dta *dta, char *path)
 	{
 		path = ft_sub_cd(dta, path, i);
 		ft_chdir_err(path);
-		return ;
+		exit (0);
 	}
 	if (path[0] == '.')
 	{
 		ft_dot_cd(dta, path, i);
-		return ;
+		exit (0);
 	}
 	if (!path[0])
-		return ;
+		exit (0);
 	dta->true_path = ft_strjoin(dta->newenv[i], "/");
 	if (path[ft_strlen(path) - 1] == '/')
 		path[ft_strlen(path) - 1] = '\0';
 	dta->true_path = ft_strjoin(dta->true_path, path);
 	dta->newenv[i] = dta->true_path;
 	ft_chdir_err(path);
+	exit (0);
 }

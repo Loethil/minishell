@@ -74,7 +74,7 @@ int			ft_whitespace(char *line);
 // PWD OR ENV //
 
 int			ft_findpwd(char **env);
-void		ft_pwdorenv(char **newenv, char *tab);
+int			ft_pwdorenv(char **newenv, char *tab);
 void		ft_changedir(t_dta *dta, char *path);
 char		**ft_find_path(t_dta *dta);
 char		*ft_get_access(t_dta *dta, char *argv);
@@ -102,12 +102,12 @@ void		ft_exit(t_dta *dta, t_cmd *cmd);
 
 // ECHO //
 
-int			ft_echo(t_dta *dta, t_cmd *cmd, int i);
+void		ft_echo(t_dta *dta, t_cmd *cmd, int i);
 void		ft_print_echo(char **arg, t_dta *dta, int i);
 void		ft_var_alloc(t_dta *dta, char *cmd, int i);
 int			ft_var_hdl(char *arg);
-void		ft_print_var(t_dta *dta);
-void		ft_var(char *arg, t_dta *dta);
+void		ft_print_var(t_dta *dta, int *k);
+char		*ft_var(char *arg, t_dta *dta, int *j);
 void		ft_var_master(char **arg, t_dta *dta, int i);
 void		ft_print_sq_echo(char **arg, int i);
 
@@ -121,22 +121,25 @@ void		ft_set_up(t_dta *dta, char *line);
 void		ft_pars(t_cmd *cmd, char **tab);
 void		ft_cmd_init(t_dta *dta, t_cmd *cmd, char **tab);
 int			ft_check_quotes(char *str, int *i, int j, int lmax);
-void		ft_pipes(t_dta *dta, int *i);
-void		ft_chevron(t_dta *dta, int *i);
+void		ft_pipes(t_dta *dta, char *line, int *i);
+void		ft_chevron(t_dta *dta, char *line, int *i);
 int			ft_checkoption(char *str);
 void		ft_cpy_quotes(t_dta *dta, char *line, int *i);
 int			ft_countword(t_dta *dta, char *str);
 void		ft_word(t_dta *dta, char *line, int *i, int *j);
 char		*ft_getstr(t_dta *dta, char *line, int *i);
 void		ft_create_tab(t_dta *dta, char *line);
+char		*replace_var(t_dta *dta, char *line, int *i);
+char		*ft_freestrjoin(char *s1, char *s2);
 
 // PIPE//
+
 void		pipex(t_dta *dta, t_cmd *cmd);
 
 // MAIN //
 
 void		ft_prompt(t_dta *dta);
-void		ft_whoitis(t_dta *dta, t_cmd *cmd);
+int			ft_whoitis(t_dta *dta, t_cmd *cmd);
 void		ft_findcmd(t_dta *dta, t_cmd *cmd);
 
 extern int	g_sigint;

@@ -28,16 +28,13 @@ void	ft_pars(t_cmd *cmd, char **tab)
 			cmd[j].cmd[ft_tablen(cmd[j].cmd)] = tab[++i];
 		}
 		else if (ft_strncmp(tab[i], "-", 1) == 0) // faire en sorte que sa marche pour toutes les options
-		{
 			cmd[j].arg[ft_tablen(cmd[j].arg)] = tab[i];
-			// cmd[j].arg[ft_tablen(cmd[j].arg) + 1] = NULL; // uniquement pour printf bug resolu
-		}
-		else if (ft_strncmp(tab[i], "-", 1)) // modifie " > 0" pour le '$' ca marchait pas
+		else if (ft_strncmp(tab[i], "-", 1))
 			cmd[j].arg[ft_tablen(cmd[j].arg)] = tab[i];
-		cmd[j].lne[ft_tablen(cmd[j].lne)] = tab[i]; // pour PIPEX
+		cmd[j].lne[ft_tablen(cmd[j].lne)] = tab[i];
 		i++;
-	} // marche du tonnerre juste a rajouter les redirs
-}	//command apres le pipe non gerer, + redir + sa rendre sa plus beau
+	}
+}
 
 
 void	ft_cmd_init(t_dta *dta, t_cmd *cmd, char **tab)

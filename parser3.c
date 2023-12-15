@@ -52,20 +52,86 @@ int	ft_countword(t_dta *dta, char *str)
 	return (j);
 } // a reduire norminette
 
+char	*ft_freestrjoin(char *s1, char *s2)
+{
+	char	*tab;
+	int		r;
+	int		a;
+
+	tab = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (!tab)
+		return (NULL);
+	r = 0;
+	a = 0;
+	while (s1 && s1[r])
+	{
+		tab[r] = s1[r];
+		r++;
+	}
+	while (s2 && s2[a])
+		tab[r++] = s2[a++];
+	tab[r] = '\0';
+	free(s1);
+	return (tab);
+}
+
+
+char	*replace_var(t_dta *dta, char *line, int *i)
+{
+	char	*tab;
+	int		j = 0;
+
+	tab = ft_calloc(ft_strlen(line), sizeof(char));
+	while (line[(*i)] == '$')
+		(*i)++;
+	while (line[(*i)] != '$' && (*i) < dta->lmax)
+	{
+		if (line[(*i)] == '|')
+			break ;
+		if (line[(*i)] == ' ')
+			break ;
+		if (line[(*i)] == '"')
+			break ;
+		tab[j++] = line[(*i)++];
+	}
+	j = 0;
+	while (dta->newenv[j])
+	{
+		if (strncmp(dta->newenv[j], tab, ft_strlen(tab)) == 0)
+		{
+			tab = dta->newenv[j] + (ft_strlen(tab) + 1);
+			break ;
+		}
+		j++;
+	}
+	if (dta->newenv[j] == NULL)
+		return (NULL);
+	// printf("%s\n", tab);	
+	return (tab);
+}
+//faire en sorte que la fonction puisse arreter le processus sans fermer minishell et afficher un msg d'erreur
+
 void	ft_word(t_dta *dta, char *line, int *i, int *j)
 {
+	char	*tab;
+
 	while ((*i) < dta->lmax)
 	{
-		if (dta->str[(*i)] == '|')
+		if (line[(*i)] == '|')
 		{
 			dta->str[(*j)] = '\0';
 			return ;
 		}
-		if (dta->str[(*i)] == ' ')
+		if (line[(*i)] == ' ')
 			break ;
+		if (line[(*i)] == '$')
+		{
+			tab =  replace_var(dta, line, i);
+			dta->str = ft_freestrjoin(dta->str, tab);
+			continue ;
+		}
 		dta->str[(*j)++] = line[(*i)++];
 	}
-	dta->str[(*j)] = '\0';
 	(*i)++;
 }
 
@@ -74,19 +140,19 @@ char	*ft_getstr(t_dta *dta, char *line, int *i)
 	int	j;
 
 	j = 0;
-	dta->str = ft_copystring(line);
+	dta->str = ft_calloc(ft_strlen(line) + 1, sizeof(char));
 	dta->lmax = ft_strlen(line);
 	if ((*i) >= dta->lmax)
 		return (NULL);
-	while (dta->str[(*i)] == ' ')
+	while (line[(*i)] == ' ')
 		(*i)++;
-	if (dta->str[(*i)] == '"' || dta->str[(*i)] == '\'')
+	if (line[(*i)] == '"' || line[(*i)] == '\'')
 		ft_cpy_quotes(dta, line, i);
-	else if (dta->str[(*i)] == '|')
-		ft_pipes(dta, i);
-	else if (dta->str[(*i)] == '<' || dta->str[(*i)] == '>')
-		ft_chevron(dta, i);
-	else if (dta->str[(*i)] != ' ')
+	else if (line[(*i)] == '|')
+		ft_pipes(dta, line, i);
+	else if (line[(*i)] == '<' || line[(*i)] == '>')
+		ft_chevron(dta, line, i);
+	else if (line[(*i)] != ' ')
 		ft_word(dta, line, i, &j);
 	return (dta->str);
 }
