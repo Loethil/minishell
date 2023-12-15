@@ -15,7 +15,7 @@
 void	ft_sigint_hdl(int signo)
 {
 	(void)signo;
-    rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();

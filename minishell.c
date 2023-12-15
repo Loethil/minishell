@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	g_sigint;
+int	g_sigint = 0;
 
 void	ft_exit(t_dta *dta, t_cmd *cmd)
 {

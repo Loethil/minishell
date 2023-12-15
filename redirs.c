@@ -36,4 +36,3 @@ void	ft_redir(t_dta *dta, t_cmd *cmd)
 		cmd->out_fd = out_fd;
 	}
 }
-

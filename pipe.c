@@ -32,7 +32,7 @@ void	error(t_cmd *cmd, t_dta *dta, char *err)
 	exit (-1);
 }
 
-void	set_cmd(t_dta *dta, t_cmd *cmd)
+int	set_cmd(t_dta *dta, t_cmd *cmd)
 {
 	int	i;
 
@@ -41,10 +41,14 @@ void	set_cmd(t_dta *dta, t_cmd *cmd)
 	while (i < dta->pnbr)
 	{
 		if (ft_get_access(dta, cmd[i].cmd[0]) == NULL)
-			error(cmd, dta, "error");
+		{
+			printf("%s: command not found\n", cmd->cmd[i]);
+			return (1);
+		}
 		cmd[i].tpath = ft_get_access(dta, cmd[i].cmd[0]);
 		i++;
 	}
+	return (0);
 }
 
 void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
@@ -118,7 +122,8 @@ void	pipex(t_dta *dta, t_cmd *cmd)
 	int	pipe_fd[2];
 
 	j = 0;
-	set_cmd(dta, cmd);
+	if (set_cmd(dta, cmd) == 1)
+		return ;
 	while (j < dta->pnbr)
 	{
 		if (pipe(pipe_fd) == -1)
