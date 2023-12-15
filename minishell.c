@@ -94,8 +94,6 @@ int		ft_whoitis(t_dta *dta, t_cmd *cmd)
 	else if (ft_strncmp(cmd->cmd[0], "exit", len) == 0)
 		ft_exit(dta, cmd);
 	return (-1);
-	// else
-	// 	ft_findcmd(dta, cmd);
 }
 
 int	main(int argc, char **argv, char **env)

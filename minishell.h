@@ -53,10 +53,10 @@ typedef struct s_cmd
 	char	**lne;  //ligne entiere
 	char	**cmd; //stock la cmd
 	char	**arg; //stock les arguments de la commande
-	char	*rdr;  //stock les arg de la redirection
+	char	**rdr;  //stock les arg de la redirection
 	char	*tpath; //pass pour execve
 	pid_t	pid; // un pid pour chque case dans le tableau de struct cmd
-	int		input_fd; //pipe
+	int		pfd; //pipe
 }				t_cmd;
 
 // UTILS //

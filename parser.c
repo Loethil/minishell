@@ -11,6 +11,19 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+int    ft_check_chevron(char *str)
+{
+    if (ft_strncmp(str, ">", 1) == 0)
+        return (0);
+    else if (ft_strncmp(str, "<", 1) == 0)
+        return (0);
+    else if (ft_strncmp(str, "<<", 2) == 0)
+        return (0);
+    else if (ft_strncmp(str, ">>", 2) == 0)
+        return (0);
+    return(1);
+}
+
 void	ft_pars(t_cmd *cmd, char **tab)
 {
 	int	i;
@@ -27,9 +40,12 @@ void	ft_pars(t_cmd *cmd, char **tab)
 			j++;
 			cmd[j].cmd[ft_tablen(cmd[j].cmd)] = tab[++i];
 		}
-		else if (ft_strncmp(tab[i], "-", 1) == 0) // faire en sorte que sa marche pour toutes les options
-			cmd[j].arg[ft_tablen(cmd[j].arg)] = tab[i];
-		else if (ft_strncmp(tab[i], "-", 1))
+		else if (ft_check_chevron(tab[i]) == 0)
+		{
+			cmd[j].rdr[ft_tablen(cmd[j].rdr)] = tab[i++];
+			cmd[j].rdr[ft_tablen(cmd[j].rdr)] = tab[i];
+		}
+		else
 			cmd[j].arg[ft_tablen(cmd[j].arg)] = tab[i];
 		cmd[j].lne[ft_tablen(cmd[j].lne)] = tab[i];
 		i++;
@@ -47,6 +63,7 @@ void	ft_cmd_init(t_dta *dta, t_cmd *cmd, char **tab)
 		cmd[j].lne = ft_calloc (ft_tablen(tab) + 1, sizeof(char *));
 		cmd[j].cmd = ft_calloc (ft_tablen(tab) + 1, sizeof(char *));
 		cmd[j].arg = ft_calloc (ft_tablen(tab) + 1, sizeof(char *));
+		cmd[j].rdr = ft_calloc (ft_tablen(tab) + 1, sizeof(char *));
 		j++;
 	}
 }
