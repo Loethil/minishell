@@ -12,27 +12,26 @@
 
 #include "minishell.h"
 
-// void	ft_redir(t_dta *dta, t_cmd *cmd)
-// {
-// 	int	input_fd;
-// 	int	output_fd;
+void	ft_redir(t_dta *dta, t_cmd *cmd)
+{
+	int	in_fd;
+	int	out_fd;
 
-// 	dta->pid = fork();
-// 	if (dta->pid == 0)
-// 	{
-// 		if ((input_fd = open(cmd->rdr[0], O_RDONLY)) != -1)
-// 		{
-// 			dup2(input_fd, STDIN_FILENO);
-// 			close(input_fd);
-// 			cmd->rdr[0] = NULL;
-// 		}
-// 		if ((output_fd = open(cmd->rdr[0], O_WRONLY | O_CREAT | O_TRUNC, 0644)))
-// 		{
-// 			dup2(output_fd, STDOUT_FILENO);
-// 			close(output_fd);
-// 			cmd->rdr[0] = NULL;
-// 		}
-// 	}
-// 	else
-// 		waitpid(dta->pid, NULL, 0);
-// }
+	if (dta->pid == 0)
+	{
+		if (cmd->rdr[0] == "<")
+		{
+			in_fd = open(&cmd->rdr[1], O_RDONLY);
+			if (in_fd == -1)
+				error(cmd, dta, "error");
+			cmd->in_fd = in_fd;
+		}
+		else if (cmd->rdr[0] == ">")
+		{
+			out_fd = open(&cmd->rdr[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (out_fd == -1)
+				error(cmd, dta, "error");
+			cmd->out_fd = out_fd;
+		}
+	}
+}
