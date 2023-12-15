@@ -102,6 +102,10 @@ char		*ft_linecpy(char *src);
 
 void		ft_exit(t_dta *dta, t_cmd *cmd);
 
+// REDIRS //
+
+void		ft_redir(t_dta *dta, t_cmd *cmd);
+
 // ECHO //
 
 void		ft_echo(t_dta *dta, t_cmd *cmd, int i);

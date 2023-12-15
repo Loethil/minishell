@@ -55,6 +55,9 @@ void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 	if (cmd->in_fd != 0)
 		if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
 			error(cmd, dta, "error");
+	if (cmd->out_fd != 0)
+		if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
+			error(cmd, dta, "error");
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	ft_whoitis(dta, cmd);
@@ -120,6 +123,7 @@ void	pipex(t_dta *dta, t_cmd *cmd)
 	{
 		if (pipe(pipe_fd) == -1)
 			error(cmd, dta, "error");
+		ft_redir(dta, &cmd[j]);
 		cmd[j].pid = fork();
 		if (cmd[j].pid == -1)
 			error(cmd, dta, "error");
