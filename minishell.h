@@ -57,6 +57,8 @@ typedef struct s_cmd
 	char	*tpath; //pass pour execve
 	pid_t	pid; // un pid pour chque case dans le tableau de struct cmd
 	int		pfd; //pipe
+	int		in_fd;
+	int		out_fd;
 }				t_cmd;
 
 // UTILS //
