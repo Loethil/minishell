@@ -42,7 +42,7 @@ int	ft_redir(t_dta *dta, t_cmd *cmd)
 	cmd->in_fd = 0;
 	cmd->out_fd = 0;
 	if (!cmd->rdr || !cmd->rdr[0])
-		return (-1);
+		return (0);
 	if (ft_strncmp(cmd->rdr[0], "<<", 2) == 0)
 	{
 		if (ft_tmp_buf(dta, cmd))
