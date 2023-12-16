@@ -40,6 +40,5 @@ void	ft_prompt(t_dta *dta)
 			g_sigint = 0;
 		add_history(dta->line);
 		ft_set_up(dta, dta->line);
-		// ft_whoitis(dta, cmd);
 	}
 }

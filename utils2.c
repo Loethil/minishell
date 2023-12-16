@@ -77,5 +77,4 @@ int	ft_pwdorenv(char **newenv, char *tab)
 		exit (0);
 	}
 	return (0);
-
 }

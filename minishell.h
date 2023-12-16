@@ -34,6 +34,7 @@ typedef struct s_dta
 	char		**all_path;
 	char		*true_path;
 	char		*line;
+	char		*buf; // variable pour <<
 	char		**newenv;
 	int			status;
 	char		*pwd;
@@ -50,10 +51,10 @@ typedef struct s_dta
 typedef struct s_cmd
 {
 	t_dta	*dta;
-	char	**lne;  //ligne entiere
+	char	**lne; //ligne entiere
 	char	**cmd; //stock la cmd
 	char	**arg; //stock les arguments de la commande
-	char	**rdr;  //stock les arg de la redirection
+	char	**rdr; //stock les arg de la redirection
 	char	*tpath; //pass pour execve
 	pid_t	pid; // un pid pour chque case dans le tableau de struct cmd
 	int		pfd; //pipe
@@ -104,7 +105,7 @@ void		ft_exit(t_dta *dta, t_cmd *cmd);
 
 // REDIRS //
 
-void		ft_redir(t_dta *dta, t_cmd *cmd);
+int			ft_redir(t_dta *dta, t_cmd *cmd);
 
 // ECHO //
 

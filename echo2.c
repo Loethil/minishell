@@ -84,7 +84,7 @@ char	*ft_var(char *arg, t_dta *dta, int *j)
 		dta->str[(*j)++] = arg[i];
 		dta->str[(*j)] = '\0';
 	}
-	return(dta->str);
+	return (dta->str);
 }
 
 void	ft_var_master(char **arg, t_dta *dta, int i)

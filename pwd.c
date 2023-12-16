@@ -51,7 +51,8 @@ char	*ft_sub_cd(t_dta *dta, char *path, int i)
 	k = 0;
 	while (dta->newenv[i][j] && dta->newenv[i][j - 1] != '=')
 		j++;
-	new_path = ft_calloc(ft_strlen(dta->newenv[i]) + ft_strlen(path), sizeof(char));
+	new_path = ft_calloc(ft_strlen(dta->newenv[i]) + ft_strlen(path),
+			sizeof(char));
 	while (dta->newenv[i][j] && dta->newenv[i][j] != 'D')
 		new_path[k++] = dta->newenv[i][j++];
 	if (!path[1])

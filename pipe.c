@@ -128,7 +128,8 @@ void	pipex(t_dta *dta, t_cmd *cmd)
 	{
 		if (pipe(pipe_fd) == -1)
 			error(cmd, dta, "error");
-		ft_redir(dta, &cmd[j]);
+		if (ft_redir(dta, &cmd[j]))
+			return ;
 		cmd[j].pid = fork();
 		if (cmd[j].pid == -1)
 			error(cmd, dta, "error");

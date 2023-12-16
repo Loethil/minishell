@@ -67,7 +67,7 @@ void	ft_exit(t_dta *dta, t_cmd *cmd)
 // 	}
 // }
 
-int		ft_whoitis(t_dta *dta, t_cmd *cmd)
+int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 {
 	int	len;
 

@@ -11,17 +11,17 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int    ft_check_chevron(char *str)
+int	ft_check_chevron(char *str)
 {
-    if (ft_strncmp(str, ">", 1) == 0)
-        return (0);
-    else if (ft_strncmp(str, "<", 1) == 0)
-        return (0);
-    else if (ft_strncmp(str, "<<", 2) == 0)
-        return (0);
-    else if (ft_strncmp(str, ">>", 2) == 0)
-        return (0);
-    return(1);
+	if (ft_strncmp(str, "<<", 2) == 0)
+		return (0);
+	else if (ft_strncmp(str, ">>", 2) == 0)
+		return (0);
+	else if (ft_strncmp(str, ">", 1) == 0)
+		return (0);
+	else if (ft_strncmp(str, "<", 1) == 0)
+		return (0);
+	return(1);
 }
 
 void	ft_pars(t_cmd *cmd, char **tab)

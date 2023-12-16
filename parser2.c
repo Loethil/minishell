@@ -44,11 +44,26 @@ void	ft_pipes(t_dta *dta, char *line, int *i)
 
 void	ft_chevron(t_dta *dta, char *line, int *i)
 {
-	if (line[(*i)] == '<')
+	if (line[(*i)] == '<' && line[(*i) + 1] == '<')
+	{
+		dta->str = "<<";
+		(*i) += 2;
+	}
+	else if (line[(*i)] == '>' && line[(*i) + 1] == '>')
+	{
+		dta->str = ">>";
+		(*i) += 2;
+	}
+	else if (line[(*i)] == '<')
+	{
 		dta->str = "<";
-	else
+		(*i)++;
+	}
+	else if (line[(*i)] == '>')
+	{
 		dta->str = ">";
-	(*i)++;
+		(*i)++;
+	}
 }
 
 int	ft_checkoption(char *str)
