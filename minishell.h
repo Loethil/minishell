@@ -35,6 +35,7 @@ typedef struct s_dta
 	char		*true_path;
 	char		*line;
 	char		*buf; // variable pour <<
+	char		**cat_buf; // variable pour cat dans <<
 	char		**newenv;
 	int			status;
 	char		*pwd;
