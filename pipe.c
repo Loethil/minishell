@@ -40,11 +40,7 @@ int	set_cmd(t_dta *dta, t_cmd *cmd)
 	dta->all_path = ft_find_path(dta);
 	while (i < dta->pnbr)
 	{
-		if (ft_get_access(dta, cmd[i].cmd[0]) == NULL)
-		{
-			printf("%s: command not found\n", cmd->cmd[i]);
-			return (1);
-		}
+		ft_get_access(dta, cmd[i].cmd[0]);
 		cmd[i].tpath = ft_get_access(dta, cmd[i].cmd[0]);
 		i++;
 	}
@@ -72,10 +68,22 @@ void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[0]);
-	if (dup2(cmd->pfd, STDIN_FILENO) == -1)
-		error(cmd, dta, "error");
-	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-		error(cmd, dta, "error");
+	if (cmd->in_fd || cmd->out_fd)
+	{
+		if (cmd->in_fd != 0)
+			if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
+				error(cmd, dta, "error");
+		if (cmd->out_fd != 0)
+			if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
+				error(cmd, dta, "error");
+	}
+	else
+	{
+		if (dup2(cmd->pfd, STDIN_FILENO) == -1)
+			error(cmd, dta, "error");
+		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+			error(cmd, dta, "error");
+	}
 	close(pipe_fd[1]);
 	ft_whoitis(dta, cmd);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
@@ -86,11 +94,20 @@ void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[1]);
 	close(pipe_fd[0]);
-	if (dup2(cmd->pfd, STDIN_FILENO) == -1)
-		error(cmd, dta, "error");
-	if (cmd->out_fd != 0)
-		if (dup2(cmd->out_fd, STDIN_FILENO) == -1)
+	if (cmd->in_fd || cmd->out_fd)
+	{
+		if (cmd->in_fd != 0)
+			if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
+				error(cmd, dta, "error");
+		if (cmd->out_fd != 0)
+			if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
+				error(cmd, dta, "error");
+	}
+	else
+	{
+		if (dup2(cmd->pfd, STDIN_FILENO) == -1)
 			error(cmd, dta, "error");
+	}
 	ft_whoitis(dta, cmd);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		error(cmd, dta, "error");
@@ -122,18 +139,16 @@ void	pipex(t_dta *dta, t_cmd *cmd)
 	int	pipe_fd[2];
 
 	j = 0;
-	if (set_cmd(dta, cmd) == 1)
-		return ;
+	set_cmd(dta, cmd);
 	while (j < dta->pnbr)
 	{
 		if (pipe(pipe_fd) == -1)
 			error(cmd, dta, "error");
-		if (ft_redir(dta, &cmd[j]))
+		if (ft_redir(dta, &cmd[j]) != 0)
 			return ;
 		cmd[j].pid = fork();
 		if (cmd[j].pid == -1)
 			error(cmd, dta, "error");
 		choose_proc(dta, cmd, pipe_fd, &j);
 	}
-	// error(cmd, dta, "");
 }
