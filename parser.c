@@ -39,6 +39,7 @@ void	ft_pars(t_cmd *cmd, char **tab)
 		{
 			j++;
 			cmd[j].cmd[ft_tablen(cmd[j].cmd)] = tab[++i];
+			cmd[j].lne[ft_tablen(cmd[j].lne)] = tab[i];
 		}
 		else if (ft_check_chevron(tab[i]) == 0)
 		{
@@ -46,8 +47,10 @@ void	ft_pars(t_cmd *cmd, char **tab)
 			cmd[j].rdr[ft_tablen(cmd[j].rdr)] = tab[i];
 		}
 		else
+		{
 			cmd[j].arg[ft_tablen(cmd[j].arg)] = tab[i];
-		cmd[j].lne[ft_tablen(cmd[j].lne)] = tab[i];
+			cmd[j].lne[ft_tablen(cmd[j].lne)] = tab[i];
+		}
 		i++;
 	}
 }
@@ -83,6 +86,13 @@ void	ft_set_up(t_dta *dta, char *line)
 	ft_create_tab(dta, line);
 	ft_cmd_init(dta, cmd, dta->tab);
 	ft_pars(cmd, dta->tab);
+	if (dta->pnbr == 1)
+	{
+		ft_redirect(dta, cmd);
+		ft_whoitis(dta, cmd);
+		if (dup2(STDOUT_FILENO, cmd->out_fd) == -1)
+				error(cmd, dta, "error");
+		return ;
+	}
 	pipex(dta, cmd);
-	// ft_whoitis(dta, cmd);
 }

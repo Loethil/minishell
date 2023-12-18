@@ -74,7 +74,10 @@ int	ft_unset(t_dta *dta, t_cmd *cmd)
 		if (ft_unset_input(cmd->arg[j]))
 			continue ;
 		if (j >= ft_tablen(cmd->arg))
-			exit (0);
+		{
+			dta->res = 0;
+			return (0);
+		}
 		if (!ft_strncmp(cmd->arg[j], dta->newenv[ft_tablen(dta->newenv) - 1],
 				ft_strlen(cmd->arg[j])))
 		{
@@ -87,5 +90,6 @@ int	ft_unset(t_dta *dta, t_cmd *cmd)
 		free(dta->newenv);
 		dta->newenv = oldenv;
 	}
-	exit (0);
+	dta->res = 0;
+	return (0);
 }

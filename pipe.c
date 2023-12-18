@@ -52,15 +52,12 @@ void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 	if (dta->pnbr != 1)
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
 			error(cmd, dta, "error");
-	if (cmd->in_fd != 0)
-		if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
-			error(cmd, dta, "error");
-	if (cmd->out_fd != 0)
-		if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
-			error(cmd, dta, "error");
+	if (ft_redirect(dta, cmd) == 1)
+		exit (0);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-	ft_whoitis(dta, cmd);
+	if (ft_whoitis(dta, cmd) == 0)
+		exit (0);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		error(cmd, dta, "error");
 }
@@ -68,24 +65,17 @@ void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[0]);
-	if (cmd->in_fd || cmd->out_fd)
-	{
-		if (cmd->in_fd != 0)
-			if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
-				error(cmd, dta, "error");
-		if (cmd->out_fd != 0)
-			if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
-				error(cmd, dta, "error");
-	}
-	else
-	{
-		if (dup2(cmd->pfd, STDIN_FILENO) == -1)
+	if (ft_redirect(dta, cmd) == 1)
+		exit (0);
+	if (cmd->in_fd == STDIN_FILENO)
+		if (dup2(cmd->pfd, cmd->in_fd) == -1)
 			error(cmd, dta, "error");
-		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+	if (cmd->out_fd == STDOUT_FILENO)
+		if (dup2(pipe_fd[1], cmd->out_fd) == -1)
 			error(cmd, dta, "error");
-	}
 	close(pipe_fd[1]);
-	ft_whoitis(dta, cmd);
+	if (ft_whoitis(dta, cmd) == 0)
+		exit (0);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		error(cmd, dta, "error");
 }
@@ -94,21 +84,13 @@ void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[1]);
 	close(pipe_fd[0]);
-	if (cmd->in_fd || cmd->out_fd)
-	{
-		if (cmd->in_fd != 0)
-			if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
-				error(cmd, dta, "error");
-		if (cmd->out_fd != 0)
-			if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
-				error(cmd, dta, "error");
-	}
-	else
-	{
+	if (ft_redirect(dta, cmd) == 1)
+		exit (0);
+	if (cmd->in_fd == STDIN_FILENO)
 		if (dup2(cmd->pfd, STDIN_FILENO) == -1)
 			error(cmd, dta, "error");
-	}
-	ft_whoitis(dta, cmd);
+	if (ft_whoitis(dta, cmd) == 0)
+		exit (0);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		error(cmd, dta, "error");
 }
@@ -144,8 +126,8 @@ void	pipex(t_dta *dta, t_cmd *cmd)
 	{
 		if (pipe(pipe_fd) == -1)
 			error(cmd, dta, "error");
-		if (ft_redir(dta, &cmd[j]) != 0)
-			return ;
+		// if (ft_redir(dta, &cmd[j]) != 0)
+		// 	return ;
 		cmd[j].pid = fork();
 		if (cmd[j].pid == -1)
 			error(cmd, dta, "error");

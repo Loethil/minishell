@@ -42,6 +42,7 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 {
 	int	len;
 
+	dta->res = -1;
 	len = ft_strlen(cmd->cmd[0]);
 	if (ft_strncmp(cmd->cmd[0], "echo", len) == 0)
 		ft_echo(dta, cmd, 0);
@@ -55,16 +56,16 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 		ft_changedir(dta, cmd->arg[0]);
 	}
 	else if (ft_strncmp(cmd->cmd[0], "pwd", len) == 0)
-		ft_pwdorenv(dta->newenv, "PWD");
+		ft_pwdorenv(dta, dta->newenv, "PWD");
 	else if (ft_strncmp(cmd->cmd[0], "export", len) == 0)
 		ft_export(dta, cmd);
 	else if (ft_strncmp(cmd->cmd[0], "unset", len) == 0)
 		ft_unset(dta, cmd);
 	else if (ft_strncmp(cmd->cmd[0], "env", len) == 0)
-		ft_pwdorenv(dta->newenv, "ENV");
+		ft_pwdorenv(dta, dta->newenv, "ENV");
 	else if (ft_strncmp(cmd->cmd[0], "exit", len) == 0)
 		ft_exit(dta, cmd); // a corriger
-	return (-1);
+	return (dta->res);
 }
 
 int	main(int argc, char **argv, char **env)

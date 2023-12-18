@@ -88,3 +88,66 @@ int	ft_redir(t_dta *dta, t_cmd *cmd)
 	}
 	return (0);
 }
+
+int	ft_redirect(t_dta *dta, t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	cmd->in_fd = STDIN_FILENO;
+	cmd->out_fd = STDOUT_FILENO;
+	if (!cmd->rdr || !cmd->rdr[0])
+		return (-1);
+	while (i < ft_tablen(cmd->rdr) && cmd->rdr[i])
+	{
+		if (ft_strncmp(cmd->rdr[i], "<<", 2) == 0)
+		{
+			ft_tmp_buf(dta, cmd); // non fini
+			return (1);
+		}
+		else if (ft_strncmp(cmd->rdr[i], ">>", 2) == 0)
+		{
+			i++;
+			if (!cmd->rdr[i])
+			{
+				printf("missing rdr\n");
+				return (1);
+			}
+			cmd->out_fd = open(cmd->rdr[i], O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (cmd->out_fd == -1)
+				error(cmd, dta, "error");
+			if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
+				error(cmd, dta, "error");
+		}
+		else if (ft_strncmp(cmd->rdr[i], "<", 1) == 0)
+		{
+			i++;
+			if (!cmd->rdr[i])
+			{
+				printf("missing rdr\n");
+				return (1);
+			}
+			cmd->in_fd = open(cmd->rdr[i], O_RDONLY);
+			if (cmd->in_fd == -1)
+				error(cmd, dta, "error");
+			if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
+				error(cmd, dta, "error");
+		}
+		else if (ft_strncmp(cmd->rdr[i], ">", 1) == 0)
+		{
+			i++;
+			if (!cmd->rdr[i])
+			{
+				printf("missing rdr\n");
+				return (1);
+			}
+			cmd->out_fd = open(cmd->rdr[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (cmd->out_fd == -1)
+				error(cmd, dta, "error");
+			if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
+				error(cmd, dta, "error");
+		}
+		i++;
+	}
+	return (0);
+}

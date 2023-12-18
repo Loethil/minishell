@@ -57,7 +57,7 @@ int	ft_findpwd(char **env)
 	return (-1);
 }
 
-int	ft_pwdorenv(char **newenv, char *tab)
+int	ft_pwdorenv(t_dta *dta, char **newenv, char *tab)
 {
 	int	i;
 
@@ -67,14 +67,16 @@ int	ft_pwdorenv(char **newenv, char *tab)
 		if (i == -1)
 			return (-1);
 		printf("%s\n", newenv[i] + 4);
-		exit (0);
+		dta->res = 0;
+		return (0);
 	}
 	if (ft_strncmp(tab, "ENV", 3) == 0)
 	{
 		i = 0;
 		while (newenv[i])
 			printf("%s\n", newenv[i++]);
-		exit (0);
+		dta->res = 0;
+		return (0);
 	}
-	return (0);
+	return (-1);
 }

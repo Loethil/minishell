@@ -46,6 +46,7 @@ typedef struct s_dta
 	int			lmax;
 	int			pnbr; // nombre de pipes
 	int			len;
+	int			res;
 	int			ext_val; // variable pour $?
 }				t_dta;
 
@@ -78,7 +79,7 @@ int			ft_whitespace(char *line);
 // PWD OR ENV //
 
 int			ft_findpwd(char **env);
-int			ft_pwdorenv(char **newenv, char *tab);
+int			ft_pwdorenv(t_dta *dta, char **newenv, char *tab);
 void		ft_changedir(t_dta *dta, char *path);
 char		**ft_find_path(t_dta *dta);
 char		*ft_get_access(t_dta *dta, char *argv);
@@ -107,6 +108,7 @@ void		ft_exit(t_dta *dta, t_cmd *cmd);
 // REDIRS //
 
 int			ft_redir(t_dta *dta, t_cmd *cmd);
+int			ft_redirect(t_dta *dta, t_cmd *cmd);
 
 // ECHO //
 

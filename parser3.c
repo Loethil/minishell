@@ -93,7 +93,7 @@ char	*replace_var(t_dta *dta, char *line, int *i)
 		if (line[(*i)] == '"')
 			break ;
 		tab[j++] = line[(*i)++];
-	}
+	} // bug avec simple dans double
 	j = 0;
 	while (dta->newenv[j])
 	{
@@ -165,10 +165,10 @@ void	ft_create_tab(t_dta *dta, char *line)
 	i = 0;
 	j = 0;
 	dta->tab = ft_calloc (dta->nbr + 1, sizeof(char *));
-	while (j < dta->nbr)
+	while (i < (int)ft_strlen(line))
 	{
 		dta->tab[j] = ft_getstr(dta, line, &i);
-		// printf("%s\n", dta->tab[j]);
+		printf("%s\n", dta->tab[j]);
 		j++;
 	}
 	dta->tab[j] = NULL;
