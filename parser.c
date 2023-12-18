@@ -89,7 +89,7 @@ void	ft_set_up(t_dta *dta, char *line)
 	if (dta->pnbr == 1)
 	{
 		ft_redirect(dta, cmd);
-		ft_whoitis(dta, cmd);
+		ft_whoitis(dta, cmd); // annule les commandes execve a corriger absolument
 		if (dup2(STDOUT_FILENO, cmd->out_fd) == -1)
 				error(cmd, dta, "error");
 		return ;
