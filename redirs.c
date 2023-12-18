@@ -21,7 +21,7 @@ void	ft_buf_cpy(t_dta *dta)
 	dta->cat_buf[j++] = dta->buf;
 }
 
-int	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
+void	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
 {
 	int	i;
 
@@ -31,9 +31,9 @@ int	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
 		dta->buf = readline("> ");
 		if (dta->buf == NULL)
 		{
-			printf("minishell: warning: EOF encountered (wanted: '%s')\n",
+			printf("minishell: warning: EOF encountered (wanted: '%s')\n\n",
 				cmd->rdr[1]);
-			return (1);
+			return ;
 		}
 		if (dta->line[0] == '\0' || ft_whitespace(dta->line))
 			continue ;
@@ -44,12 +44,11 @@ int	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
 				while (dta->cat_buf[++i])
 					printf("%s\n", dta->cat_buf[i]);
 			}
-			return (1);
+			return ;
 		}
 		if (ft_strncmp(cmd->cmd[0], "cat", 3) == 0)
 			ft_buf_cpy(dta);
 	}
-	return (0);
 }
 
 int	ft_redir(t_dta *dta, t_cmd *cmd)
@@ -63,8 +62,8 @@ int	ft_redir(t_dta *dta, t_cmd *cmd)
 		return (0);
 	if (ft_strncmp(cmd->rdr[0], "<<", 2) == 0)
 	{
-		if (ft_tmp_buf(dta, cmd))
-			return (1);
+		ft_tmp_buf(dta, cmd);
+		return (1);
 	}
 	else if (ft_strncmp(cmd->rdr[0], ">>", 2) == 0)
 	{
