@@ -19,7 +19,6 @@ void	ft_sigint_hdl(int signo)
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
-	g_sigint = 1;
 }
 
 void	ft_sigquit_hdl(int signo)
