@@ -22,8 +22,8 @@ void	ft_sigint_hdl(int signo)
 	g_sigint = 1;
 }
 
-// void	ft_sigquit_hdl(int signo)
-// {
-// 	(void)signo;
-// 	g_sig.sigquit = 1;
-// }
+void	ft_sigquit_hdl(int signo)
+{
+	(void)signo;
+	printf("\b\b  \b\b");
+}

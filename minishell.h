@@ -84,6 +84,9 @@ void		ft_changedir(t_dta *dta, char *path);
 char		**ft_find_path(t_dta *dta);
 char		*ft_get_access(t_dta *dta, char *argv);
 char		**changeenv(t_dta *dta, char **env);
+char		*ft_dot_cd(t_dta *dta, char *path, int i);
+void		ft_chdir_err(char *path);
+void		ft_sub_cd(t_dta *dta, char *path, int i);
 
 // EXPORT //
 
@@ -124,6 +127,7 @@ void		ft_print_sq_echo(char **arg, int i);
 // SIGNAL //
 
 void		ft_sigint_hdl(int signo);
+void		ft_sigquit_hdl(int signo);
 
 // PARS //
 

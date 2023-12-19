@@ -20,6 +20,7 @@ CCC = minishell.c \
 	prompt.c \
 	sort_env.c \
 	pwd.c \
+	pwd2.c \
 	signal.c \
 	export.c \
 	echo.c \
