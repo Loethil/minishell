@@ -37,7 +37,9 @@ char	*ft_freestrjoin(char *s1, char *s2)
 char	*replace_var(t_dta *dta, char *line, int *i)
 {
 	char	*tab;
-	int		j;
+	char	*tmp;
+	int		j = 0;
+	int		k = 0;
 
 	j = 0;
 	tab = ft_calloc(dta->len, sizeof(char));
@@ -51,6 +53,15 @@ char	*replace_var(t_dta *dta, char *line, int *i)
 			break ;
 		if (line[(*i)] == '"')
 			break ;
+		if (line[(*i)] == '?')
+		{
+			tmp = ft_calloc(10, sizeof(char));
+			tmp = ft_itoa(dta->ext_val);
+			while (tmp[k])
+				tab[j++] = tmp[k++];
+			(*i) += k;
+			return (tab);
+		}
 		tab[j++] = line[(*i)++];
 	}
 	// bug avec simple dans double
