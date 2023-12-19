@@ -168,7 +168,7 @@ void	ft_create_tab(t_dta *dta, char *line)
 	while (i < (int)ft_strlen(line))
 	{
 		dta->tab[j] = ft_getstr(dta, line, &i);
-		printf("%s\n", dta->tab[j]);
+		// printf("%s\n", dta->tab[j]);
 		j++;
 	}
 	dta->tab[j] = NULL;

@@ -75,6 +75,7 @@ int			ft_explen(char **tab);
 int			ft_invalid(char i);
 char		**ft_swap(char **env, int i);
 int			ft_whitespace(char *line);
+int			check_builtin(char *cmd);
 
 // PWD OR ENV //
 
