@@ -53,6 +53,7 @@ void	ft_pars(t_cmd *cmd, char **tab)
 		}
 		i++;
 	}
+	
 }
 
 

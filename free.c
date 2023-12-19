@@ -16,9 +16,12 @@ void	ft_free_tab(char **tab)
 {
 	int	i;
 
-	i = -1;
-	while (tab[++i])
+	i = 0;
+	while (i < ft_tablen(tab))
+	{
 		free(tab[i]);
+		i++;
+	}
 	free(tab);
 }
 
