@@ -11,24 +11,11 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	free_tabs(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-}
-
 void	error(t_cmd *cmd, t_dta *dta, char *err)
 {
 	(void)cmd;
 	(void)dta;
-	perror (err);
+	perror(err);
 	exit (-1);
 }
 
