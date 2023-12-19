@@ -64,7 +64,7 @@ typedef struct s_cmd
 }				t_cmd;
 
 // UTILS //
-void		error(t_cmd *cmd, t_dta *dta, char *err);
+void		ft_error(t_cmd *cmd, t_dta *dta, char *err);
 int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_copystring(char *env);
 char		*ft_strcpy(char *dst, const char *src);
@@ -74,7 +74,6 @@ int			ft_explen(char **tab);
 int			ft_invalid(char i);
 char		**ft_swap(char **env, int i);
 int			ft_whitespace(char *line);
-int			check_builtin(char *cmd);
 
 // PWD OR ENV //
 
@@ -134,10 +133,8 @@ void		ft_sigquit_hdl(int signo);
 void		ft_set_up(t_dta *dta, char *line);
 void		ft_pars(t_cmd *cmd, char **tab);
 void		ft_cmd_init(t_dta *dta, t_cmd *cmd, char **tab);
-int			ft_check_quotes(t_dta *dta, char *str, int *i);
-void		ft_pipes(t_dta *dta, char *line, int *i);
-void		ft_chevron(t_dta *dta, char *line, int *i);
-int			ft_checkoption(char *str);
+int			ft_cmd_simple(t_dta *dta, t_cmd *cmd);
+void		ft_pipes(t_dta *dta, int *i);
 void		ft_cpy_quotes(t_dta *dta, char *line, int *i);
 int			ft_countword(t_dta *dta, char *str);
 void		ft_word(t_dta *dta, char *line, int *i, int *j);
@@ -146,9 +143,17 @@ void		ft_create_tab(t_dta *dta, char *line);
 char		*replace_var(t_dta *dta, char *line, int *i);
 char		*ft_freestrjoin(char *s1, char *s2);
 
+// CHECK PARS
+
+void		ft_chevron(t_dta *dta, char *line, int *i);
+int			ft_check_quotes(t_dta *dta, char *str, int *i);
+int			ft_check_line(t_dta *dta, char *line);
+int			ft_check_builtin(char *cmd);
+int			ft_check_chevron(char *str);
+
 // PIPE//
 
-void		pipex(t_dta *dta, t_cmd *cmd);
+void		ft_pipex(t_dta *dta, t_cmd *cmd);
 
 // MAIN //
 

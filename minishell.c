@@ -12,30 +12,6 @@
 
 #include "minishell.h"
 
-void	ft_exit(t_dta *dta, t_cmd *cmd)
-{
-	char	*chk;
-
-	printf ("exit\n");
-	if (cmd->arg[0] == NULL)
-		exit (0);
-	dta->ext = ft_atoll(cmd->arg[0]);
-	chk = ft_itoa(dta->ext);
-	if (ft_strcmp(cmd->arg[0], chk) != 0)
-	{
-		printf("minishell: exit: %s: numeric argument required\n", cmd->arg[0]);
-		exit (2);
-	}
-	dta->ext %= 256;
-	if (cmd->arg[1])
-	{
-		printf("minishell: exit: too many arguments\n");
-		dta->ext_val = 1;
-		return ;
-	}
-	exit(dta->ext);
-}
-
 int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 {
 	int	len;
@@ -45,14 +21,7 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 	if (ft_strncmp(cmd->cmd[0], "echo", len) == 0)
 		ft_echo(dta, cmd, 0);
 	else if (ft_strncmp(cmd->cmd[0], "cd", len) == 0)
-	{
-		if (cmd->arg[1])
-		{
-			printf("minishell: cd: too many arguments\n");
-			return (-1);
-		}
 		ft_changedir(dta, cmd->arg[0]);
-	}
 	else if (ft_strncmp(cmd->cmd[0], "pwd", len) == 0)
 		ft_pwdorenv(dta, dta->newenv, "PWD");
 	else if (ft_strncmp(cmd->cmd[0], "export", len) == 0)
@@ -62,14 +31,30 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 	else if (ft_strncmp(cmd->cmd[0], "env", len) == 0)
 		ft_pwdorenv(dta, dta->newenv, "ENV");
 	else if (ft_strncmp(cmd->cmd[0], "exit", len) == 0)
-		ft_exit(dta, cmd); // a corriger
+		ft_exit(dta, cmd);
 	return (dta->res);
+}
+
+void	ft_set_up(t_dta *dta, char *line)
+{
+	t_cmd	*cmd;
+
+	if (ft_check_line(dta, line) == -1)
+		return ;
+	dta->var = NULL;
+	cmd = ft_calloc(dta->pnbr + 1, sizeof(t_cmd));
+	ft_create_tab(dta, line);
+	ft_cmd_init(dta, cmd, dta->tab);
+	ft_pars(cmd, dta->tab);
+	if (dta->pnbr == 1 && ft_check_builtin(cmd->cmd[0]) == 1)
+		if (ft_cmd_simple(dta, cmd) == 0)
+			return ;
+	ft_pipex(dta, cmd);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_dta	*dta;
-	t_cmd	*cmd;
 	int		i;
 
 	(void)argv;
@@ -79,10 +64,9 @@ int	main(int argc, char **argv, char **env)
 		return (0);
 	dta->newenv = changeenv(dta, env);
 	dta->ext_val = 0;
-	cmd = ft_calloc(dta->pnbr + 1, sizeof(t_cmd));
 	signal(SIGINT, &ft_sigint_hdl);
 	signal(SIGQUIT, &ft_sigquit_hdl);
 	ft_prompt(dta);
-	ft_destroy(dta);
+	free(dta);
 	return (0);
 }

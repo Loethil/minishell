@@ -32,87 +32,85 @@ int	ft_check_quotes(t_dta *dta, char *str, int *i)
 	return (0);
 }
 
-void	ft_pipes(t_dta *dta, char *line, int *i)
+int	ft_check_builtin(char *cmd)
 {
-	if (line[(*i) + 1] == '|')
-		return ;
-	if (line[(*i)] == '|' && (*i) == dta->len)
-		return ; //bug avec trop de pipes a regler
-	dta->str = "|";
-	(*i)++;
+	int	len;
+
+	len = ft_strlen(cmd) - 1;
+	if (ft_strncmp(cmd, "echo", len) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "cd", len) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "pwd", len) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "export", len) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "unset", len) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "env", len) == 0)
+		return (1);
+	else if (ft_strncmp(cmd, "exit", len) == 0)
+		return (1);
+	return (0);
 }
 
-void	ft_chevron(t_dta *dta, char *line, int *i)
+int	ft_check_word(t_dta *dta, char *str, int *i)
 {
-	if (line[(*i)] == '<' && line[(*i) + 1] == '<')
+	while (str[(*i)] != ' ' && (*i) < dta->len)
 	{
-		dta->str = "<<";
-		(*i) += 2;
-	}
-	else if (line[(*i)] == '>' && line[(*i) + 1] == '>')
-	{
-		dta->str = ">>";
-		(*i) += 2;
-	}
-	else if (line[(*i)] == '<')
-	{
-		dta->str = "<";
+		if (str[(*i)] == '|')
+		{
+			if (str[(*i) + 1] == '|')
+				return (-2);
+			if (str[(*i) + 1] == '\0')
+				return (-2);
+			dta->pnbr++;
+			dta->nbr += 2;
+		}
 		(*i)++;
 	}
-	else if (line[(*i)] == '>')
-	{
-		dta->str = ">";
-		(*i)++;
-	}
+	dta->nbr++;
+	return (0);
 }
 
-int	ft_checkoption(char *str)
+int	ft_countword(t_dta *dta, char *str)
 {
-	int	i = 0;
+	int	i;
 
-	while (str[i])
+	i = -1;
+	dta->pnbr = 1;
+	dta->nbr = 0;
+	dta->len = ft_strlen(str);
+	while (++i < dta->len)
 	{
-		if (str[i] == '-')
-			return (1);
-		else if (str[(i)] == '\'')
+		if (str[i] == '"' || str[i] == '\'')
 		{
-			while (str[++(i)] != '\'' && str[i])
-				;
+			if (ft_check_quotes(dta, str, &i) == -1)
+				return (-1);
 		}
-		else if (str[(i)] == '"')
+		else if (str[i] == '|')
 		{
-			while (str[++(i)] != '"' && str[i])
-				;
+			if (str[i + 1] == '|' || str[i + 1] == '\0')
+				return (-2);
+			dta->pnbr++;
+			dta->nbr++;
 		}
-		i++;
+		else if (str[i] != ' ')
+			if (ft_check_word(dta, str, &i) == -2)
+				return (-2);
 	}
 	return (0);
 }
 
-void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
+int	ft_check_chevron(char *str)
 {
-	int	j;
-	char *tab;
-
-	j = 0;
-	if (line[(*i)] == '\'')
-	{
-		while (line[++(*i)] != '\'' && (*i) < dta->len)
-			dta->str[j++] = line[(*i)];
-		dta->str[j] = '\0';
-	}
-	else if (line[(*i)] == '"')
-	{
-		while (line[++(*i)] != '"' && (*i) < dta->len)
-		{
-			if (line[(*i)] == '$')
-			{
-				tab =  replace_var(dta, line, i);
-				dta->str = ft_freestrjoin(dta->str, tab);
-				continue ;
-			}
-			dta->str[j++] = line[(*i)];
-		}
-	}
-	(*i)++;
+	if (ft_strncmp(str, "<<", 2) == 0)
+		return (0);
+	else if (ft_strncmp(str, ">>", 2) == 0)
+		return (0);
+	else if (ft_strncmp(str, ">", 1) == 0)
+		return (0);
+	else if (ft_strncmp(str, "<", 1) == 0)
+		return (0);
+	return (1);
 }

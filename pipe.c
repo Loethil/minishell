@@ -11,47 +11,11 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	free_tabs(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-}
-
-void	error(t_cmd *cmd, t_dta *dta, char *err)
-{
-	(void)cmd;
-	(void)dta;
-	perror (err);
-	exit (-1);
-}
-
-int	set_cmd(t_dta *dta, t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	dta->all_path = ft_find_path(dta);
-	while (i < dta->pnbr)
-	{
-		ft_get_access(dta, cmd[i].cmd[0]);
-		cmd[i].tpath = ft_get_access(dta, cmd[i].cmd[0]);
-		i++;
-	}
-	return (0);
-}
-
 void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 {
 	if (dta->pnbr != 1)
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-			error(cmd, dta, "error");
+			ft_error(cmd, dta, "error");
 	if (ft_redirect(dta, cmd) == 1)
 		exit (0);
 	close(pipe_fd[0]);
@@ -59,7 +23,7 @@ void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
-		error(cmd, dta, "error");
+		ft_error(cmd, dta, "error");
 }
 
 void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
@@ -69,15 +33,15 @@ void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 		exit (0);
 	if (cmd->in_fd == STDIN_FILENO)
 		if (dup2(cmd->pfd, cmd->in_fd) == -1)
-			error(cmd, dta, "error");
+			ft_error(cmd, dta, "error");
 	if (cmd->out_fd == STDOUT_FILENO)
 		if (dup2(pipe_fd[1], cmd->out_fd) == -1)
-			error(cmd, dta, "error");
+			ft_error(cmd, dta, "error");
 	close(pipe_fd[1]);
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
-		error(cmd, dta, "error");
+		ft_error(cmd, dta, "error");
 }
 
 void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
@@ -88,11 +52,11 @@ void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 		exit (0);
 	if (cmd->in_fd == STDIN_FILENO)
 		if (dup2(cmd->pfd, STDIN_FILENO) == -1)
-			error(cmd, dta, "error");
+			ft_error(cmd, dta, "error");
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
-		error(cmd, dta, "error");
+		ft_error(cmd, dta, "error");
 }
 
 void	choose_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2], int *j)
@@ -115,7 +79,7 @@ void	choose_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2], int *j)
 	}
 }
 
-void	pipex(t_dta *dta, t_cmd *cmd)
+void	ft_pipex(t_dta *dta, t_cmd *cmd)
 {
 	int	j;
 	int	pipe_fd[2];
@@ -125,12 +89,10 @@ void	pipex(t_dta *dta, t_cmd *cmd)
 	while (j < dta->pnbr)
 	{
 		if (pipe(pipe_fd) == -1)
-			error(cmd, dta, "error");
-		// if (ft_redir(dta, &cmd[j]) != 0)
-		// 	return ;
+			ft_error(cmd, dta, "error");
 		cmd[j].pid = fork();
 		if (cmd[j].pid == -1)
-			error(cmd, dta, "error");
+			ft_error(cmd, dta, "error");
 		choose_proc(dta, cmd, pipe_fd, &j);
 	}
 }
