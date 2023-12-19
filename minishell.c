@@ -69,6 +69,7 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 int	main(int argc, char **argv, char **env)
 {
 	t_dta	*dta;
+	t_cmd	*cmd;
 	int		i;
 
 	(void)argv;
@@ -78,8 +79,10 @@ int	main(int argc, char **argv, char **env)
 		return (0);
 	dta->newenv = changeenv(dta, env);
 	dta->ext_val = 0;
+	cmd = ft_calloc(dta->pnbr + 1, sizeof(t_cmd));
 	signal(SIGINT, &ft_sigint_hdl);
 	signal(SIGQUIT, &ft_sigquit_hdl);
 	ft_prompt(dta);
+	ft_destroy(dta);
 	return (0);
 }

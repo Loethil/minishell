@@ -29,7 +29,8 @@ CCC = minishell.c \
 	parser2.c \
 	parser3.c \
 	redirs.c \
-	pipe.c
+	pipe.c \
+	free.c
 
 OOO = $(CCC:.c=.o)
 

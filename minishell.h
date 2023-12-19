@@ -52,7 +52,6 @@ typedef struct s_dta
 
 typedef struct s_cmd
 {
-	t_dta	*dta;
 	char	**lne; //ligne entiere
 	char	**cmd; //stock la cmd
 	char	**arg; //stock les arguments de la commande
@@ -155,6 +154,10 @@ void		pipex(t_dta *dta, t_cmd *cmd);
 
 void		ft_prompt(t_dta *dta);
 int			ft_whoitis(t_dta *dta, t_cmd *cmd);
-void		ft_findcmd(t_dta *dta, t_cmd *cmd);
+
+// FREE //
+
+void		ft_destroy(t_dta *dta);
+void		ft_free_tab(char **tab);
 
 #endif
