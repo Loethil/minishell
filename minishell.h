@@ -156,5 +156,4 @@ void		ft_prompt(t_dta *dta);
 int			ft_whoitis(t_dta *dta, t_cmd *cmd);
 void		ft_findcmd(t_dta *dta, t_cmd *cmd);
 
-extern int	g_sigint;
 #endif
