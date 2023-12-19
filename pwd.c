@@ -52,12 +52,14 @@ void	ft_changedir(t_dta *dta, char *path)
 	if (path[0] == '~')
 		ft_sub_cd(dta, path, i);
 	else if (path[0] == '.')
-		dta->true_path = ft_dot_cd(dta, path, i);
+	{
+		ft_dot_cd(dta, path, i);
+		ft_chdir_err(path);
+	}
 	else
 	{
 		path = ft_check_slash(path);
-		if (!dta->true_path)
-			dta->true_path = ft_new_path(dta, i);
+		dta->true_path = ft_strjoin("", dta->newenv[i] + 4);
 		if (ft_strncmp("/home", path, 5) == 0)
 			dta->true_path = ft_strjoin("", path);
 		else

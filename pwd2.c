@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*ft_dot_cd(t_dta *dta, char *path, int i)
+void	ft_dot_cd(t_dta *dta, char *path, int i)
 {
 	int	j;
 	int	k;
@@ -26,14 +26,10 @@ char	*ft_dot_cd(t_dta *dta, char *path, int i)
 			while (dta->newenv[i][j - 1] != '/')
 				j--;
 			dta->newenv[i][j] = '\0';
-			path = dta->newenv[i] + 4;
-			if (chdir(path) == -1)
-				printf("minishell: cd: %s: No such file or directory\n", path);
 			k++;
 		}
 		k++;
 	}
-	return (path);
 }
 
 void	ft_chdir_err(char *path)
