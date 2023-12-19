@@ -11,32 +11,32 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_check_quotes(char *str, int *i, int j, int lmax)
+int	ft_check_quotes(t_dta *dta, char *str, int *i)
 {
 	if (str[(*i)] == '\'')
 	{
-		while (str[++(*i)] != '\'' && (*i) < lmax)
+		while (str[++(*i)] != '\'' && (*i) < dta->len)
 			;
-		if (str[*i] != '\'' && (*i) == lmax)
+		if (str[*i] != '\'' && (*i) == dta->len)
 			return (-1);
-		j++;
+		dta->nbr++;
 	}
 	else if (str[(*i)] == '"')
 	{
-		while (str[++(*i)] != '"' && (*i) < lmax)
+		while (str[++(*i)] != '"' && (*i) < dta->len)
 			;
-		if (str[*i] != '"' && (*i) == lmax)
+		if (str[*i] != '"' && (*i) == dta->len)
 			return (-1);
-		j++;
+		dta->nbr++;
 	}
-	return (j);
+	return (0);
 }
 
 void	ft_pipes(t_dta *dta, char *line, int *i)
 {
 	if (line[(*i) + 1] == '|')
 		return ;
-	if (line[(*i)] == '|' && (*i) == dta->lmax)
+	if (line[(*i)] == '|' && (*i) == dta->len)
 		return ; //bug avec trop de pipes a regler
 	dta->str = "|";
 	(*i)++;
@@ -97,13 +97,13 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 	j = 0;
 	if (line[(*i)] == '\'')
 	{
-		while (line[++(*i)] != '\'' && (*i) < dta->lmax)
+		while (line[++(*i)] != '\'' && (*i) < dta->len)
 			dta->str[j++] = line[(*i)];
 		dta->str[j] = '\0';
 	}
 	else if (line[(*i)] == '"')
 	{
-		while (line[++(*i)] != '"' && (*i) < dta->lmax)
+		while (line[++(*i)] != '"' && (*i) < dta->len)
 		{
 			if (line[(*i)] == '$')
 			{

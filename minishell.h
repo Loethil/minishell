@@ -134,7 +134,7 @@ void		ft_sigquit_hdl(int signo);
 void		ft_set_up(t_dta *dta, char *line);
 void		ft_pars(t_cmd *cmd, char **tab);
 void		ft_cmd_init(t_dta *dta, t_cmd *cmd, char **tab);
-int			ft_check_quotes(char *str, int *i, int j, int lmax);
+int			ft_check_quotes(t_dta *dta, char *str, int *i);
 void		ft_pipes(t_dta *dta, char *line, int *i);
 void		ft_chevron(t_dta *dta, char *line, int *i);
 int			ft_checkoption(char *str);

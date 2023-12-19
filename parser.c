@@ -105,16 +105,27 @@ int	cmd_simple(t_dta *dta, t_cmd *cmd)
 	return (0);
 }
 
+int	check_line(t_dta *dta, char *line)
+{
+	if (ft_countword(dta, line) == -1)
+	{
+		printf("error quotes\n");
+		return (-1);
+	}
+	if (ft_countword(dta, line) == -2)
+	{
+		printf("error pipes\n");
+		return (-1);
+	}
+	return (0);
+}
+
 void	ft_set_up(t_dta *dta, char *line)
 {
 	t_cmd	*cmd;
 
-	if (ft_countword(dta, line) == -1)
-	{
-		printf("error quotes\n");
+	if (check_line(dta, line) == -1)
 		return ;
-	}
-	dta->nbr = ft_countword(dta, line);
 	dta->var = NULL;
 	cmd = ft_calloc(dta->pnbr + 1, sizeof(t_cmd));
 	ft_create_tab(dta, line);

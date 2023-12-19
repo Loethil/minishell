@@ -11,46 +11,53 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+int	ft_check_word(t_dta *dta, char *str, int *i)
+{
+	while (str[(*i)] != ' ' && (*i) < dta->len)
+	{
+		if (str[(*i)] == '|')
+		{
+			if (str[(*i) + 1] == '|')
+				return (-2);
+			if (str[(*i) + 1] == '\0')
+				return (-2);
+			dta->pnbr++;
+			dta->nbr += 2;
+		}
+		(*i)++;
+	}
+	dta->nbr++;
+	return (0);
+}
+
 int	ft_countword(t_dta *dta, char *str)
 {
 	int	i;
-	int	j;
-	int	lmax;
 
-	i = 0;
-	j = 0;
+	i = -1;
 	dta->pnbr = 1;
-	lmax = ft_strlen(str);
-	while (i < lmax)
+	dta->nbr = 0;
+	dta->len = ft_strlen(str);
+	while (++i < dta->len)
 	{
 		if (str[i] == '"' || str[i] == '\'')
 		{
-			j = ft_check_quotes(str, &i, j, lmax);
-			if (j == -1)
+			if (ft_check_quotes(dta, str, &i) == -1)
 				return (-1);
 		}
 		else if (str[i] == '|')
 		{
+			if (str[i + 1] == '|' || str[i + 1] == '\0')
+				return (-2);
 			dta->pnbr++;
-			j++;
+			dta->nbr++;
 		}
 		else if (str[i] != ' ')
-		{
-			while (str[i] != ' ' && i < lmax)
-			{
-				if (str[i] == '|')
-				{
-					dta->pnbr++;
-					j += 2;
-				}
-				i++;
-			}
-			j++;
-		}
-		i++;
+			if (ft_check_word(dta, str, &i) == -2)
+				return (-2);
 	}
-	return (j);
-} // a reduire norminette
+	return (0);
+}
 
 char	*ft_freestrjoin(char *s1, char *s2)
 {
@@ -81,10 +88,10 @@ char	*replace_var(t_dta *dta, char *line, int *i)
 	char	*tab;
 	int		j = 0;
 
-	tab = ft_calloc(ft_strlen(line), sizeof(char));
+	tab = ft_calloc(dta->len, sizeof(char));
 	while (line[(*i)] == '$')
 		(*i)++;
-	while (line[(*i)] != '$' && (*i) < dta->lmax)
+	while (line[(*i)] != '$' && (*i) < dta->len)
 	{
 		if (line[(*i)] == '|')
 			break ;
@@ -115,7 +122,7 @@ void	ft_word(t_dta *dta, char *line, int *i, int *j)
 {
 	char	*tab;
 
-	while ((*i) < dta->lmax)
+	while ((*i) < dta->len)
 	{
 		if (line[(*i)] == '|')
 		{
@@ -141,8 +148,8 @@ char	*ft_getstr(t_dta *dta, char *line, int *i)
 
 	j = 0;
 	dta->str = ft_calloc(ft_strlen(line) + 1, sizeof(char));
-	dta->lmax = ft_strlen(line);
-	if ((*i) >= dta->lmax)
+	dta->len = ft_strlen(line);
+	if ((*i) >= dta->len)
 		return (NULL);
 	while (line[(*i)] == ' ')
 		(*i)++;
@@ -165,7 +172,7 @@ void	ft_create_tab(t_dta *dta, char *line)
 	i = 0;
 	j = 0;
 	dta->tab = ft_calloc (dta->nbr + 1, sizeof(char *));
-	while (i < (int)ft_strlen(line))
+	while (i < dta->len)
 	{
 		dta->tab[j] = ft_getstr(dta, line, &i);
 		// printf("%s\n", dta->tab[j]);
