@@ -36,7 +36,7 @@ char	**changeenv(t_dta *dta, char **env)
 	dta->newenv = ft_calloc((ft_explen(env) + 1), sizeof(char *));
 	while (env[i])
 	{
-		dta->newenv[i] = ft_copystring(env[i]);
+		dta->newenv[i] = env[i];
 		i++;
 	}
 	dta->newenv[i] = NULL;

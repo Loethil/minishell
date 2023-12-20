@@ -153,6 +153,7 @@ int			ft_check_chevron(char *str);
 
 // PIPE//
 
+int			ft_set_cmd(t_dta *dta, t_cmd *cmd);
 void		ft_pipex(t_dta *dta, t_cmd *cmd);
 
 // MAIN //
@@ -164,5 +165,6 @@ int			ft_whoitis(t_dta *dta, t_cmd *cmd);
 
 void		ft_destroy(t_dta *dta);
 void		ft_free_tab(char **tab);
+void		ft_free_cmd(t_dta *dta, t_cmd *cmd);
 
 #endif

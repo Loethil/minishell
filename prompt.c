@@ -38,5 +38,6 @@ void	ft_prompt(t_dta *dta)
 			continue ;
 		add_history(dta->line);
 		ft_set_up(dta, dta->line);
+		// ft_free_tab(dta->tab);
 	}
 }

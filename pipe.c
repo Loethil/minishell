@@ -85,7 +85,7 @@ void	ft_pipex(t_dta *dta, t_cmd *cmd)
 	int	pipe_fd[2];
 
 	j = 0;
-	set_cmd(dta, cmd);
+	ft_set_cmd(dta, cmd);
 	while (j < dta->pnbr)
 	{
 		if (pipe(pipe_fd) == -1)

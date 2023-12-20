@@ -51,7 +51,7 @@ char	**ft_find_path(t_dta *dta)
 	dta->all_path = ft_split(getenv("PATH"), ':');
 	while (dta->all_path[i])
 	{
-		dta->all_path[i] = ft_strjoin(dta->all_path[i], "/");
+		dta->all_path[i] = ft_freestrjoin(dta->all_path[i], "/");
 		i++;
 	}
 	return (dta->all_path);
@@ -60,16 +60,17 @@ char	**ft_find_path(t_dta *dta)
 char	*ft_get_access(t_dta *dta, char *cmd)
 {
 	int	i;
+	char	*tab;
 
 	i = 0;
 	if (access(cmd, X_OK) == 0)
 		return (cmd);
 	while (dta->all_path[i])
 	{
-		dta->true_path = ft_strjoin(dta->all_path[i], cmd);
-		if (access(dta->true_path, X_OK) == 0)
-			return (dta->true_path);
-		free(dta->true_path);
+		tab = ft_strjoin(dta->all_path[i], cmd);
+		if (access(tab, X_OK) == 0)
+			return (tab);
+		free(tab);
 		i++;
 	}
 	return (NULL);

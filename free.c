@@ -17,12 +17,45 @@ void	ft_free_tab(char **tab)
 	int	i;
 
 	i = 0;
-	while (i < ft_tablen(tab) - 1)
+	while (1)
 	{
+		if (tab[i] == NULL)
+		{
+			free(tab);
+			return ;
+		}
 		free(tab[i]);
 		i++;
 	}
-	free(tab);
+}
+
+void	ft_free_cmd(t_dta *dta, t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (i < dta->pnbr)
+	{
+		// if (cmd[i].lne != NULL)
+		// 	ft_free_tab(cmd[i].lne);
+		if (cmd[i].cmd != NULL)
+			ft_free_tab(cmd[i].cmd);
+		if (cmd[i].arg != NULL)
+			ft_free_tab(cmd[i].arg);
+		if (cmd[i].rdr != NULL)
+			ft_free_tab(cmd[i].rdr);
+		if (cmd[i].tpath != NULL)
+			free(cmd[i].tpath);
+		if (dta->all_path != NULL)
+			ft_free_tab(dta->all_path);
+		if (dta->newenv != NULL)
+			free(dta->newenv);
+		free(cmd[i].lne);
+		free(&cmd[i]);
+		free(dta->tab);
+		free(dta->line);
+		i++;
+	}
 }
 
 void	ft_destroy(t_dta *dta)
