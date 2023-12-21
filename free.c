@@ -36,8 +36,6 @@ void	ft_free_cmd(t_dta *dta, t_cmd *cmd)
 	i = 0;
 	while (i < dta->pnbr)
 	{
-		// if (cmd[i].lne != NULL)
-		// 	ft_free_tab(cmd[i].lne);
 		if (cmd[i].cmd != NULL)
 			ft_free_tab(cmd[i].cmd);
 		if (cmd[i].arg != NULL)
@@ -48,8 +46,6 @@ void	ft_free_cmd(t_dta *dta, t_cmd *cmd)
 			free(cmd[i].tpath);
 		if (dta->all_path != NULL)
 			ft_free_tab(dta->all_path);
-		if (dta->newenv != NULL)
-			free(dta->newenv);
 		free(cmd[i].lne);
 		free(&cmd[i]);
 		free(dta->tab);

@@ -70,13 +70,6 @@ void	choose_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2], int *j)
 		else
 			middle_proc(dta, &cmd[(*j)], pipe_fd);
 	}
-	else
-	{
-		close(pipe_fd[1]);
-		waitpid(cmd[(*j)].pid, &dta->status, 0);
-		(*j)++;
-		cmd[(*j)].pfd = pipe_fd[0];
-	}
 }
 
 void	ft_pipex(t_dta *dta, t_cmd *cmd)

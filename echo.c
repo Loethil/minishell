@@ -12,27 +12,13 @@
 
 #include "minishell.h"
 
-void	ft_print_sq_echo(char **arg, int i)
-{
-	int	j;
-
-	j = 1;
-	while (arg[i][j] && arg[i][j] != '\'')
-		printf("%c", arg[i][j++]);
-	if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
-		return ;
-	else
-		printf(" ");
-}
-
 void	ft_print_echo(char **arg, t_dta *dta, int i)
 {
 	(void)dta;
 	while (arg[i])
 	{
-		if (arg[i][0] == '\'')
-			ft_print_sq_echo(arg, i);
-		else if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
+
+		if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
 			printf("%s", arg[i]);
 		else
 			printf("%s ", arg[i]);

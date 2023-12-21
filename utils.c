@@ -36,10 +36,12 @@ char	*ft_strcpy(char *dst, const char *src)
 	unsigned int	j;
 
 	i = ft_strlen(src);
-	j = -1;
-	while (++j < i + 1)
+	j = 0;
+	while (j < i)
+	{
 		dst[j] = src[j];
-	dst[j] = '\0';
+		j++;
+	}
 	return (dst);
 }
 

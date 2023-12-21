@@ -28,7 +28,6 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 	{
 		while (line[++(*i)] != '\'' && (*i) < dta->len)
 			dta->str[j++] = line[(*i)];
-		dta->str[j] = '\0';
 	}
 	else if (line[(*i)] == '"')
 	{
@@ -39,6 +38,12 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 				tab = replace_var(dta, line, i);
 				dta->str = ft_freestrjoin(dta->str, tab);
 				continue ;
+			}
+			else if (line[(*i)] == '\'')
+			{
+				dta->str[j++] = line[(*i)];
+				while (line[++(*i)] != '\'' && (*i) < dta->len)
+					dta->str[j++] = line[(*i)];
 			}
 			dta->str[j++] = line[(*i)];
 		}
