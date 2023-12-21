@@ -19,11 +19,6 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 	int	len;
 
 	dta->res = -1;
-	if (ft_path(dta->newenv) == -1)
-	{
-		printf("minishell: %s: No such file or directory\n", cmd->cmd[0]);
-		return (0);
-	}
 	len = ft_strlen(cmd->cmd[0]);
 	if (ft_strncmp(cmd->cmd[0], "echo", len) == 0)
 		ft_echo(dta, cmd, 0);
@@ -39,6 +34,11 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 		ft_pwdorenv(dta, dta->newenv, "ENV");
 	else if (ft_strncmp(cmd->cmd[0], "exit", len) == 0)
 		ft_exit(dta, cmd);
+	else if (ft_path(dta->newenv) == -1)
+	{
+		printf("minishell: %s: No such file or directory\n", cmd->cmd[0]);
+		return (0);
+	}
 	return (dta->res);
 }
 
