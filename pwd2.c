@@ -30,6 +30,7 @@ void	ft_dot_cd(t_dta *dta, char *path, int i)
 		}
 		k++;
 	}
+	ft_chdir_err(path);
 }
 
 void	ft_chdir_err(char *path)

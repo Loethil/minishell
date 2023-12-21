@@ -79,7 +79,7 @@ int			ft_whitespace(char *line);
 
 int			ft_findpwd(char **env);
 int			ft_pwdorenv(t_dta *dta, char **newenv, char *tab);
-void		ft_changedir(t_dta *dta, char *path);
+void		ft_changedir(t_dta *dta, t_cmd *cmd, char *path);
 char		**ft_find_path(t_dta *dta);
 char		*ft_get_access(t_dta *dta, char *argv);
 char		**changeenv(t_dta *dta, char **env);
@@ -166,5 +166,7 @@ int			ft_whoitis(t_dta *dta, t_cmd *cmd);
 void		ft_destroy(t_dta *dta);
 void		ft_free_tab(char **tab);
 void		ft_free_cmd(t_dta *dta, t_cmd *cmd);
+
+extern int g_sigint;
 
 #endif

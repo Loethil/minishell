@@ -40,11 +40,28 @@ char	*ft_check_slash(char *path)
 	return (path);
 }
 
-void	ft_changedir(t_dta *dta, char *path)
+char	*ft_chdir(t_dta *dta, char *true_path, char *path, int i)
+{
+	true_path = ft_strjoin("", dta->newenv[i] + 4);
+	if (ft_strncmp("/home", path, 5) == 0)
+		true_path = ft_strjoin("", path);
+	else
+		true_path = ft_strjoin(true_path, path);
+	dta->newenv[i] = ft_strjoin("PWD=", true_path);
+	return (true_path);
+}
+
+void	ft_changedir(t_dta *dta, t_cmd *cmd, char *path)
 {
 	int	i;
 
 	i = ft_findpwd(dta->newenv);
+	if (cmd->arg[1])
+	{
+		dta->ext_val = 1;
+		printf("minishell: cd: too many args\n");
+		return ;
+	}
 	if (!path)
 		path = "~";
 	if (!path[0])
@@ -52,19 +69,11 @@ void	ft_changedir(t_dta *dta, char *path)
 	if (path[0] == '~')
 		ft_sub_cd(dta, path, i);
 	else if (path[0] == '.')
-	{
 		ft_dot_cd(dta, path, i);
-		ft_chdir_err(path);
-	}
 	else
 	{
 		path = ft_check_slash(path);
-		dta->true_path = ft_strjoin("", dta->newenv[i] + 4);
-		if (ft_strncmp("/home", path, 5) == 0)
-			dta->true_path = ft_strjoin("", path);
-		else
-			dta->true_path = ft_strjoin(dta->true_path, path);
-		dta->newenv[i] = ft_strjoin("PWD=", dta->true_path);
+		dta->true_path = ft_chdir(dta, dta->true_path, path, i);
 		ft_chdir_err(dta->true_path);
 	}
 }

@@ -31,10 +31,16 @@ void	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
 		dta->buf = readline("> ");
 		if (dta->buf == NULL)
 		{
-			printf("minishell: warning: EOF encountered (wanted: '%s')\n\n",
+			printf("minishell: warning: EOF encountered (wanted: '%s')\n",
 				cmd->rdr[1]);
 			return ;
 		}
+		// if (g_sigint == 1)
+		// {
+		// 	g_sigint = 0;
+		// 	dta->ext_val = 130;
+		// 	return ;
+		// }
 		if (dta->line[0] == '\0' || ft_whitespace(dta->line))
 			continue ;
 		if (ft_strncmp(dta->buf, cmd->rdr[1], ft_strlen(cmd->rdr[1])) == 0)
@@ -49,6 +55,51 @@ void	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
 		if (ft_strncmp(cmd->cmd[0], "cat", 3) == 0)
 			ft_buf_cpy(dta);
 	}
+}
+
+int	ft_sub_redir(t_dta *dta, t_cmd *cmd, int i)
+{
+	if (!cmd->rdr[i])
+	{
+		printf("missing rdr\n");
+		return (1);
+	}
+	cmd->out_fd = open(cmd->rdr[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (cmd->out_fd == -1)
+		ft_error(cmd, dta, "error");
+	if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
+		ft_error(cmd, dta, "error");
+	return (0);
+}
+
+int ft_read_redir(t_dta *dta, t_cmd *cmd, int i)
+{
+	if (!cmd->rdr[i])
+	{
+		printf("missing rdr\n");
+		return (1);
+	}
+	cmd->in_fd = open(cmd->rdr[i], O_RDONLY);
+	if (cmd->in_fd == -1)
+		ft_error(cmd, dta, "error");
+	if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
+		ft_error(cmd, dta, "error");
+	return (0);
+}
+
+int	ft_app_redir(t_dta *dta, t_cmd *cmd, int i)
+{
+	if (!cmd->rdr[i])
+	{
+		printf("missing rdr\n");
+		return (1);
+	}
+	cmd->out_fd = open(cmd->rdr[i],	O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (cmd->out_fd == -1)
+		ft_error(cmd, dta, "error");
+	if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
+		ft_error(cmd, dta, "error");
+	return (0);
 }
 
 int	ft_redirect(t_dta *dta, t_cmd *cmd)
@@ -69,47 +120,17 @@ int	ft_redirect(t_dta *dta, t_cmd *cmd)
 		}
 		else if (ft_strncmp(cmd->rdr[i], ">>", 2) == 0)
 		{
-			i++;
-			if (!cmd->rdr[i])
-			{
-				printf("missing rdr\n");
+			if (ft_app_redir(dta, cmd, ++i))
 				return (1);
-			}
-			cmd->out_fd = open(cmd->rdr[i], \
-					O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (cmd->out_fd == -1)
-				ft_error(cmd, dta, "error");
-			if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
-				ft_error(cmd, dta, "error");
 		}
 		else if (ft_strncmp(cmd->rdr[i], "<", 1) == 0)
 		{
-			i++;
-			if (!cmd->rdr[i])
-			{
-				printf("missing rdr\n");
+			if(ft_read_redir(dta, cmd, i))
 				return (1);
-			}
-			cmd->in_fd = open(cmd->rdr[i], O_RDONLY);
-			if (cmd->in_fd == -1)
-				ft_error(cmd, dta, "error");
-			if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
-				ft_error(cmd, dta, "error");
 		}
 		else if (ft_strncmp(cmd->rdr[i], ">", 1) == 0)
-		{
-			i++;
-			if (!cmd->rdr[i])
-			{
-				printf("missing rdr\n");
+			if (ft_sub_redir(dta, cmd, ++i))
 				return (1);
-			}
-			cmd->out_fd = open(cmd->rdr[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (cmd->out_fd == -1)
-				ft_error(cmd, dta, "error");
-			if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
-				ft_error(cmd, dta, "error");
-		}
 		i++;
 	}
 	return (0);

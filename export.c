@@ -69,7 +69,7 @@ int	ft_sub_export(t_dta *dta, t_cmd *cmd, int i, int k)
 		j++;
 	if (dta->newenv[i] && ft_strncmp(dta->newenv[i], cmd->arg[k], j) == 0)
 	{
-		free(dta->newenv[i]);
+		//free(dta->newenv[i]);
 		ft_export_malloc(dta, cmd, i, k);
 		return (k + 1);
 	}

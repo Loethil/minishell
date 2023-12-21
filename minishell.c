@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int	g_sigint = 0;
+
 int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 {
 	int	len;
@@ -21,7 +23,9 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 	if (ft_strncmp(cmd->cmd[0], "echo", len) == 0)
 		ft_echo(dta, cmd, 0);
 	else if (ft_strncmp(cmd->cmd[0], "cd", len) == 0)
-		ft_changedir(dta, cmd->arg[0]);
+	{
+		ft_changedir(dta, cmd, cmd->arg[0]);
+	}
 	else if (ft_strncmp(cmd->cmd[0], "pwd", len) == 0)
 		ft_pwdorenv(dta, dta->newenv, "PWD");
 	else if (ft_strncmp(cmd->cmd[0], "export", len) == 0)
@@ -50,7 +54,7 @@ void	ft_set_up(t_dta *dta, char *line)
 		if (ft_cmd_simple(dta, cmd) == 0)
 			return ;
 	ft_pipex(dta, cmd);
-	ft_free_cmd(dta, cmd);
+	//ft_free_cmd(dta, cmd);
 }
 
 int	main(int argc, char **argv, char **env)

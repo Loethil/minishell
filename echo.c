@@ -27,12 +27,11 @@ void	ft_print_sq_echo(char **arg, int i)
 
 void	ft_print_echo(char **arg, t_dta *dta, int i)
 {
+	(void)dta;
 	while (arg[i])
 	{
 		if (arg[i][0] == '\'')
 			ft_print_sq_echo(arg, i);
-		else if (ft_var_hdl(arg[i]) == 1)
-			ft_var_master(arg, dta, i);
 		else if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
 			printf("%s", arg[i]);
 		else
@@ -76,5 +75,4 @@ void	ft_echo(t_dta *dta, t_cmd *cmd, int i)
 	}
 	dta->ext_val = 0;
 	dta->res = 0;
-	return ;
 }

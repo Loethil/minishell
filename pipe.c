@@ -93,6 +93,16 @@ void	ft_pipex(t_dta *dta, t_cmd *cmd)
 		cmd[j].pid = fork();
 		if (cmd[j].pid == -1)
 			ft_error(cmd, dta, "error");
-		choose_proc(dta, cmd, pipe_fd, &j);
+		if (cmd[j].pid == 0)
+			choose_proc(dta, cmd, pipe_fd, &j);
+		else
+		{
+			close(pipe_fd[1]);
+			waitpid(cmd[j].pid, &dta->status, 0);
+			if (WIFEXITED(dta->status) && WEXITSTATUS(dta->status))
+                dta->ext_val = 127;
+			j++;
+			cmd[j].pfd = pipe_fd[0];
+		}
 	}
 }
