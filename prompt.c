@@ -17,7 +17,7 @@ int	ft_whitespace(char *line)
 	size_t	i;
 
 	i = 0;
-	while (line[i] && line[i] == ' ')
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
 	if (i != ft_strlen(line))
 		return (0);
