@@ -93,7 +93,7 @@ void	ft_pipex(t_dta *dta, t_cmd *cmd)
 			close(pipe_fd[1]);
 			waitpid(cmd[j].pid, &dta->status, 0);
 			if (WIFEXITED(dta->status) && WEXITSTATUS(dta->status))
-				dta->ext_val = 127;
+				dta->ext_val = WEXITSTATUS(dta->status);
 			j++;
 			cmd[j].pfd = pipe_fd[0];
 		}

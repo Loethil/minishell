@@ -19,13 +19,16 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 	int	len;
 
 	dta->res = -1;
+	if (ft_path(dta->newenv) == -1)
+	{
+		printf("minishell: %s: No such file or directory\n", cmd->cmd[0]);
+		return (0);
+	}
 	len = ft_strlen(cmd->cmd[0]);
 	if (ft_strncmp(cmd->cmd[0], "echo", len) == 0)
 		ft_echo(dta, cmd, 0);
 	else if (ft_strncmp(cmd->cmd[0], "cd", len) == 0)
-	{
 		ft_changedir(dta, cmd, cmd->arg[0]);
-	}
 	else if (ft_strncmp(cmd->cmd[0], "pwd", len) == 0)
 		ft_pwdorenv(dta, dta->newenv, "PWD");
 	else if (ft_strncmp(cmd->cmd[0], "export", len) == 0)

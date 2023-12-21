@@ -43,6 +43,20 @@ char	**changeenv(t_dta *dta, char **env)
 	return (dta->newenv);
 }
 
+int	ft_path(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 int	ft_findpwd(char **env)
 {
 	int	i;
