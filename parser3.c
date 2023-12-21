@@ -123,6 +123,7 @@ void	ft_create_tab(t_dta *dta, char *line)
 	while (i < dta->len)
 	{
 		dta->tab[j] = ft_getstr(dta, line, &i);
+		// printf("%s\n", dta->tab[j]);
 		j++;
 	}
 	dta->tab[j] = NULL;

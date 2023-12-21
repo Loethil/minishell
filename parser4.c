@@ -52,28 +52,33 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 	(*i)++;
 }
 
-void	ft_chevron(t_dta *dta, char *line, int *i)
+int	ft_chevron(t_dta *dta, char *line, int *i)
 {
 	if (line[(*i)] == '<' && line[(*i) + 1] == '<')
 	{
 		dta->str = "<<";
 		(*i) += 2;
+		return (1);
 	}
 	else if (line[(*i)] == '>' && line[(*i) + 1] == '>')
 	{
 		dta->str = ">>";
 		(*i) += 2;
+		return (1);
 	}
 	else if (line[(*i)] == '<')
 	{
 		dta->str = "<";
 		(*i)++;
+		return (1);
 	}
 	else if (line[(*i)] == '>')
 	{
 		dta->str = ">";
 		(*i)++;
+		return (1);
 	}
+	return (0);
 }
 
 void	ft_word(t_dta *dta, char *line, int *i)

@@ -148,7 +148,7 @@ char		*ft_freestrjoin(char *s1, char *s2);
 
 // CHECK PARS
 
-void		ft_chevron(t_dta *dta, char *line, int *i);
+int			ft_chevron(t_dta *dta, char *line, int *i);
 int			ft_check_quotes(t_dta *dta, char *str, int *i);
 int			ft_check_line(t_dta *dta, char *line);
 int			ft_check_builtin(char *cmd);

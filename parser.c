@@ -88,7 +88,8 @@ int	ft_cmd_simple(t_dta *dta, t_cmd *cmd)
 	int	svg_out;
 
 	svg_out = dup(STDOUT_FILENO);
-	ft_redirect(dta, cmd);
+	if (ft_redirect(dta, cmd) == 1)
+		return (1);
 	ft_whoitis(dta, cmd);
 	if (dup2(svg_out, STDOUT_FILENO) == -1)
 		ft_error(cmd, dta, cmd->cmd[0]);

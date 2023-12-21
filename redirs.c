@@ -54,7 +54,7 @@ int	ft_sub_buf(t_dta *dta, t_cmd *cmd)
 	signal(SIGINT, &ft_sigint_rdr);
 	ft_tmp_buf(dta, cmd);
 	signal(SIGINT, &ft_sigint_hdl);
-	return (1);
+	return (0);
 }
 
 int	ft_redirect(t_dta *dta, t_cmd *cmd)
