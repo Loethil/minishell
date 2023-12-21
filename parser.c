@@ -80,7 +80,7 @@ int	ft_cmd_simple(t_dta *dta, t_cmd *cmd)
 	ft_whoitis(dta, cmd);
 	if (dup2(svg_out, STDOUT_FILENO) == -1)
 		ft_error(cmd, dta, "error");
-	ft_free_cmd(dta, cmd);
+	// ft_free_cmd(dta, cmd);
 	return (0);
 }
 

@@ -123,7 +123,6 @@ int			ft_var_hdl(char *arg);
 void		ft_print_var(t_dta *dta, int *k);
 char		*ft_var(char *arg, t_dta *dta, int *j);
 void		ft_var_master(char **arg, t_dta *dta, int i);
-void		ft_print_sq_echo(char **arg, int i);
 
 // SIGNAL //
 
@@ -140,7 +139,7 @@ int			ft_cmd_simple(t_dta *dta, t_cmd *cmd);
 void		ft_pipes(t_dta *dta, int *i);
 void		ft_cpy_quotes(t_dta *dta, char *line, int *i);
 int			ft_countword(t_dta *dta, char *str);
-void		ft_word(t_dta *dta, char *line, int *i, int *j);
+void		ft_word(t_dta *dta, char *line, int *i);
 char		*ft_getstr(t_dta *dta, char *line, int *i);
 void		ft_create_tab(t_dta *dta, char *line);
 char		*replace_var(t_dta *dta, char *line, int *i);

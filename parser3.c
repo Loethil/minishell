@@ -34,37 +34,10 @@ char	*ft_freestrjoin(char *s1, char *s2)
 	return (tab);
 }
 
-char	*replace_var(t_dta *dta, char *line, int *i)
+char 	*replace_mac(t_dta *dta, char *tab)
 {
-	char	*tab;
-	char	*tmp;
-	int		j = 0;
-	int		k = 0;
+	int	j;
 
-	j = 0;
-	tab = ft_calloc(dta->len, sizeof(char));
-	while (line[(*i)] == '$')
-		(*i)++;
-	while (line[(*i)] != '$' && (*i) < dta->len)
-	{
-		if (line[(*i)] == '|')
-			break ;
-		if (line[(*i)] == ' ')
-			break ;
-		if (line[(*i)] == '"')
-			break ;
-		if (line[(*i)] == '?')
-		{
-			tmp = ft_calloc(10, sizeof(char));
-			tmp = ft_itoa(dta->ext_val);
-			while (tmp[k])
-				tab[j++] = tmp[k++];
-			(*i) += k;
-			return (tab);
-		}
-		tab[j++] = line[(*i)++];
-	}
-	// bug avec simple dans double
 	j = 0;
 	while (dta->newenv[j])
 	{
@@ -77,17 +50,51 @@ char	*replace_var(t_dta *dta, char *line, int *i)
 	}
 	if (dta->newenv[j] == NULL)
 		return (NULL);
-	// printf("%s\n", tab);	
 	return (tab);
 }
-//faire en sorte que la fonction puisse arreter
-//le processus sans fermer minishell et afficher un msg d'erreur
+
+char	*replace_inter(t_dta *dta, char *tab, int *i, int *j)
+{
+	char	*tmp;
+	int		k;
+
+	k = 0;
+	tmp = ft_calloc(10, sizeof(char));
+	tmp = ft_itoa(dta->ext_val);
+	while (tmp[k])
+		tab[(*j)++] = tmp[k++];
+	(*i) += k;
+	return (tab);
+}
+
+char	*replace_var(t_dta *dta, char *line, int *i)
+{
+	char	*tab;
+	int		j;
+
+	j = 0;
+	tab = ft_calloc(dta->len, sizeof(char));
+	while (line[++(*i)] != '$' && (*i) < dta->len)
+	{
+		if (line[(*i)] == '|' || line[(*i)] == ' ')
+			break ;
+		if (line[(*i)] == '"' || line[(*i)] == '\'' )
+			break ;
+		if (line[(*i)] == '?')
+		{
+			replace_inter(dta, tab, i, &j);
+			return (tab);
+		}
+		tab[j++] = line[(*i)];
+	}
+	tab = replace_mac(dta, tab);
+	if (tab == NULL)
+		return (NULL);
+	return (tab);
+}
 
 char	*ft_getstr(t_dta *dta, char *line, int *i)
 {
-	int	j;
-
-	j = 0;
 	dta->str = ft_calloc(ft_strlen(line) + 1, sizeof(char));
 	dta->len = ft_strlen(line);
 	if ((*i) >= dta->len)
@@ -101,7 +108,7 @@ char	*ft_getstr(t_dta *dta, char *line, int *i)
 	else if (line[(*i)] == '<' || line[(*i)] == '>')
 		ft_chevron(dta, line, i);
 	else if (line[(*i)] != ' ')
-		ft_word(dta, line, i, &j);
+		ft_word(dta, line, i);
 	return (dta->str);
 }
 
@@ -116,8 +123,6 @@ void	ft_create_tab(t_dta *dta, char *line)
 	while (i < dta->len)
 	{
 		dta->tab[j] = ft_getstr(dta, line, &i);
-		// printf("%s\n", dta->tab[j]);
-		// free(dta->str);
 		j++;
 	}
 	dta->tab[j] = NULL;

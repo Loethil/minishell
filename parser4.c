@@ -25,13 +25,12 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 
 	j = 0;
 	if (line[(*i)] == '\'')
-	{
 		while (line[++(*i)] != '\'' && (*i) < dta->len)
 			dta->str[j++] = line[(*i)];
-	}
 	else if (line[(*i)] == '"')
 	{
-		while (line[++(*i)] != '"' && (*i) < dta->len)
+		(*i)++;
+		while (line[(*i)] != '"' && (*i) < dta->len)
 		{
 			if (line[(*i)] == '$')
 			{
@@ -39,13 +38,7 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 				dta->str = ft_freestrjoin(dta->str, tab);
 				continue ;
 			}
-			else if (line[(*i)] == '\'')
-			{
-				dta->str[j++] = line[(*i)];
-				while (line[++(*i)] != '\'' && (*i) < dta->len)
-					dta->str[j++] = line[(*i)];
-			}
-			dta->str[j++] = line[(*i)];
+			dta->str[ft_strlen(dta->str)] = line[(*i)++];
 		}
 	}
 	(*i)++;
@@ -75,7 +68,7 @@ void	ft_chevron(t_dta *dta, char *line, int *i)
 	}
 }
 
-void	ft_word(t_dta *dta, char *line, int *i, int *j)
+void	ft_word(t_dta *dta, char *line, int *i)
 {
 	char	*tab;
 
@@ -83,7 +76,7 @@ void	ft_word(t_dta *dta, char *line, int *i, int *j)
 	{
 		if (line[(*i)] == '|')
 		{
-			dta->str[(*j)] = '\0';
+			dta->str[ft_strlen(dta->str)] = '\0';
 			return ;
 		}
 		if (line[(*i)] == ' ')
@@ -94,7 +87,25 @@ void	ft_word(t_dta *dta, char *line, int *i, int *j)
 			dta->str = ft_freestrjoin(dta->str, tab);
 			continue ;
 		}
-		dta->str[(*j)++] = line[(*i)++];
+		if (line[(*i)] == '"')
+		{
+			(*i)++;
+			if (line[(*i)] == '\'')
+			{
+				dta->str[ft_strlen(dta->str)] = line[(*i)++];
+				while (line[(*i)] != '\'')
+					dta->str[ft_strlen(dta->str)] = line[(*i)++];
+				dta->str[ft_strlen(dta->str)] = line[(*i)++];
+			}
+			continue ;
+		}
+		if (line[(*i)] == '\'')
+		{
+			while (line[++(*i)] != '\'' && (*i) < dta->len)
+				dta->str[ft_strlen(dta->str)] = line[(*i)];
+			continue ;
+		}
+		dta->str[ft_strlen(dta->str)] = line[(*i)++];
 	}
 	(*i)++;
 }
