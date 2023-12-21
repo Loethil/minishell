@@ -69,27 +69,23 @@ int	ft_sub_export(t_dta *dta, t_cmd *cmd, int i, int k)
 		j++;
 	if (dta->newenv[i] && ft_strncmp(dta->newenv[i], cmd->arg[k], j) == 0)
 	{
-		dta->newenv[i] = cmd->arg[k];
+		ft_export_malloc(dta, cmd, i, k);
 		return (k + 1);
 	}
 	return (k);
 }
 
-void	ft_export(t_dta *dta, t_cmd *cmd)
+int	ft_export(t_dta *dta, t_cmd *cmd, int k)
 {
 	int	i;
-	int	k;
 
-	k = -1;
+	dta->res = 0;
 	if (!cmd->arg[0])
 		return (ft_export_no_args(dta));
 	while (cmd->arg[++k])
 	{
 		if (k >= ft_tablen(cmd->arg))
-		{
-			dta->res = 0;
-			return ;
-		}
+			return (dta->res);
 		if (ft_export_input(cmd->arg[k]) || !ft_strchr(cmd->arg[k], '='))
 			continue ;
 		i = -1;
@@ -105,6 +101,5 @@ void	ft_export(t_dta *dta, t_cmd *cmd)
 			ft_export_malloc(dta, cmd, i, k);
 		dta->newenv[++i] = NULL;
 	}
-	dta->res = 0;
-	return ;
+	return (dta->res);
 }

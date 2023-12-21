@@ -61,7 +61,7 @@ char	**ft_find_path(t_dta *dta)
 
 char	*ft_get_access(t_dta *dta, char *cmd)
 {
-	int	i;
+	int		i;
 	char	*tab;
 
 	i = 0;

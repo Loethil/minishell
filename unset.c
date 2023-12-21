@@ -61,11 +61,18 @@ char	**ft_newenv(t_dta *dta, t_cmd *cmd, int i, int j)
 	return (oldenv);
 }
 
+void	ft_sub_unset(t_dta *dta, t_cmd *cmd, int i, int j)
+{
+	char	**oldenv;
+
+	oldenv = ft_newenv(dta, cmd, i, j);
+	dta->newenv = oldenv;
+}
+
 int	ft_unset(t_dta *dta, t_cmd *cmd)
 {
 	int		i;
 	int		j;
-	char	**oldenv;
 
 	j = -1;
 	while (cmd->arg[++j])
@@ -84,11 +91,7 @@ int	ft_unset(t_dta *dta, t_cmd *cmd)
 			dta->newenv[ft_tablen(dta->newenv) - 1] = NULL;
 			continue ;
 		}
-		oldenv = ft_newenv(dta, cmd, i, j);
-		while (dta->newenv[++i])
-			free(dta->newenv[i]);
-		free(dta->newenv);
-		dta->newenv = oldenv;
+		ft_sub_unset(dta, cmd, i, j);
 	}
 	dta->res = 0;
 	return (0);

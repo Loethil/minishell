@@ -29,7 +29,7 @@ int	ft_whoitis(t_dta *dta, t_cmd *cmd)
 	else if (ft_strncmp(cmd->cmd[0], "pwd", len) == 0)
 		ft_pwdorenv(dta, dta->newenv, "PWD");
 	else if (ft_strncmp(cmd->cmd[0], "export", len) == 0)
-		ft_export(dta, cmd);
+		ft_export(dta, cmd, -1);
 	else if (ft_strncmp(cmd->cmd[0], "unset", len) == 0)
 		ft_unset(dta, cmd);
 	else if (ft_strncmp(cmd->cmd[0], "env", len) == 0)

@@ -17,13 +17,13 @@ void	ft_print_echo(char **arg, t_dta *dta, int i)
 	(void)dta;
 	while (arg[i])
 	{
-
 		if (ft_tablen(arg) < 2 || i == ft_tablen(arg) - 1)
 			printf("%s", arg[i]);
 		else
 			printf("%s ", arg[i]);
 		i++;
 	}
+	dta->res = 0;
 }
 
 int	ft_sub_echo(char *arg, int j)
@@ -47,7 +47,6 @@ void	ft_echo(t_dta *dta, t_cmd *cmd, int i)
 			if (cmd->arg[i][j])
 			{
 				ft_print_echo(cmd->arg, dta, i);
-				dta->res = 0;
 				return ;
 			}
 			i++;
@@ -60,5 +59,4 @@ void	ft_echo(t_dta *dta, t_cmd *cmd, int i)
 		printf("\n");
 	}
 	dta->ext_val = 0;
-	dta->res = 0;
 }

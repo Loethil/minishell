@@ -89,11 +89,11 @@ void		ft_sub_cd(t_dta *dta, char *path, int i);
 
 // EXPORT //
 
-void		ft_export(t_dta *dta, t_cmd *cmd);
+int			ft_export(t_dta *dta, t_cmd *cmd, int k);
 int			ft_sub_export(t_dta *dta, t_cmd *cmd, int i, int k);
 int			ft_export_input(char *linesplit);
 void		ft_export_malloc(t_dta *dta, t_cmd *cmd, int i, int k);
-void		ft_export_no_args(t_dta *dta);
+int			ft_export_no_args(t_dta *dta);
 char		**ft_sort_env(char **env);
 
 // UNSET //
@@ -170,6 +170,6 @@ void		ft_destroy(t_dta *dta);
 void		ft_free_tab(char **tab);
 void		ft_free_cmd(t_dta *dta, t_cmd *cmd);
 
-extern int g_sigint;
+extern int	g_sigint;
 
 #endif

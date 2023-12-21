@@ -51,14 +51,13 @@ char	**ft_sort_env(char **env)
 	return (env);
 }
 
-void	ft_export_no_args(t_dta *dta)
+int	ft_export_no_args(t_dta *dta)
 {
 	int		i;
 	int		j;
 	char	**env;
 
 	i = -1;
-	env = malloc(sizeof(char *) * (ft_tablen(dta->newenv) + 1));
 	env = dta->newenv;
 	env = ft_sort_env(env);
 	while (env[++i])
@@ -77,6 +76,5 @@ void	ft_export_no_args(t_dta *dta)
 			printf("%c", env[i][j++]);
 		printf("\"\n");
 	}
-	dta->res = 0;
-	return ;
+	return (dta->res);
 }
