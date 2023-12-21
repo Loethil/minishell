@@ -25,6 +25,18 @@ int	ft_set_cmd(t_dta *dta, t_cmd *cmd)
 	return (0);
 }
 
+char	*ft_trimq(char *tab)
+{
+	int	i;
+
+	i = 0;
+	if (tab[i] == '\'')
+		tab = ft_strtrim(tab, "\'");
+	else if (tab[i] == '"')
+		tab = ft_strtrim(tab, "\"");
+	return (tab);		
+}
+
 void	ft_pars(t_cmd *cmd, char **tab)
 {
 	int	i;
@@ -32,25 +44,25 @@ void	ft_pars(t_cmd *cmd, char **tab)
 
 	j = 0;
 	i = 0;
-	cmd[j].lne[0] = tab[i];
-	cmd[j].cmd[0] = tab[i++];
+	cmd[j].lne[0] = ft_trimq(tab[i]);
+	cmd[j].cmd[0] = ft_trimq(tab[i++]);
 	while (tab[i])
 	{
 		if (ft_strcmp(tab[i], "|") == 0)
 		{
 			j++;
-			cmd[j].cmd[ft_tablen(cmd[j].cmd)] = tab[++i];
-			cmd[j].lne[ft_tablen(cmd[j].lne)] = tab[i];
+			cmd[j].cmd[ft_tablen(cmd[j].cmd)] = ft_trimq(tab[++i]);
+			cmd[j].lne[ft_tablen(cmd[j].lne)] = ft_trimq(tab[i]);
 		}
 		else if (ft_check_chevron(tab[i]) == 0)
 		{
-			cmd[j].rdr[ft_tablen(cmd[j].rdr)] = tab[i++];
-			cmd[j].rdr[ft_tablen(cmd[j].rdr)] = tab[i];
+			cmd[j].rdr[ft_tablen(cmd[j].rdr)] = ft_trimq(tab[i++]);
+			cmd[j].rdr[ft_tablen(cmd[j].rdr)] = ft_trimq(tab[i]);
 		}
 		else
 		{
-			cmd[j].arg[ft_tablen(cmd[j].arg)] = tab[i];
-			cmd[j].lne[ft_tablen(cmd[j].lne)] = tab[i];
+			cmd[j].arg[ft_tablen(cmd[j].arg)] = ft_trimq(tab[i]);
+			cmd[j].lne[ft_tablen(cmd[j].lne)] = ft_trimq(tab[i]);
 		}
 		i++;
 	}
@@ -79,7 +91,7 @@ int	ft_cmd_simple(t_dta *dta, t_cmd *cmd)
 	ft_redirect(dta, cmd);
 	ft_whoitis(dta, cmd);
 	if (dup2(svg_out, STDOUT_FILENO) == -1)
-		ft_error(cmd, dta, "error");
+		ft_error(cmd, dta, cmd->cmd[0]);
 	// ft_free_cmd(dta, cmd);
 	return (0);
 }

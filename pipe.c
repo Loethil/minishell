@@ -15,7 +15,7 @@ void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 {
 	if (dta->pnbr != 1)
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-			ft_error(cmd, dta, "error");
+			ft_error(cmd, dta, cmd->cmd[0]);
 	if (ft_redirect(dta, cmd) == 1)
 		exit (0);
 	close(pipe_fd[0]);
@@ -23,7 +23,7 @@ void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
-		ft_error(cmd, dta, "error");
+		ft_error(cmd, dta, cmd->cmd[0]);
 }
 
 void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
@@ -33,15 +33,15 @@ void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 		exit (0);
 	if (cmd->in_fd == STDIN_FILENO)
 		if (dup2(cmd->pfd, cmd->in_fd) == -1)
-			ft_error(cmd, dta, "error");
+			ft_error(cmd, dta, cmd->cmd[0]);
 	if (cmd->out_fd == STDOUT_FILENO)
 		if (dup2(pipe_fd[1], cmd->out_fd) == -1)
-			ft_error(cmd, dta, "error");
+			ft_error(cmd, dta, cmd->cmd[0]);
 	close(pipe_fd[1]);
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
-		ft_error(cmd, dta, "error");
+		ft_error(cmd, dta, cmd->cmd[0]);
 }
 
 void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
@@ -52,11 +52,11 @@ void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 		exit (0);
 	if (cmd->in_fd == STDIN_FILENO)
 		if (dup2(cmd->pfd, STDIN_FILENO) == -1)
-			ft_error(cmd, dta, "error");
+			ft_error(cmd, dta, cmd->cmd[0]);
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
-		ft_error(cmd, dta, "error");
+		ft_error(cmd, dta, cmd->cmd[0]);
 }
 
 void	choose_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2], int *j)
@@ -82,10 +82,10 @@ void	ft_pipex(t_dta *dta, t_cmd *cmd)
 	while (j < dta->pnbr)
 	{
 		if (pipe(pipe_fd) == -1)
-			ft_error(cmd, dta, "error");
+			ft_error(cmd, dta, cmd->cmd[0]);
 		cmd[j].pid = fork();
 		if (cmd[j].pid == -1)
-			ft_error(cmd, dta, "error");
+			ft_error(cmd, dta, cmd->cmd[0]);
 		if (cmd[j].pid == 0)
 			choose_proc(dta, cmd, pipe_fd, &j);
 		else

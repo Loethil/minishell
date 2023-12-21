@@ -25,10 +25,17 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 
 	j = 0;
 	if (line[(*i)] == '\'')
+	{
+		dta->str[j++] = line[(*i)];
 		while (line[++(*i)] != '\'' && (*i) < dta->len)
 			dta->str[j++] = line[(*i)];
+		if ((*i) >=dta->len)
+			return ;
+		dta->str[j++] = line[(*i)];
+	}
 	else if (line[(*i)] == '"')
 	{
+		dta->str[j++] = line[(*i)];
 		(*i)++;
 		while (line[(*i)] != '"' && (*i) < dta->len)
 		{
@@ -40,6 +47,7 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 			}
 			dta->str[ft_strlen(dta->str)] = line[(*i)++];
 		}
+		dta->str[ft_strlen(dta->str)] = line[(*i)];
 	}
 	(*i)++;
 }
