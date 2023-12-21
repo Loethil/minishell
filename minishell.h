@@ -109,8 +109,10 @@ void		ft_exit(t_dta *dta, t_cmd *cmd);
 
 // REDIRS //
 
-int			ft_redir(t_dta *dta, t_cmd *cmd);
 int			ft_redirect(t_dta *dta, t_cmd *cmd);
+int			ft_sub_redir(t_dta *dta, t_cmd *cmd, int i);
+int			ft_app_redir(t_dta *dta, t_cmd *cmd, int i);
+int			ft_read_redir(t_dta *dta, t_cmd *cmd, int i);
 
 // ECHO //
 
@@ -126,6 +128,7 @@ void		ft_print_sq_echo(char **arg, int i);
 // SIGNAL //
 
 void		ft_sigint_hdl(int signo);
+void		ft_sigint_rdr(int signo);
 void		ft_sigquit_hdl(int signo);
 
 // PARS //

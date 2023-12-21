@@ -35,21 +35,13 @@ void	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
 				cmd->rdr[1]);
 			return ;
 		}
-		// if (g_sigint == 1)
-		// {
-		// 	g_sigint = 0;
-		// 	dta->ext_val = 130;
-		// 	return ;
-		// }
 		if (dta->line[0] == '\0' || ft_whitespace(dta->line))
 			continue ;
 		if (ft_strncmp(dta->buf, cmd->rdr[1], ft_strlen(cmd->rdr[1])) == 0)
 		{
 			if (ft_strncmp(cmd->cmd[0], "cat", 3) == 0)
-			{
 				while (dta->cat_buf[++i])
 					printf("%s\n", dta->cat_buf[i]);
-			}
 			return ;
 		}
 		if (ft_strncmp(cmd->cmd[0], "cat", 3) == 0)
@@ -57,49 +49,12 @@ void	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
 	}
 }
 
-int	ft_sub_redir(t_dta *dta, t_cmd *cmd, int i)
+int	ft_sub_buf(t_dta *dta, t_cmd *cmd)
 {
-	if (!cmd->rdr[i])
-	{
-		printf("missing rdr\n");
-		return (1);
-	}
-	cmd->out_fd = open(cmd->rdr[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (cmd->out_fd == -1)
-		ft_error(cmd, dta, "error");
-	if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
-		ft_error(cmd, dta, "error");
-	return (0);
-}
-
-int ft_read_redir(t_dta *dta, t_cmd *cmd, int i)
-{
-	if (!cmd->rdr[i])
-	{
-		printf("missing rdr\n");
-		return (1);
-	}
-	cmd->in_fd = open(cmd->rdr[i], O_RDONLY);
-	if (cmd->in_fd == -1)
-		ft_error(cmd, dta, "error");
-	if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
-		ft_error(cmd, dta, "error");
-	return (0);
-}
-
-int	ft_app_redir(t_dta *dta, t_cmd *cmd, int i)
-{
-	if (!cmd->rdr[i])
-	{
-		printf("missing rdr\n");
-		return (1);
-	}
-	cmd->out_fd = open(cmd->rdr[i],	O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (cmd->out_fd == -1)
-		ft_error(cmd, dta, "error");
-	if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
-		ft_error(cmd, dta, "error");
-	return (0);
+	signal(SIGINT, &ft_sigint_rdr);
+	ft_tmp_buf(dta, cmd);
+	signal(SIGINT, &ft_sigint_hdl);
+	return (1);
 }
 
 int	ft_redirect(t_dta *dta, t_cmd *cmd)
@@ -114,21 +69,14 @@ int	ft_redirect(t_dta *dta, t_cmd *cmd)
 	while (i < ft_tablen(cmd->rdr) && cmd->rdr[i])
 	{
 		if (ft_strncmp(cmd->rdr[i], "<<", 2) == 0)
-		{
-			ft_tmp_buf(dta, cmd); // non fini
-			return (1);
-		}
-		else if (ft_strncmp(cmd->rdr[i], ">>", 2) == 0)
-		{
+			return (ft_sub_buf(dta, cmd));
+		if (ft_strncmp(cmd->rdr[i], ">>", 2) == 0)
 			if (ft_app_redir(dta, cmd, ++i))
 				return (1);
-		}
-		else if (ft_strncmp(cmd->rdr[i], "<", 1) == 0)
-		{
-			if(ft_read_redir(dta, cmd, i))
+		if (ft_strncmp(cmd->rdr[i], "<", 1) == 0)
+			if (ft_read_redir(dta, cmd, ++i))
 				return (1);
-		}
-		else if (ft_strncmp(cmd->rdr[i], ">", 1) == 0)
+		if (ft_strncmp(cmd->rdr[i], ">", 1) == 0)
 			if (ft_sub_redir(dta, cmd, ++i))
 				return (1);
 		i++;

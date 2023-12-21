@@ -22,6 +22,14 @@ void	ft_sigint_hdl(int signo)
 	rl_redisplay();
 }
 
+void	ft_sigint_rdr(int signo)
+{
+	(void)signo;
+	g_sigint = 2;
+	printf("\n");
+	exit (0);
+}
+
 void	ft_sigquit_hdl(int signo)
 {
 	(void)signo;
