@@ -68,6 +68,8 @@ void	ft_sub_cd(t_dta *dta, char *path, int i)
 
 	j = 0;
 	k = 0;
+	if (ft_chdir_err(path))
+		return ;
 	while (dta->newenv[i][j] && dta->newenv[i][j - 1] != '=')
 		j++;
 	new_path = ft_calloc(ft_strlen(dta->newenv[i]) + ft_strlen(path),
@@ -77,7 +79,6 @@ void	ft_sub_cd(t_dta *dta, char *path, int i)
 	if (!path[1])
 	{
 		dta->newenv[i] = ft_strjoin("PWD=", new_path);
-		ft_chdir_err(new_path);
 		return ;
 	}
 	l = 2;
@@ -85,5 +86,4 @@ void	ft_sub_cd(t_dta *dta, char *path, int i)
 		new_path[k++] = path[l++];
 	new_path[k] = '\0';
 	dta->newenv[i] = ft_strjoin("PWD=", new_path);
-	ft_chdir_err(new_path);
 }

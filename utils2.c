@@ -73,14 +73,13 @@ int	ft_findpwd(char **env)
 
 int	ft_pwdorenv(t_dta *dta, char **newenv, char *tab)
 {
-	int	i;
+	int		i;
+	char	pwd[1024];
 
 	if (ft_strncmp(tab, "PWD", 3) == 0)
 	{
-		i = ft_findpwd(newenv);
-		if (i == -1)
-			return (-1);
-		printf("%s\n", newenv[i] + 4);
+		getcwd(pwd, 1024);
+		printf("%s\n", pwd);
 		dta->res = 0;
 		return (0);
 	}

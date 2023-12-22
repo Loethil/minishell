@@ -89,8 +89,9 @@ void	ft_changedir(t_dta *dta, t_cmd *cmd, char *path)
 		ft_dot_cd(dta, path, i);
 	else
 	{
+		if (ft_chdir_err(path))
+			return ;
 		path = ft_check_slash(path);
 		dta->true_path = ft_chdir(dta, dta->true_path, path, i);
-		ft_chdir_err(dta->true_path);
 	}
 }
