@@ -94,4 +94,5 @@ void	ft_changedir(t_dta *dta, t_cmd *cmd, char *path)
 		path = ft_check_slash(path);
 		dta->true_path = ft_chdir(dta, dta->true_path, path, i);
 	}
+	dta->res = 0;
 }
