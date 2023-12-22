@@ -32,6 +32,7 @@ void	ft_cpy_squotes(t_dta *dta, char *line, int *i)
 			return ;
 		dta->str[j++] = line[(*i)];
 	}
+	(*i)++;
 }
 
 void	ft_cpy_dquotes(t_dta *dta, char *line, int *i)

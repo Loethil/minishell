@@ -49,7 +49,10 @@ void	ft_prompt(t_dta *dta)
 			return ;
 		}
 		if (dta->line[0] == '\0' || ft_whitespace(dta->line))
+		{
+			free(dta->line);
 			continue ;
+		}
 		add_history(dta->line);
 		if (g_sigint)
 		{

@@ -13,20 +13,20 @@
 
 void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 {
+	close(pipe_fd[0]);
+	if (cmd->tpath == NULL)
+	{
+		printf("%s: command not found\n", cmd->cmd[0]);
+		exit (-1);
+	}
 	if (dta->pnbr != 1)
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
 			ft_error(cmd, dta, cmd->cmd[0]);
 	if (ft_redirect(dta, cmd) == 1)
 		exit (0);
-	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
-	if (cmd->tpath == NULL)
-	{
-		printf("%s: command not found\n", cmd->cmd[0]);
-		exit (0);
-	}
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		ft_error(cmd, dta, cmd->cmd[0]);
 }
@@ -34,6 +34,12 @@ void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[0]);
+	if (cmd->tpath == NULL)
+	{
+		printf("%s: command not found\n", cmd->cmd[0]);
+		dta->ext_val = 127;
+		exit (-1);
+	}
 	if (ft_redirect(dta, cmd) == 1)
 		exit (0);
 	if (cmd->in_fd == STDIN_FILENO)
@@ -45,11 +51,6 @@ void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 	close(pipe_fd[1]);
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
-	if (cmd->tpath == NULL)
-	{
-		printf("%s: command not found\n", cmd->cmd[0]);
-		exit (0);
-	}
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		ft_error(cmd, dta, cmd->cmd[0]);
 }
@@ -58,6 +59,12 @@ void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[1]);
 	close(pipe_fd[0]);
+	if (cmd->tpath == NULL)
+	{
+		printf("%s: command not found\n", cmd->cmd[0]);
+		dta->ext_val = 127;
+		exit (-1);
+	}
 	if (ft_redirect(dta, cmd) == 1)
 		exit (0);
 	if (cmd->in_fd == STDIN_FILENO)
@@ -65,11 +72,6 @@ void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 			ft_error(cmd, dta, cmd->cmd[0]);
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
-	if (cmd->tpath == NULL)
-	{
-		printf("%s: command not found\n", cmd->cmd[0]);
-		exit (0);
-	}
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		ft_error(cmd, dta, cmd->cmd[0]);
 }
@@ -107,7 +109,7 @@ void	ft_pipex(t_dta *dta, t_cmd *cmd)
 		{
 			close(pipe_fd[1]);
 			waitpid(cmd[j].pid, &dta->status, 0);
-			if (WIFEXITED(dta->status) && WEXITSTATUS(dta->status))
+			if (WIFEXITED(dta->status))
 				dta->ext_val = WEXITSTATUS(dta->status);
 			j++;
 			cmd[j].pfd = pipe_fd[0];

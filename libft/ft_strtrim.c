@@ -36,13 +36,12 @@ char	*ft_strtrim(char *s1, char *set)
 	while (v > a && is_charset(s1[v - 1], set) == 1)
 		v--;
 	e = ft_strlen(s1) - v;
-	tab = malloc((ft_strlen(s1) - e - a + 1) * sizeof(char));
+	tab = ft_calloc((ft_strlen(s1) - e - a) + 1, sizeof(char));
 	if (!tab)
 		return (NULL);
 	e = 0;
 	while (a < v)
 		tab[e++] = s1[a++];
 	tab[e] = 0;
-	free(s1);
 	return (tab);
 }

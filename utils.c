@@ -66,7 +66,7 @@ char	*ft_get_access(t_dta *dta, char *cmd)
 
 	i = 0;
 	if (access(cmd, X_OK) == 0)
-		return (cmd);
+		return (ft_copystring(cmd));
 	while (dta->all_path[i])
 	{
 		tab = ft_strjoin(dta->all_path[i], cmd);

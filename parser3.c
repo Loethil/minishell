@@ -50,7 +50,7 @@ char	*replace_var(t_dta *dta, char *line, int *i)
 	int		j;
 
 	j = 0;
-	tab = ft_calloc(dta->len, sizeof(char));
+	tab = ft_calloc(dta->len + 100, sizeof(char));
 	while (line[++(*i)] != '$' && (*i) < dta->len)
 	{
 		if (line[(*i)] == '|' || line[(*i)] == ' ')
