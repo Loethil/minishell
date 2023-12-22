@@ -82,10 +82,7 @@ int	ft_export_no_args(t_dta *dta)
 		j = 0;
 		printf("declare -x ");
 		while (env[i][j] && env[i][j - 1] != '=')
-		{
-			printf("%c", env[i][j]);
-			j++;
-		}
+			printf("%c", env[i][j++]);
 		printf("\"");
 		while (env[i][j])
 			printf("%c", env[i][j++]);

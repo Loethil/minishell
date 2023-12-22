@@ -18,7 +18,23 @@ void	ft_buf_cpy(t_dta *dta)
 
 	if (!dta->cat_buf)
 		dta->cat_buf = ft_calloc(1000, sizeof(char *));
-	dta->cat_buf[j++] = dta->buf;
+	dta->cat_buf[j++] = ft_copystring(dta->buf);
+}
+
+void	ft_cat_buf_free(t_dta *dta)
+{
+	int	i;
+
+	i = 0;
+	if (dta->cat_buf)
+	{
+		while (dta->cat_buf[i])
+		{
+			free(dta->cat_buf[i]);
+			i++;
+		}
+		free(dta->cat_buf);
+	}
 }
 
 void	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
@@ -42,7 +58,8 @@ void	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
 			if (ft_strncmp(cmd->cmd[0], "cat", 3) == 0)
 				while (dta->cat_buf[++i])
 					printf("%s\n", dta->cat_buf[i]);
-			return ;
+			ft_cat_buf_free(dta);
+			exit (0);
 		}
 		if (ft_strncmp(cmd->cmd[0], "cat", 3) == 0)
 			ft_buf_cpy(dta);
