@@ -1,7 +1,7 @@
 export sans arg tri le vrai env | Simon FAIT
 signaux | Simon
-dollars seul et double  | mathis
-cd bad adress avec pipe | mathis
+dollars seul et double  | mathis FAIT
+cd bad adress avec pipe | mathis 
 cd avec ./x et ../x | simon FAIT
 chevron coller | mathis
 cat | cat | ls | mathis

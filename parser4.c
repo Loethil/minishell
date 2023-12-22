@@ -41,6 +41,12 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 		{
 			if (line[(*i)] == '$')
 			{
+				if (ft_isalpha(line[(*i) + 1]) == 0)
+				{
+					dta->str = ft_freestrjoin(dta->str, "$");
+					(*i)++;
+					continue ;
+				}
 				tab = replace_var(dta, line, i);
 				dta->str = ft_freestrjoin(dta->str, tab);
 				continue ;
@@ -96,6 +102,12 @@ void	ft_word(t_dta *dta, char *line, int *i)
 			break ;
 		if (line[(*i)] == '$')
 		{
+			if (ft_isalpha(line[(*i) + 1]) == 0)
+			{
+				dta->str = ft_freestrjoin(dta->str, "$");
+				(*i)++;
+				continue ;
+			}
 			tab = replace_var(dta, line, i);
 			dta->str = ft_freestrjoin(dta->str, tab);
 			continue ;
