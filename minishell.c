@@ -57,7 +57,7 @@ void	ft_set_up(t_dta *dta, char *line)
 		if (ft_cmd_simple(dta, cmd) == 0)
 			return ;
 	ft_pipex(dta, cmd);
-	//ft_free_cmd(dta, cmd);
+	ft_free_cmd(dta, cmd);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -76,6 +76,7 @@ int	main(int argc, char **argv, char **env)
 	signal(SIGQUIT, &ft_sigquit_hdl);
 	ft_prompt(dta);
 	free(dta->newenv);
+	ft_destroy(dta);
 	free(dta);
 	return (0);
 }

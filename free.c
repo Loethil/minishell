@@ -40,25 +40,25 @@ void	ft_free_cmd(t_dta *dta, t_cmd *cmd)
 			ft_free_tab(cmd[i].cmd);
 		if (cmd[i].arg != NULL)
 			ft_free_tab(cmd[i].arg);
-		if (cmd[i].rdr != NULL)
-			ft_free_tab(cmd[i].rdr);
+		// if (cmd[i].rdr != NULL)
+		// 	ft_free_tab(cmd[i].rdr);
 		if (cmd[i].tpath != NULL)
 			free(cmd[i].tpath);
-		if (dta->all_path != NULL)
-			ft_free_tab(dta->all_path);
-		free(cmd[i].lne);
-		free(&cmd[i]);
-		free(dta->tab);
-		free(dta->line);
+		//free(cmd[i].lne);
+		//free(&cmd[i]);
 		i++;
 	}
+	if (dta->all_path != NULL)
+		ft_free_tab(dta->all_path);
+	// if (dta->tab != NULL)
+	// 	ft_free_tab(dta->tab);
+	//free(cmd);
 }
 
 void	ft_destroy(t_dta *dta)
 {
 	free(dta->var);
 	free(dta->pwd);
-	free(dta->buf);
-	free(dta->line);
+	//free(dta->buf);
 	free(dta->str);
 }

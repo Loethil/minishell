@@ -43,5 +43,6 @@ void	ft_prompt(t_dta *dta)
 			dta->ext_val = 130;
 		}
 		ft_set_up(dta, dta->line);
+		//free(dta->line);
 	}
 }
