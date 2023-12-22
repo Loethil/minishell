@@ -55,7 +55,7 @@ void	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
 			continue ;
 		if (ft_strncmp(dta->buf, cmd->rdr[1], ft_strlen(cmd->rdr[1])) == 0)
 		{
-			if (ft_strncmp(cmd->cmd[0], "cat", 3) == 0)
+			if (ft_strncmp(cmd->cmd[0], "cat", 3) == 0 && dta->cat_buf)
 				while (dta->cat_buf[++i])
 					printf("%s\n", dta->cat_buf[i]);
 			ft_cat_buf_free(dta);

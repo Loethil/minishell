@@ -175,6 +175,7 @@ int			ft_whoitis(t_dta *dta, t_cmd *cmd);
 void		ft_destroy(t_dta *dta);
 void		ft_free_tab(char **tab);
 void		ft_free_cmd(t_dta *dta, t_cmd *cmd);
+void		ft_free_builtin(t_dta *dta, t_cmd *cmd);
 
 extern int	g_sigint;
 

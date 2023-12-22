@@ -57,10 +57,7 @@ void	ft_set_up(t_dta *dta, char *line)
 		if (ft_cmd_simple(dta, cmd) == 0)
 			return ;
 	ft_pipex(dta, cmd);
-<<<<<<< Updated upstream
 	ft_free_cmd(dta, cmd);
-=======
->>>>>>> Stashed changes
 }
 
 int	main(int argc, char **argv, char **env)
@@ -72,14 +69,18 @@ int	main(int argc, char **argv, char **env)
 	dta = ft_calloc (1, sizeof(t_dta));
 	i = -1;
 	if (argc != 1)
+	{
+		free(dta);
 		return (0);
+	}
 	dta->newenv = changeenv(dta, env);
 	dta->ext_val = 0;
 	signal(SIGINT, &ft_sigint_hdl);
 	signal(SIGQUIT, &ft_sigquit_hdl);
 	ft_prompt(dta);
+	// ft_destroy(dta);
 	free(dta->newenv);
-	ft_destroy(dta);
+	free(dta->tab);
 	free(dta);
 	return (0);
 }

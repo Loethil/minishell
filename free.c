@@ -29,6 +29,19 @@ void	ft_free_tab(char **tab)
 	}
 }
 
+void	ft_free_builtin(t_dta *dta, t_cmd *cmd)
+{
+	(void)dta;
+	if (cmd->cmd != NULL)
+		ft_free_tab(cmd->cmd);
+	if (cmd->arg != NULL)
+		ft_free_tab(cmd->arg);
+	if (cmd->rdr != NULL)
+		ft_free_tab(cmd->rdr);
+	free(cmd->lne);
+	free(cmd);
+}
+
 void	ft_free_cmd(t_dta *dta, t_cmd *cmd)
 {
 	int	i;
@@ -40,19 +53,15 @@ void	ft_free_cmd(t_dta *dta, t_cmd *cmd)
 			ft_free_tab(cmd[i].cmd);
 		if (cmd[i].arg != NULL)
 			ft_free_tab(cmd[i].arg);
-		// if (cmd[i].rdr != NULL)
-		// 	ft_free_tab(cmd[i].rdr);
+		if (cmd[i].rdr != NULL)
+			ft_free_tab(cmd[i].rdr);
 		if (cmd[i].tpath != NULL)
 			free(cmd[i].tpath);
-		//free(cmd[i].lne);
-		//free(&cmd[i]);
+		free(cmd[i].lne);
+		free(&cmd[i]);
 		i++;
 	}
-	if (dta->all_path != NULL)
-		ft_free_tab(dta->all_path);
-	// if (dta->tab != NULL)
-	// 	ft_free_tab(dta->tab);
-	//free(cmd);
+	ft_free_tab(dta->all_path);
 }
 
 void	ft_destroy(t_dta *dta)

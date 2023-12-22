@@ -22,7 +22,7 @@ int	is_charset(char c, const char *charset)
 	return (0);
 }
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char *s1, char *set)
 {
 	int		a;
 	int		v;
@@ -43,5 +43,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (a < v)
 		tab[e++] = s1[a++];
 	tab[e] = 0;
+	free(s1);
 	return (tab);
 }
