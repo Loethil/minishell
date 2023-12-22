@@ -63,6 +63,8 @@ int	ft_sub_export(t_dta *dta, t_cmd *cmd, int i, int k)
 	j = 0;
 	if (!cmd->arg[k])
 		return (ft_tablen(cmd->arg));
+	if (ft_export_input(cmd->arg[k]))
+		return (k + 1);
 	if (!ft_strchr(cmd->arg[k], '='))
 		return (k + 1);
 	while (cmd->arg[k][j] && cmd->arg[k][j] != '=')

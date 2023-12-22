@@ -51,6 +51,20 @@ char	**ft_sort_env(char **env)
 	return (env);
 }
 
+char	**ft_copy_env(char **dst_env, char **src_env)
+{
+	int	i;
+
+	i = 0;
+	while (src_env[i])
+	{
+		dst_env[i] = src_env[i];
+		i++;
+	}
+	dst_env[i] = NULL;
+	return (dst_env);
+}
+
 int	ft_export_no_args(t_dta *dta)
 {
 	int		i;
@@ -58,7 +72,8 @@ int	ft_export_no_args(t_dta *dta)
 	char	**env;
 
 	i = -1;
-	env = dta->newenv;
+	env = ft_calloc(ft_tablen(dta->newenv) + 1, sizeof(char *));
+	env = ft_copy_env(env, dta->newenv);
 	env = ft_sort_env(env);
 	while (env[++i])
 	{
@@ -76,5 +91,6 @@ int	ft_export_no_args(t_dta *dta)
 			printf("%c", env[i][j++]);
 		printf("\"\n");
 	}
+	free(env);
 	return (dta->res);
 }

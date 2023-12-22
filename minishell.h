@@ -85,8 +85,9 @@ char		**ft_find_path(t_dta *dta);
 char		*ft_get_access(t_dta *dta, char *argv);
 char		**changeenv(t_dta *dta, char **env);
 void		ft_dot_cd(t_dta *dta, char *path, int i);
-void		ft_chdir_err(char *path);
+int			ft_chdir_err(char *path);
 void		ft_sub_cd(t_dta *dta, char *path, int i);
+char		*ft_check_slash(char *path);
 
 // EXPORT //
 

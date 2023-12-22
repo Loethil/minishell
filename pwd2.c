@@ -12,31 +12,51 @@
 
 #include "minishell.h"
 
+void	ft_sub_dot_cd(t_dta *dta, int i)
+{
+	int	j;
+
+	j = ft_strlen(dta->newenv[i]) - 1;
+	while (dta->newenv[i][j - 1] != '/')
+		j--;
+	dta->newenv[i][j] = '\0';
+}
+
 void	ft_dot_cd(t_dta *dta, char *path, int i)
 {
 	int	j;
 	int	k;
 
-	k = 0;
-	while (path[k])
+	k = -1;
+	path = ft_check_slash(path);
+	if (ft_chdir_err(path))
+		return ;
+	while (path[++k])
 	{
 		if (path[k] == '.' && path[k + 1] == '.')
 		{
-			j = ft_strlen(dta->newenv[i]) - 2;
-			while (dta->newenv[i][j - 1] != '/')
-				j--;
-			dta->newenv[i][j] = '\0';
-			k++;
+			ft_sub_dot_cd(dta, i);
+			k += 2;
 		}
-		k++;
+		else if (path[k])
+		{
+			dta->newenv[i] = ft_check_slash(dta->newenv[i]);
+			j = ft_strlen(dta->newenv[i]);
+			while (path[k] != '/')
+				dta->newenv[i][j++] = path[k++];
+			dta->newenv[i][j] = '\0';
+		}
 	}
-	ft_chdir_err(path);
 }
 
-void	ft_chdir_err(char *path)
+int	ft_chdir_err(char *path)
 {
 	if (chdir(path) == -1)
+	{
 		printf("minishell: cd: %s: No such file or directory\n", path);
+		return (1);
+	}
+	return (0);
 }
 
 void	ft_sub_cd(t_dta *dta, char *path, int i)

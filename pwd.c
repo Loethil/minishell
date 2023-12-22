@@ -29,12 +29,29 @@ char	*ft_new_path(t_dta *dta, int i)
 	return (new_path);
 }
 
+int	ft_check_dot(char *path)
+{
+	int	i;
+
+	i = 0;
+	while (path[i])
+	{
+		if (path[i] == '.')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*ft_check_slash(char *path)
 {
-	if (path[ft_strlen(path) - 1] != '/')
+	int	i;
+
+	i = ft_strlen(path);
+	if (path[i - 1] != '/')
 	{
-		path[ft_strlen(path)] = '/';
-		path[ft_strlen(path) + 1] = '\0';
+		path[i++] = '/';
+		path[i] = '\0';
 		return (path);
 	}
 	return (path);
@@ -68,7 +85,7 @@ void	ft_changedir(t_dta *dta, t_cmd *cmd, char *path)
 		return ;
 	if (path[0] == '~')
 		ft_sub_cd(dta, path, i);
-	else if (path[0] == '.')
+	else if (ft_check_dot(path))
 		ft_dot_cd(dta, path, i);
 	else
 	{
