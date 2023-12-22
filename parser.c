@@ -29,12 +29,13 @@ void	ft_pars(t_cmd *cmd, char **tab, int j)
 
 	i = 0;
 	cmd[j].lne[0] = ft_trimq(tab[i]);
-	cmd[j].cmd[0] = ft_trimq(tab[i++]);
-	while (tab[i])
+	cmd[j].cmd[0] = ft_trimq(tab[i]);
+	while (tab[++i])
 	{
 		if (ft_strcmp(tab[i], "|") == 0)
 		{
 			j++;
+			free(tab[i]);
 			cmd[j].cmd[ft_tablen(cmd[j].cmd)] = ft_trimq(tab[++i]);
 			cmd[j].lne[ft_tablen(cmd[j].lne)] = ft_trimq(tab[i]);
 		}
@@ -48,7 +49,6 @@ void	ft_pars(t_cmd *cmd, char **tab, int j)
 			cmd[j].arg[ft_tablen(cmd[j].arg)] = ft_trimq(tab[i]);
 			cmd[j].lne[ft_tablen(cmd[j].lne)] = ft_trimq(tab[i]);
 		}
-		i++;
 	}
 }
 

@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-void	ft_pipes(t_dta *dta, int *i)
+void	ft_pipes(t_dta *dta, char *line, int *i)
 {
-	dta->str = "|";
+	dta->str[ft_strlen(dta->str)] = line[(*i)];
 	(*i)++;
 }
 
@@ -36,8 +36,6 @@ void	ft_cpy_squotes(t_dta *dta, char *line, int *i)
 
 void	ft_cpy_dquotes(t_dta *dta, char *line, int *i)
 {
-	char	*tab;
-
 	if (line[(*i)] == '"')
 	{
 		dta->str[ft_strlen(dta->str)] = line[(*i)];
@@ -46,7 +44,7 @@ void	ft_cpy_dquotes(t_dta *dta, char *line, int *i)
 		{
 			if (line[(*i)] == '$')
 			{
-				tab = ft_dollar(dta, line, tab, i);
+				ft_dollar(dta, line, i);
 				continue ;
 			}
 			dta->str[ft_strlen(dta->str)] = line[(*i)++];
@@ -60,26 +58,26 @@ int	ft_chevron(t_dta *dta, char *line, int *i)
 {
 	if (line[(*i)] == '<' && line[(*i) + 1] == '<')
 	{
-		dta->str = "<<";
+		dta->str[ft_strlen(dta->str)] = line[(*i)];
+		dta->str[ft_strlen(dta->str)] = line[(*i) + 1];
 		(*i) += 2;
 		return (1);
 	}
 	else if (line[(*i)] == '>' && line[(*i) + 1] == '>')
 	{
-		dta->str = ">>";
+		dta->str[ft_strlen(dta->str)] = line[(*i)];
+		dta->str[ft_strlen(dta->str)] = line[(*i) + 1];
 		(*i) += 2;
 		return (1);
 	}
 	else if (line[(*i)] == '<')
 	{
-		dta->str = "<";
-		(*i)++;
+		dta->str[ft_strlen(dta->str)] = line[(*i)++];
 		return (1);
 	}
 	else if (line[(*i)] == '>')
 	{
-		dta->str = ">";
-		(*i)++;
+		dta->str[ft_strlen(dta->str)] = line[(*i)++];
 		return (1);
 	}
 	return (0);
@@ -87,8 +85,6 @@ int	ft_chevron(t_dta *dta, char *line, int *i)
 
 void	ft_word(t_dta *dta, char *line, int *i)
 {
-	char	*tab;
-
 	while ((*i) < dta->len)
 	{
 		if (line[(*i)] == '|')
@@ -100,7 +96,7 @@ void	ft_word(t_dta *dta, char *line, int *i)
 			break ;
 		if (line[(*i)] == '$')
 		{
-			tab = ft_dollar(dta, line, tab, i);
+			ft_dollar(dta, line, i);
 			continue ;
 		}
 		if (line[(*i)] == '"')

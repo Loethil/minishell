@@ -138,7 +138,7 @@ void		ft_set_up(t_dta *dta, char *line);
 void		ft_pars(t_cmd *cmd, char **tab, int j);
 void		ft_cmd_init(t_dta *dta, t_cmd *cmd, char **tab);
 int			ft_cmd_simple(t_dta *dta, t_cmd *cmd);
-void		ft_pipes(t_dta *dta, int *i);
+void		ft_pipes(t_dta *dta, char *line, int *i);
 void		ft_cpy_squotes(t_dta *dta, char *line, int *i);
 void		ft_cpy_squotes2(t_dta *dta, char *line, int *i);
 void		ft_cpy_dquotes(t_dta *dta, char *line, int *i);
@@ -149,8 +149,9 @@ char		*ft_getstr(t_dta *dta, char *line, int *i);
 int			ft_create_tab(t_dta *dta, char *line);
 char		*replace_var(t_dta *dta, char *line, int *i);
 char		*ft_freestrjoin(char *s1, char *s2);
-char		*ft_dollar(t_dta *dta, char *line, char *tab, int *i);
+void		ft_dollar(t_dta *dta, char *line, int *i);
 int			ft_word_and_quotes(t_dta *dta, char *line, int *i);
+int			check_redir(char **tab);
 
 // CHECK PARS
 
@@ -176,8 +177,6 @@ void		ft_destroy(t_dta *dta);
 void		ft_free_tab(char **tab);
 void		ft_free_cmd(t_dta *dta, t_cmd *cmd);
 void		ft_free_builtin(t_dta *dta, t_cmd *cmd);
-void		free_string_array(char **array, int size);
-
 
 extern int	g_sigint;
 

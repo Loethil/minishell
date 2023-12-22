@@ -27,9 +27,8 @@ void	free_tabs(char **tab)
 
 void	ft_error(t_cmd *cmd, t_dta *dta, char *err)
 {
-	(void)cmd;
-	(void)dta;
 	perror (err);
+	ft_free_cmd(dta, cmd);
 	exit (-1);
 }
 

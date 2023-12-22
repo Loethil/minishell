@@ -49,7 +49,7 @@ void	ft_tmp_buf(t_dta *dta, t_cmd *cmd)
 		{
 			printf("minishell: warning: EOF encountered (wanted: '%s')\n",
 				cmd->rdr[1]);
-			return ;
+			exit (0);
 		}
 		if (dta->line[0] == '\0' || ft_whitespace(dta->line))
 			continue ;

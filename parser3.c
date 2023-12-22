@@ -18,9 +18,9 @@ char	*replace_mac(t_dta *dta, char *tab)
 	j = 0;
 	while (dta->newenv[j])
 	{
-		if (strncmp(dta->newenv[j], tab, ft_strlen(tab)) == 0)
+		if (ft_strncmp(dta->newenv[j], tab, ft_strlen(tab)) == 0)
 		{
-			tab = dta->newenv[j] + (ft_strlen(tab) + 1);
+			tab = ft_strcpy(tab, dta->newenv[j] + (ft_strlen(tab) + 1));
 			break ;
 		}
 		j++;
@@ -36,11 +36,11 @@ char	*replace_inter(t_dta *dta, char *tab, int *i, int *j)
 	int		k;
 
 	k = 0;
-	tmp = ft_calloc(10, sizeof(char));
 	tmp = ft_itoa(dta->ext_val);
 	while (tmp[k])
 		tab[(*j)++] = tmp[k++];
 	(*i) += k;
+	free(tmp);
 	return (tab);
 }
 
@@ -83,31 +83,12 @@ char	*ft_getstr(t_dta *dta, char *line, int *i)
 	else if (line[(*i)] == '\'')
 		ft_cpy_squotes(dta, line, i);
 	else if (line[(*i)] == '|')
-		ft_pipes(dta, i);
+		ft_pipes(dta, line, i);
 	else if (line[(*i)] == '<' || line[(*i)] == '>')
 		ft_chevron(dta, line, i);
 	else if (line[(*i)] != ' ')
 		ft_word(dta, line, i);
 	return (dta->str);
-}
-
-int	check_redir(char **tab)
-{
-	int	i;
-
-	i = 0;
-	if (!tab)
-		return (-1);
-	while (tab[i])
-	{
-		if (ft_check_chevron(tab[i]) == 0)
-		{
-			if (!tab[i + 1])
-				return (-1);
-		}
-		i++;
-	}
-	return (0);
 }
 
 int	ft_create_tab(t_dta *dta, char *line)
@@ -123,11 +104,10 @@ int	ft_create_tab(t_dta *dta, char *line)
 		dta->tab[j] = ft_getstr(dta, line, &i);
 		j++;
 	}
-	dta->tab[j] = NULL;
 	if (check_redir(dta->tab) == -1)
 	{
 		printf("syntax error near unexpected token `newline'\n");
-		free_string_array(dta->tab, 3);
+		ft_free_tab(dta->tab);
 		return (-1);
 	}
 	return (0);

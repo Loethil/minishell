@@ -82,7 +82,6 @@ int	main(int argc, char **argv, char **env)
 	signal(SIGINT, &ft_sigint_hdl);
 	signal(SIGQUIT, &ft_sigquit_hdl);
 	ft_prompt(dta);
-	// ft_destroy(dta);
 	free(dta->newenv);
 	free(dta);
 	return (0);

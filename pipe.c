@@ -22,6 +22,11 @@ void	first_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 	close(pipe_fd[1]);
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
+	if (cmd->tpath == NULL)
+	{
+		printf("%s: command not found\n", cmd->cmd[0]);
+		exit (0);
+	}
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		ft_error(cmd, dta, cmd->cmd[0]);
 }
@@ -40,6 +45,11 @@ void	middle_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 	close(pipe_fd[1]);
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
+	if (cmd->tpath == NULL)
+	{
+		printf("%s: command not found\n", cmd->cmd[0]);
+		exit (0);
+	}
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		ft_error(cmd, dta, cmd->cmd[0]);
 }
@@ -55,6 +65,11 @@ void	final_proc(t_dta *dta, t_cmd *cmd, int pipe_fd[2])
 			ft_error(cmd, dta, cmd->cmd[0]);
 	if (ft_whoitis(dta, cmd) == 0)
 		exit (0);
+	if (cmd->tpath == NULL)
+	{
+		printf("%s: command not found\n", cmd->cmd[0]);
+		exit (0);
+	}
 	if (execve(cmd->tpath, cmd->lne, dta->newenv) == -1)
 		ft_error(cmd, dta, cmd->cmd[0]);
 }

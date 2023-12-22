@@ -17,33 +17,12 @@ void	ft_free_tab(char **tab)
 	int	i;
 
 	i = 0;
-	while (1)
+	while (i < ft_tablen(tab))
 	{
-		if (tab[i] == NULL)
-		{
-			free(tab);
-			return ;
-		}
 		free(tab[i]);
 		i++;
 	}
-}
-
-void free_string_array(char **array, int size)
-{
-	int	i;
-
-	i = 0;
-    if (array == NULL) 
-	{
-        return;
-    }
-	while (i < size)
-	{
-        free(array[i]); // Libère chaque chaîne
-		i++;
-    }
-    free(array); // Libère le tableau
+	free(tab);
 }
 
 void	ft_free_builtin(t_dta *dta, t_cmd *cmd)
@@ -57,6 +36,7 @@ void	ft_free_builtin(t_dta *dta, t_cmd *cmd)
 		ft_free_tab(cmd->rdr);
 	free(cmd->lne);
 	free(cmd);
+	free(dta->tab);
 }
 
 void	ft_free_cmd(t_dta *dta, t_cmd *cmd)
@@ -75,16 +55,9 @@ void	ft_free_cmd(t_dta *dta, t_cmd *cmd)
 		if (cmd[i].tpath != NULL)
 			free(cmd[i].tpath);
 		free(cmd[i].lne);
-		free(&cmd[i]);
 		i++;
 	}
+	free(cmd);
+	free(dta->tab);
 	ft_free_tab(dta->all_path);
-}
-
-void	ft_destroy(t_dta *dta)
-{
-	free(dta->var);
-	free(dta->pwd);
-	//free(dta->buf);
-	free(dta->str);
 }

@@ -33,3 +33,22 @@ int	ft_explen(char **tab)
 		j += ft_strlen(tab[i]);
 	return (j);
 }
+
+int	check_redir(char **tab)
+{
+	int	i;
+
+	i = 0;
+	if (!tab)
+		return (-1);
+	while (tab[i])
+	{
+		if (ft_check_chevron(tab[i]) == 0)
+		{
+			if (!tab[i + 1])
+				return (-1);
+		}
+		i++;
+	}
+	return (0);
+}

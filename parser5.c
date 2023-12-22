@@ -35,17 +35,21 @@ char	*ft_freestrjoin(char *s1, char *s2)
 	return (tab);
 }
 
-char	*ft_dollar(t_dta *dta, char *line, char *tab, int *i)
+void	ft_dollar(t_dta *dta, char *line, int *i)
 {
-	if (ft_isalpha(line[(*i) + 1]) == 0)
+	char	*tab;
+
+	if (line[(*i) + 1] == '?')
+		;
+	else if (ft_isalpha(line[(*i) + 1]) == 0)
 	{
 		dta->str = ft_freestrjoin(dta->str, "$");
 		(*i)++;
-		return (tab);
+		return ;
 	}
 	tab = replace_var(dta, line, i);
 	dta->str = ft_freestrjoin(dta->str, tab);
-	return (tab);
+	free(tab);
 }
 
 int	ft_word_and_quotes(t_dta *dta, char *line, int *i)
@@ -73,8 +77,6 @@ int	ft_word_and_quotes(t_dta *dta, char *line, int *i)
 
 void	ft_cpy_dquotes2(t_dta *dta, char *line, int *i)
 {
-	char	*tab;
-
 	if (line[(*i)] == '"')
 	{
 		(*i)++;
@@ -82,7 +84,7 @@ void	ft_cpy_dquotes2(t_dta *dta, char *line, int *i)
 		{
 			if (line[(*i)] == '$')
 			{
-				tab = ft_dollar(dta, line, tab, i);
+				ft_dollar(dta, line, i);
 				continue ;
 			}
 			dta->str[ft_strlen(dta->str)] = line[(*i)++];
