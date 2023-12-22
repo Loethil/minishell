@@ -24,6 +24,20 @@ int	ft_whitespace(char *line)
 	return (1);
 }
 
+int	ft_set_cmd(t_dta *dta, t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	dta->all_path = ft_find_path(dta);
+	while (i < dta->pnbr)
+	{
+		cmd[i].tpath = ft_get_access(dta, cmd[i].cmd[0]);
+		i++;
+	}
+	return (0);
+}
+
 void	ft_prompt(t_dta *dta)
 {
 	while (1)

@@ -11,20 +11,6 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_set_cmd(t_dta *dta, t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	dta->all_path = ft_find_path(dta);
-	while (i < dta->pnbr)
-	{
-		cmd[i].tpath = ft_get_access(dta, cmd[i].cmd[0]);
-		i++;
-	}
-	return (0);
-}
-
 char	*ft_trimq(char *tab)
 {
 	int	i;
@@ -34,19 +20,17 @@ char	*ft_trimq(char *tab)
 		tab = ft_strtrim(tab, "\'");
 	else if (tab[i] == '"')
 		tab = ft_strtrim(tab, "\"");
-	return (tab);		
+	return (tab);
 }
 
-void	ft_pars(t_cmd *cmd, char **tab)
+void	ft_pars(t_cmd *cmd, char **tab, int j)
 {
 	int	i;
-	int	j;
 
-	j = 0;
-	i = 0;
+	i = -1;
 	cmd[j].lne[0] = ft_trimq(tab[i]);
 	cmd[j].cmd[0] = ft_trimq(tab[i++]);
-	while (tab[i])
+	while (tab[++i])
 	{
 		if (ft_strcmp(tab[i], "|") == 0)
 		{
@@ -64,7 +48,6 @@ void	ft_pars(t_cmd *cmd, char **tab)
 			cmd[j].arg[ft_tablen(cmd[j].arg)] = ft_trimq(tab[i]);
 			cmd[j].lne[ft_tablen(cmd[j].lne)] = ft_trimq(tab[i]);
 		}
-		i++;
 	}
 }
 
@@ -93,7 +76,6 @@ int	ft_cmd_simple(t_dta *dta, t_cmd *cmd)
 	ft_whoitis(dta, cmd);
 	if (dup2(svg_out, STDOUT_FILENO) == -1)
 		ft_error(cmd, dta, cmd->cmd[0]);
-	// ft_free_cmd(dta, cmd);
 	return (0);
 }
 

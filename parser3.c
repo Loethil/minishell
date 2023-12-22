@@ -11,30 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	*ft_freestrjoin(char *s1, char *s2)
-{
-	char	*tab;
-	int		r;
-	int		a;
-
-	tab = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (!tab)
-		return (NULL);
-	r = 0;
-	a = 0;
-	while (s1 && s1[r])
-	{
-		tab[r] = s1[r];
-		r++;
-	}
-	while (s2 && s2[a])
-		tab[r++] = s2[a++];
-	tab[r] = '\0';
-	free(s1);
-	return (tab);
-}
-
-char 	*replace_mac(t_dta *dta, char *tab)
+char	*replace_mac(t_dta *dta, char *tab)
 {
 	int	j;
 
@@ -101,8 +78,10 @@ char	*ft_getstr(t_dta *dta, char *line, int *i)
 		return (NULL);
 	while (line[(*i)] == ' ')
 		(*i)++;
-	if (line[(*i)] == '"' || line[(*i)] == '\'')
-		ft_cpy_quotes(dta, line, i);
+	if (line[(*i)] == '"')
+		ft_cpy_dquotes(dta, line, i);
+	else if (line[(*i)] == '\'')
+		ft_cpy_squotes(dta, line, i);
 	else if (line[(*i)] == '|')
 		ft_pipes(dta, i);
 	else if (line[(*i)] == '<' || line[(*i)] == '>')
@@ -123,7 +102,6 @@ void	ft_create_tab(t_dta *dta, char *line)
 	while (i < dta->len)
 	{
 		dta->tab[j] = ft_getstr(dta, line, &i);
-		// printf("%s\n", dta->tab[j]);
 		j++;
 	}
 	dta->tab[j] = NULL;

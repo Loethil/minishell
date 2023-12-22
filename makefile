@@ -29,6 +29,7 @@ CCC = minishell.c \
 	parser2.c \
 	parser3.c \
 	parser4.c \
+	parser5.c \
 	redirs.c \
 	redirs2.c \
 	pipe.c \

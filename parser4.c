@@ -18,10 +18,9 @@ void	ft_pipes(t_dta *dta, int *i)
 	(*i)++;
 }
 
-void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
+void	ft_cpy_squotes(t_dta *dta, char *line, int *i)
 {
-	int		j;
-	char	*tab;
+	int	j;
 
 	j = 0;
 	if (line[(*i)] == '\'')
@@ -29,26 +28,25 @@ void	ft_cpy_quotes(t_dta *dta, char *line, int *i)
 		dta->str[j++] = line[(*i)];
 		while (line[++(*i)] != '\'' && (*i) < dta->len)
 			dta->str[j++] = line[(*i)];
-		if ((*i) >=dta->len)
+		if ((*i) >= dta->len)
 			return ;
 		dta->str[j++] = line[(*i)];
 	}
-	else if (line[(*i)] == '"')
+}
+
+void	ft_cpy_dquotes(t_dta *dta, char *line, int *i)
+{
+	char	*tab;
+
+	if (line[(*i)] == '"')
 	{
-		dta->str[j++] = line[(*i)];
+		dta->str[ft_strlen(dta->str)] = line[(*i)];
 		(*i)++;
 		while (line[(*i)] != '"' && (*i) < dta->len)
 		{
 			if (line[(*i)] == '$')
 			{
-				if (ft_isalpha(line[(*i) + 1]) == 0)
-				{
-					dta->str = ft_freestrjoin(dta->str, "$");
-					(*i)++;
-					continue ;
-				}
-				tab = replace_var(dta, line, i);
-				dta->str = ft_freestrjoin(dta->str, tab);
+				tab = ft_dollar(dta, line, tab, i);
 				continue ;
 			}
 			dta->str[ft_strlen(dta->str)] = line[(*i)++];
@@ -102,34 +100,13 @@ void	ft_word(t_dta *dta, char *line, int *i)
 			break ;
 		if (line[(*i)] == '$')
 		{
-			if (ft_isalpha(line[(*i) + 1]) == 0)
-			{
-				dta->str = ft_freestrjoin(dta->str, "$");
-				(*i)++;
-				continue ;
-			}
-			tab = replace_var(dta, line, i);
-			dta->str = ft_freestrjoin(dta->str, tab);
+			tab = ft_dollar(dta, line, tab, i);
 			continue ;
 		}
 		if (line[(*i)] == '"')
-		{
-			(*i)++;
-			if (line[(*i)] == '\'')
-			{
-				dta->str[ft_strlen(dta->str)] = line[(*i)++];
-				while (line[(*i)] != '\'')
-					dta->str[ft_strlen(dta->str)] = line[(*i)++];
-				dta->str[ft_strlen(dta->str)] = line[(*i)++];
-			}
-			continue ;
-		}
+			ft_cpy_dquotes2(dta, line, i);
 		if (line[(*i)] == '\'')
-		{
-			while (line[++(*i)] != '\'' && (*i) < dta->len)
-				dta->str[ft_strlen(dta->str)] = line[(*i)];
-			continue ;
-		}
+			ft_cpy_squotes2(dta, line, i);
 		dta->str[ft_strlen(dta->str)] = line[(*i)++];
 	}
 	(*i)++;

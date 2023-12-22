@@ -52,12 +52,15 @@ void	ft_set_up(t_dta *dta, char *line)
 	cmd = ft_calloc(dta->pnbr + 1, sizeof(t_cmd));
 	ft_create_tab(dta, line);
 	ft_cmd_init(dta, cmd, dta->tab);
-	ft_pars(cmd, dta->tab);
+	ft_pars(cmd, dta->tab, 0);
 	if (dta->pnbr == 1 && ft_check_builtin(cmd->cmd[0]) == 1)
 		if (ft_cmd_simple(dta, cmd) == 0)
 			return ;
 	ft_pipex(dta, cmd);
+<<<<<<< Updated upstream
 	ft_free_cmd(dta, cmd);
+=======
+>>>>>>> Stashed changes
 }
 
 int	main(int argc, char **argv, char **env)
