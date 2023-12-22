@@ -91,7 +91,26 @@ char	*ft_getstr(t_dta *dta, char *line, int *i)
 	return (dta->str);
 }
 
-void	ft_create_tab(t_dta *dta, char *line)
+int	check_redir(char **tab)
+{
+	int	i;
+
+	i = 0;
+	if (!tab)
+		return (-1);
+	while (tab[i])
+	{
+		if (ft_check_chevron(tab[i]) == 0)
+		{
+			if (!tab[i + 1])
+				return (-1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	ft_create_tab(t_dta *dta, char *line)
 {
 	int	i;
 	int	j;
@@ -105,4 +124,11 @@ void	ft_create_tab(t_dta *dta, char *line)
 		j++;
 	}
 	dta->tab[j] = NULL;
+	if (check_redir(dta->tab) == -1)
+	{
+		printf("syntax error near unexpected token `newline'\n");
+		free_string_array(dta->tab, 3);
+		return (-1);
+	}
+	return (0);
 }

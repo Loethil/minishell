@@ -146,7 +146,7 @@ void		ft_cpy_dquotes2(t_dta *dta, char *line, int *i);
 int			ft_countword(t_dta *dta, char *str);
 void		ft_word(t_dta *dta, char *line, int *i);
 char		*ft_getstr(t_dta *dta, char *line, int *i);
-void		ft_create_tab(t_dta *dta, char *line);
+int			ft_create_tab(t_dta *dta, char *line);
 char		*replace_var(t_dta *dta, char *line, int *i);
 char		*ft_freestrjoin(char *s1, char *s2);
 char		*ft_dollar(t_dta *dta, char *line, char *tab, int *i);
@@ -176,6 +176,8 @@ void		ft_destroy(t_dta *dta);
 void		ft_free_tab(char **tab);
 void		ft_free_cmd(t_dta *dta, t_cmd *cmd);
 void		ft_free_builtin(t_dta *dta, t_cmd *cmd);
+void		free_string_array(char **array, int size);
+
 
 extern int	g_sigint;
 

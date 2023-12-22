@@ -50,7 +50,11 @@ void	ft_set_up(t_dta *dta, char *line)
 		return ;
 	dta->var = NULL;
 	cmd = ft_calloc(dta->pnbr + 1, sizeof(t_cmd));
-	ft_create_tab(dta, line);
+	if (ft_create_tab(dta, line) == -1)
+	{
+		free(cmd);
+		return ;
+	}
 	ft_cmd_init(dta, cmd, dta->tab);
 	ft_pars(cmd, dta->tab, 0);
 	if (dta->pnbr == 1 && ft_check_builtin(cmd->cmd[0]) == 1)
@@ -80,7 +84,6 @@ int	main(int argc, char **argv, char **env)
 	ft_prompt(dta);
 	// ft_destroy(dta);
 	free(dta->newenv);
-	free(dta->tab);
 	free(dta);
 	return (0);
 }

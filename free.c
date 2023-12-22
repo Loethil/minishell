@@ -29,6 +29,23 @@ void	ft_free_tab(char **tab)
 	}
 }
 
+void free_string_array(char **array, int size)
+{
+	int	i;
+
+	i = 0;
+    if (array == NULL) 
+	{
+        return;
+    }
+	while (i < size)
+	{
+        free(array[i]); // Libère chaque chaîne
+		i++;
+    }
+    free(array); // Libère le tableau
+}
+
 void	ft_free_builtin(t_dta *dta, t_cmd *cmd)
 {
 	(void)dta;
